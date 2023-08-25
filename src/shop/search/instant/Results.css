@@ -1,0 +1,29 @@
+@import '@src/shop/component/btn.css';
+@import '@src/shop/component/backdrop.css';
+
+section {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 2rem;
+    text-align: left;
+    z-index: 10000;
+    max-height: 90vh;
+    max-width: 70vw;
+    min-width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.8);
+}
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.products {
+}
+header {
+    font-weight: 700;
+}

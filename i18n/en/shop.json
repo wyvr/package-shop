@@ -1,0 +1,15 @@
+{
+    "javascript_required": "JavaScript seems to be disabled in your browser. For the best experience on our site, be sure to turn on Javascript in your browser.",
+    "email": "Email",
+    "zip": "ZIP Code",
+    "product": "Product",
+    "find_order_by": "Find Order By",
+    "order_id": "Order ID",
+    "billing_last_name": "Billing Last Name",
+    "search": "Search",
+    "orders_and_returns": "Orders and Returns",
+    "internal_error": "Internal server error",
+    "missing_required_field": "{name} is missing",
+    "invalid_field": "{name} is not valid",
+    "close": "Close"
+}

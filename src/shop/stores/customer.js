@@ -1,0 +1,34 @@
+import { writable } from 'svelte/store';
+import { isServer } from '@wyvr/generator';
+import { load, save } from './storage';
+import { getSharedStore, setSharedStore } from './shared.js';
+
+export const customer_storage_name = 'customer_data';
+
+function createCustomer() {
+    // customer is always null on server, no customer available
+    if (isServer) {
+        return null;
+    }
+    let store = getSharedStore(customer_storage_name);
+    if (store) {
+        return store;
+    }
+    const current_customer = load(customer_storage_name, null);
+    // load customer from storage
+    const customer_store = writable(current_customer);
+
+    // notification from other tab
+    window.addEventListener('storage', (e) => {
+        if (e.key == customer_storage_name) {
+            set(e.newValue);
+        }
+    });
+    // set current value of the store
+    customer_store.subscribe((customer) => {
+        save(customer_storage_name, customer);
+    });
+    return setSharedStore(customer_storage_name, customer_store);
+}
+
+export const customer = createCustomer();

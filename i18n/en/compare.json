@@ -1,0 +1,8 @@
+{
+    "name": "Compare",
+    "add_to_compare": "Add to comparelist",
+    "remove_from_compare": "Remove from comparelist",
+    "add": "Added {name} to your comparelist",
+    "remove": "Removed {name} from your comparelist",
+    "empty": "Your comparelist is empty"
+}

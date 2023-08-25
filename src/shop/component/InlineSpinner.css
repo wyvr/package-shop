@@ -1,0 +1,19 @@
+span {
+    pointer-events: none;
+    border: var(--spinner-stroke) solid var(--spinner-color);
+    border-right-color: transparent;
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    border-radius: 50%;
+    animation: spinner-rotation var(--spinner-speed) infinite ease-out;
+    display: inline-block;
+    vertical-align: middle;
+}
+@keyframes spinner-rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}

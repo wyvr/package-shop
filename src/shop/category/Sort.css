@@ -1,0 +1,17 @@
+section {
+    display: flex;
+    justify-content: end;
+    padding: 0.5rem 0;
+    gap: 0.2rem;
+}
+button {
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1rem;
+    background: none;
+    border: 0;
+    display: inline-block;
+    padding: 0.2rem;
+    margin: 0 0.2rem;
+    color: var(--color-primary);
+}

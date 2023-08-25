@@ -1,0 +1,44 @@
+button {
+    cursor: pointer;
+}
+section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+}
+.control {
+    font-size: 1rem;
+    line-height: 1rem;
+    background: none;
+    border: 0;
+    display: inline-block;
+    padding: 0.2rem;
+    color: var(--color-primary);
+}
+.control:disabled {
+    visibility: hidden;
+    pointer-events: none;
+}
+.pages {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0.5rem;
+    align-items: center;
+}
+.pages span,
+.pages button {
+    font-size: 1rem;
+    line-height: 1rem;
+    background: none;
+    border: 0;
+    display: inline-block;
+    padding: 0.2rem;
+    margin: 0 0.2rem;
+}
+.pages .limit {
+    opacity: 0.8;
+}
+.pages button {
+    color: var(--color-primary);
+}

@@ -1,0 +1,29 @@
+:root {
+    --color-text: #222;
+    --color-bg: #fff;
+    --color-primary: #6d8ddf;
+    --color-text-on-primary: #fff;
+    --color-error: #b92020;
+    --color-warning: #cf6223;
+    --color-info: #6d8ddf;
+    --color-success: #3fac1d;
+    --opacity-backdrop: 0.8;
+    --size: 1rem;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-text: #ddd;
+        --color-bg: #222;
+        --color-primary: #6d8ddf;
+    }
+}
+html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+a {
+    color: var(--color-primary);
+}
+*, *:before, *:after {
+    box-sizing: border-box;
+}

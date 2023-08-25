@@ -1,0 +1,31 @@
+a {
+    text-decoration: none;
+    color: var(--color-text);
+}
+.product {
+    padding-bottom: 1em;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+.image {
+    position: relative;
+}
+.image :global(img) {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+}
+.name,
+.price,
+.stock {
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.2em;
+}
+.name {
+    border-top: 1px solid #ccc;
+    padding-top: 1em;
+}
+.price {
+    font-weight: 700;
+}

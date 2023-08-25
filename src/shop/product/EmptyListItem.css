@@ -1,0 +1,33 @@
+.product {
+    padding-bottom: 1em;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+.image:before,
+.name:before,
+.price:before {
+    content: '';
+    display: inline-block;
+    background: #ccc;
+    width: 75%;
+    height: 1em;
+}
+.image:before {
+    max-width: 300px;
+    width: 100%;
+    height: 300px;
+    display: block;
+}
+.name,
+.price {
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.2em;
+}
+.name {
+    border-top: 1px solid #ccc;
+    padding-top: 1em;
+}
+.price {
+    font-weight: 700;
+}

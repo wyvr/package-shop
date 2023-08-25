@@ -1,0 +1,10 @@
+{
+    "stock": "Stock",
+    "show_all": "Show all",
+    "show_in_stock": "Show only in stock",
+    "show_out_of_stock": "Show only out of stock",
+    "price": "Price",
+    "from": "from",
+    "to": "to",
+    "sort": "Sort by"
+}

@@ -1,0 +1,12 @@
+{
+    "search": "Search",
+    "quicksearch": "Search in Shop",
+    "search_results_for": "Search results for \"{term}\"",
+    "suggestion": "Do you mean",
+    "products": "Products",
+    "categories": "Categories",
+    "pages": "Pages",
+    "more_results": "More results",
+    "sku_match": "Exact match",
+    "nothing_found": "Nothing found"
+}

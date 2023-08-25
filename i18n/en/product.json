@@ -1,0 +1,9 @@
+{
+    "sku": "SKU",
+    "ready_for_shipment": "Immediately ready for shipment",
+    "delivery_time": "Delivery time approx. {value}",
+    "show_product": "Show product",
+    "regular_price": "Regular price",
+    "add_to_cart": "Add to cart",
+    "remove_from_cart": "Remove from cart"
+}

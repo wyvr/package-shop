@@ -1,0 +1,14 @@
+.btn {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    font-size: 1rem;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+.btn:not([disabled]) {
+    cursor: pointer;
+    pointer-events: all;
+    filter: none;
+}

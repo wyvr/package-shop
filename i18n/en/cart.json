@@ -1,0 +1,21 @@
+{
+    "name": "Your cart",
+    "add": "Product \"{name}\" added to the cart",
+    "update": "Product \"{name}\" updated to quantity {qty} in the cart",
+    "delete": "Product \"{name}\" removed from the cart",
+    "unchanged": "Product \"{name}\" was already in cart with quantity {qty}",
+    "merged": "Products in your current cart has been added to your saved cart",
+    "update_error": "Error updating {sku} in your cart",
+    "delete_error": "Error deleting {sku} in your cart",
+    "empty": "Your cart is empty",
+    "proceed_to_checkout": "Proceed to checkout",
+    "view_cart": "View and edit your cart",
+    "items_in_cart": {
+        "_": "<b>{count}</b> items in your cart",
+        "1": "<b>{count}</b> item in your cart"
+    },
+    "is_in_cart": "This product is in your cart",
+    "sum": "Total",
+    "item_qty": "Amount:",
+    "invalid_cart_error": "Something is not correct with the cart you sent"
+}

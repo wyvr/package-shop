@@ -1,0 +1,6 @@
+{
+    "in_stock": "In stock",
+    "out_of_stock": "Out of stock",
+    "only_x_in_stock": "Only {qty} left in stock"
+
+}

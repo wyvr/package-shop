@@ -1,0 +1,35 @@
+import { writable } from 'svelte/store';
+import { isServer } from '@wyvr/generator';
+import { load, save } from './storage';
+import { getSharedStore, setSharedStore } from './shared';
+
+export const token_storage_name = 'customer_token';
+
+function createToken() {
+    // token is always null on server, no token available
+    if (isServer) {
+        return null;
+    }
+    let store = getSharedStore(token_storage_name);
+    if (store) {
+        return store;
+    }
+    const current_token = load(token_storage_name, null);
+    // load token from storage
+    const token_store = writable(current_token);
+
+    // notification from other tab
+    window.addEventListener('storage', (e) => {
+        if (e.key == token_storage_name) {
+            set(e.newValue);
+        }
+    });
+    // set current value of the store
+    token_store.subscribe((token) => {
+        save(token_storage_name, token);
+    });
+
+    return setSharedStore(token_storage_name, token_store);
+}
+
+export const token = createToken();

@@ -1,0 +1,22 @@
+{
+    "clear": "Clear",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "from": "From",
+    "to": "To",
+    "price": "Price",
+    "color": "Color",
+    "size": "Size",
+    "material": "Material",
+    "style": "Style",
+    "pattern": "Pattern",
+    "climate": "Climate",
+    "eco_collection": "Eco Collection",
+    "performance_fabric": "Performance Fabric",
+    "erin_recommends": "Erin Recommends",
+    "new": "New",
+    "sale": "Sale",
+    "not_key": "Not {key}",
+    "show_facets": "Show Facets"
+}

@@ -1,0 +1,21 @@
+section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 0;
+    line-height: 0;
+    padding: 0.5rem 0;
+}
+
+button {
+    border: 0;
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    cursor: pointer;
+    margin: 0 0.2rem 0.2rem 0;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    text-align: left;
+}

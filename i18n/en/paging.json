@@ -1,0 +1,8 @@
+{
+    "prev": "Previous Page",
+    "prev_symbol": "🡄",
+    "next": "Next Page",
+    "next_symbol": "🡆",
+    "limit": "&hellip;",
+    "x_of_y": "{x} of {y}"
+}

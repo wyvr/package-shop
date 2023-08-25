@@ -1,0 +1,8 @@
+{
+    "name": "Wishlist",
+    "add_to_wishlist": "Add to wishlist",
+    "remove_from_wishlist": "Remove from wishlist",
+    "add": "Added {name} to your wishlist",
+    "remove": "Removed {name} from your wishlist",
+    "empty": "Your wishlist is empty"
+}

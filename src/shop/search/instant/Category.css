@@ -1,0 +1,8 @@
+a {
+    color: var(--color-text);
+    text-decoration: none;
+    display: flex;
+}
+a > span {
+    flex-grow: 1;
+}

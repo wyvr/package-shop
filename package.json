@@ -1,0 +1,14 @@
+{
+    "name": "@wyvr/package-shop",
+    "description": "wyvr shop package",
+    "type": "module",
+    "keywords": [
+        "wyvr",
+        "generator",
+        "shop",
+        "ecommerce"
+    ],
+    "dependencies": {
+        "@elastic/elasticsearch": "^8.4.0"
+    }
+}

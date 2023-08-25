@@ -1,0 +1,34 @@
+.name {
+    grid-area: product_name;
+    margin-bottom: 1em;
+}
+.image {
+    grid-area: product_image;
+    position: relative;
+}
+.info {
+    margin-top: 1em;
+    grid-area: product_info;
+}
+@media (min-width: 768px) {
+    .main {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: auto 1fr;
+        gap: 0px 0px;
+        grid-template-areas:
+            'product_image product_name'
+            'product_image product_info';
+    }
+    .image {
+        margin-right: 2rem;
+        min-width: 300px;
+    }
+    .info {
+        flex-grow: 1;
+    }
+}
+.main,
+.details {
+    margin-bottom: 2em;
+}

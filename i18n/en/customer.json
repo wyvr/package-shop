@@ -1,0 +1,18 @@
+{
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "logout": "Logout",
+    "my_account": "My Account",
+    "register": "Register",
+    "create_account": "Create an Account",
+    "newsletter_register": "Register for Newsletter",
+    "allow_remote": "Allow remote shopping assistance",
+    "allow_remote_hint": "This allows merchants to \"see what you see\" and take actions on your behalf in order to provide better assistance.",
+    "invalid_error": "The account with the given email does not exist or the login is not valid anymore",
+    "login_error": "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.",
+    "login_success": "You signed in successfully",
+    "logout_success": "You have been successfully logged out"
+}
