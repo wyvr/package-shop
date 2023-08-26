@@ -1,4 +1,3 @@
-
 export default {
     shop: {
         default_store: null,
