@@ -1,12 +1,23 @@
 {
-    "name": "@wyvr/package-shop",
-    "type": "module",
-    "keywords": [
-        "wyvr",
-        "package",
-        "shop",
-        "ecommerce"
-    ],
-    "dependencies": {
-    }
+  "name": "@wyvr/package-shop",
+  "type": "module",
+  "keywords": [
+    "wyvr",
+    "package",
+    "shop",
+    "ecommerce"
+  ],
+  "description": "Package for [wyvr](https://wyvr.dev) which provides a basic headless ecommerce implementation.",
+  "version": "0.0.0",
+  "main": "wyvr.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wyvr/package-shop.git"
+  },
+  "author": "wyvr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wyvr/package-shop/issues"
+  },
+  "homepage": "https://github.com/wyvr/package-shop#readme"
 }
