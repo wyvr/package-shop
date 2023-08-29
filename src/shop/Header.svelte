@@ -7,6 +7,7 @@
     import Wishlist from '@src/shop/header/Wishlist.svelte';
     import Compare from '@src/shop/header/Compare.svelte';
 
+    export let title = '';
     export let store = null;
     export let locale;
     export let currency;
@@ -15,7 +16,7 @@
 <header>
     <section>
         <div class="logo">
-            <Logo />
+            <Logo store={store?.key} name={title} />
         </div>
         <div class="other">
             <Search store={store?.key} />
@@ -42,7 +43,7 @@
         justify-content: end;
         gap: 0.5rem;
     }
-    .other :global( > *) {
+    .other :global(> *) {
         text-align: left;
     }
     @media (min-width: 768px) {
