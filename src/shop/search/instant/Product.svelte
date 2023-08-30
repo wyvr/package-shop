@@ -10,7 +10,7 @@
     export let locale = 'en';
     export let currency = 'EUR';
 
-    const slug = _inject('config.magento2.slug.product', 'product');
+    const slug = _inject('config.shop.slug.product', 'product');
 
     $: link = url_join(store, slug, get_attribute_value(product, 'url_key'));
     $: sku = get_attribute_value(product, 'sku');

@@ -7,7 +7,7 @@
     export let categories;
     export let store = 'en';
     
-    const slug = _inject('config.magento2.slug.category', 'category');
+    const slug = _inject('config.shop.slug.category', 'category');
 </script>
 
 {#if Array.isArray(categories) && categories.length > 0}

@@ -12,7 +12,7 @@
     export let locale;
     export let currency;
 
-    const slug = _inject('config.magento2.slug.product', 'product');
+    const slug = _inject('config.shop.slug.product', 'product');
 
     $: image_path = item.thumbnail ? get_image_path(item.thumbnail) : undefined;
     $: link = url_join(get_store(), slug, get_attribute_value(item, 'url_key'));

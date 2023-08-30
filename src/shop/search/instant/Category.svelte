@@ -6,7 +6,7 @@
     export let category;
     export let store;
 
-    const slug = _inject('config.magento2.slug.category', 'category');
+    const slug = _inject('config.shop.slug.category', 'category');
 
     $: link = url_join(store, slug, category.url_path);
 </script>
