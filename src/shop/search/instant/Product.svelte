@@ -2,7 +2,7 @@
     import ImageAttribute from '@src/shop/product/ImageAttribute.svelte';
     import { get_attribute_value } from '@src/shop/core/attributes.mjs';
     import Price from '@src/shop/product/Price.svelte';
-    import { get_product_url } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.mjs';
 
     export let product;
     export let term = '';
@@ -10,7 +10,9 @@
     export let locale = 'en';
     export let currency = 'EUR';
 
-    $: link = get_product_url(store, get_attribute_value(product, 'url_key'));
+    const slug = _inject('config.magento2.slug.product', 'product');
+
+    $: link = url_join(store, slug, get_attribute_value(product, 'url_key'));
     $: sku = get_attribute_value(product, 'sku');
     $: name = get_attribute_value(product, 'name');
     $: sku_match = sku.toLowerCase() === term;

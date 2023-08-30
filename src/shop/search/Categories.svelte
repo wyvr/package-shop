@@ -2,16 +2,18 @@
     import Image from '@src/shop/component/Image.svelte';
     import Error from '@src/shop/Error.svelte';
     import { trim_text } from '@src/shop/core/sanitize.mjs';
-    import { get_category_url } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.mjs';
 
     export let categories;
     export let store = 'en';
+    
+    const slug = _inject('config.magento2.slug.category', 'category');
 </script>
 
 {#if Array.isArray(categories) && categories.length > 0}
     <section>
         {#each categories as category}
-            {@const link = get_category_url(store, category.url_path)}
+            {@const link = url_join(store, slug, category.url_path)}
             <div class="category">
                 <div class="image">
                     <a href={link}>

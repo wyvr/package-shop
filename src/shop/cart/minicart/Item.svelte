@@ -5,15 +5,17 @@
     import { get_image_path } from '@src/shop/product/get_image_path.mjs';
     import { update_qty_delayed, update_qty } from '@src/shop/cart/minicart/item_events';
     import { get_store } from '@src/shop/api-client/get_store';
-    import { get_product_url } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.mjs';
     import { get_attribute_value } from '@src/shop/core/attributes.mjs';
 
     export let item;
     export let locale;
     export let currency;
 
+    const slug = _inject('config.magento2.slug.product', 'product');
+
     $: image_path = item.thumbnail ? get_image_path(item.thumbnail) : undefined;
-    $: link = get_product_url(get_store(), get_attribute_value(item, 'url_key'));
+    $: link = url_join(get_store(), slug, get_attribute_value(item, 'url_key'));
 
     function update_qty_event(e) {
         update_qty_delayed(item.sku, e.detail?.qty);

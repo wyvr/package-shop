@@ -1,25 +1,39 @@
-export function combine_url(...parts) {
-    return `/${parts
-        .map((part) => (part || '').split('/'))
-        .flat(2)
-        .filter((x) => x)
-        .join('/')
-        .replace(/\/$/, '')}/`;
-}
-export function get_category_url(store, url) {
-    return combine_url(store, 'c', url);
-}
-export function get_product_url(store, url) {
-    return combine_url(store, 'p', url);
-}
-export function get_page_url(store, url) {
-    return combine_url(store, url);
-}
+/**
+ * Joins given URL parts into a single URL string.
+ *
+ * @function url_join
+ * @param {...string} parts - The URL parts to concatenate.
+ * @returns {string|undefined} The joined URL string or undefined if no valid parts were provided.
+ *
+ * @description
+ * This function takes multiple URL parts as input, removes leading and trailing slashes of each part, then concatenates them.
+ * If the last part doesn't contain an extension (i.e., there is no '.' in the last part), it is treated as a directory, and a trailing slash is added.
+ * If the final URL does not start with 'http', a leading slash is prepended. If no valid parts are provided, the function returns undefined.
+ *
+ * @example
+ * url_join('http://example.com/', '/path/to', 'resource.html');
+ * // Returns 'http://example.com/path/to/resource.html'
+ *
+ * url_join('/path/to', 'directory');
+ * // Returns '/path/to/directory/'
+ */
 export function url_join(...parts) {
-    let url = parts.filter(Boolean).join('/');
+    // combine parts together and remove the leading and trailing slashes
+    let url = parts.filter(Boolean).map((part) => part.replace(/\/$/, '').replace(/^\//, ''));
+    if (url.length == 0) {
+        return undefined;
+    }
+    // when the last element dosn't contains a dot(extension for file) treat as folder with trailing slash
+    const contains_ext = url[url.length - 1].indexOf('.') > -1;
+    if (!contains_ext) {
+        url[url.length - 1] += '/';
+    }
 
+    url = url.join('/');
+
+    // avoid leading slash for absolute urls
     if (url.indexOf('http') != 0) {
         url = '/' + url.replace(/^\//, '');
     }
-    return url.replace(/\/$/) + '/';
+    return url;
 }
