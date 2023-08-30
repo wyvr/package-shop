@@ -1,7 +1,7 @@
 import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.mjs';
 import { get_domain } from '@src/shop/api-client/get_domain';
 import { get_store } from '@src/shop/api-client/get_store';
-import { url_join } from '@src/shop/api-client/url_join';
+import { url_join } from '@src/shop/core/url.mjs';
 
 export async function update_cart(email_or_token, bearer_token, cart_data, domain_url, store_key) {
     store_key = get_store(store_key);

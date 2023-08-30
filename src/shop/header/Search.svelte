@@ -1,5 +1,5 @@
 <script>
-    import { url_join } from '@src/shop/api-client/url_join';
+    import { url_join } from '@src/shop/core/url.mjs';
 
     export let store;
 
