@@ -2,6 +2,7 @@
     import is_logged_in from '@src/shop/stores/is_logged_in';
     import LoginDialog from '@src/shop/customer/login/Dialog.svelte';
     import { customer_logout } from '@src/shop/logic/customer_logout';
+    import { url_join } from '@src/shop/core/url.mjs';
 
     wyvr: {
         render: 'hydrate';
@@ -10,17 +11,19 @@
 
     export let store = null;
 
+    $: url = url_join(store, 'account');
+
     let openLoginDialog = false;
 </script>
 
 <section>
-    <a href="/{store}/account">{__('customer.my_account')}</a>
+    <a href={url}>{__('customer.my_account')}</a>
     <nav>
         {#if $is_logged_in && isClient}
-            <a href="/{store}/account">{__('customer.my_account')}</a>
+            <a href={url}>{__('customer.my_account')}</a>
             <button type="button" on:click={() => customer_logout()}>{__('customer.logout')}</button>
         {:else}
-            <a href="/{store}/account">{__('customer.register')}</a>
+            <a href={url}>{__('customer.register')}</a>
             <button type="button" on:click={() => (openLoginDialog = true)}>{__('customer.login')}</button>
         {/if}
     </nav>
@@ -39,7 +42,7 @@
     section > a {
         color: var(--color-primary);
     }
-   
+
     nav {
         position: absolute;
         top: 100%;
@@ -60,7 +63,8 @@
         pointer-events: all;
         opacity: 1;
     }
-    nav a, nav button {
+    nav a,
+    nav button {
         color: var(--color-text);
         background-color: transparent;
         border: none;
