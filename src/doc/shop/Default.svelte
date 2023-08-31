@@ -5,7 +5,7 @@
 </script>
 
 <!DOCTYPE html>
-<html lang={data._wyvr.language || 'en'} data-store-key={data.store.key}>
+<html lang={data?._wyvr?.language || 'en'} data-store-key={data?.store?.key}>
     <head>
         <title>{data.meta?.title || data.title}</title>
 
