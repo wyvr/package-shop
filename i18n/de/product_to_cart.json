@@ -1,0 +1,6 @@
+{
+    "name": "Artikel zum Warenkorb hinzufügen",
+    "loading": "Produkt wird in den Warenkorb gelegt &hellip;",
+    "error": "Kein Produkt verfügbar, dass in den Warenkorb gelegt werden kann.",
+    "success": "Das Produkt <b>{name}</b> wurde erfolgreich in den Warenkorb gelegt."
+}

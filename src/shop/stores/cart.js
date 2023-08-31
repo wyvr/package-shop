@@ -167,12 +167,13 @@ function createCart() {
     // create store logic
     store = {
         update_item: async (sku, qty) => {
+            let item = { sku, qty };
             if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
-                messages.push(__('cart.update_error', get_product_from_products_cache({ sku, qty })), 'error');
+                messages.push(__('cart.update_error', get_product_from_products_cache(item)), 'error');
                 return;
             }
             await fill_products_cache(get_uncached_items([item]));
-            const item = get_product_from_products_cache(item);
+            item = get_product_from_products_cache(item);
 
             update((cart) => {
                 let message = 'shop.internal_error';

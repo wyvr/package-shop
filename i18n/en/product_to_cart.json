@@ -1,0 +1,6 @@
+{
+    "name": "Add product to cart",
+    "loading": "Please wait, product will be added to your cart &hellip;",
+    "error": "No product available to add to your cart.",
+    "success": "Product <b>{name}</b> was successfully added to your cart."
+}
