@@ -24,9 +24,10 @@ export function url_join(...parts) {
         return undefined;
     }
     // when the last element dosn't contains a dot(extension for file) treat as folder with trailing slash
-    const contains_ext = url[url.length - 1].indexOf('.') > -1;
+    const last_index = url.length - 1;
+    const contains_ext = url[last_index].indexOf('.') > -1 && url[last_index].indexOf('@') == -1;
     if (!contains_ext) {
-        url[url.length - 1] += '/';
+        url[last_index] += '/';
     }
 
     url = url.join('/');

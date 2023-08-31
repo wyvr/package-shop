@@ -17,10 +17,7 @@ export async function load_cart(email_or_token, bearer_token, domain_url, store_
             data.headers.authorization = `Bearer ${bearer_token}`;
         }
         const url = url_join(domain_url, store_key, 'api', 'cart', email_or_token || 'guest');
-        const response = await fetch(
-             url + `?cb=${cb}`,
-            data
-        );
+        const response = await fetch(url + `?cb=${cb}`, data);
         cart = await response.json();
     } catch (e) {
         return [e, undefined];
