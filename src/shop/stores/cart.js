@@ -146,7 +146,9 @@ function createCart() {
                 // when exists use the higher qty
                 loaded_cart.items[items_map[item.sku].index].qty = Math.max(items_map[item.sku].item.qty, item.qty);
             });
-            messages.push(__('cart.merged'), 'info');
+            if (loaded_cart.items.length > 0 || snapshot.items.length > 0) {
+                messages.push(__('cart.merged'), 'info');
+            }
         }
 
         // the id of guests cart is the token
