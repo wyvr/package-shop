@@ -11,5 +11,6 @@
     "internal_error": "Internal server error",
     "missing_required_field": "{name} is missing",
     "invalid_field": "{name} is not valid",
-    "close": "Close"
+    "close": "Close",
+    "feature_not_available": "This Feature is not available"
 }
