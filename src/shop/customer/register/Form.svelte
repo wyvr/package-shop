@@ -3,52 +3,82 @@
     import Email from '@src/form/Email.svelte';
     import Password from '@src/form/Password.svelte';
     import Checkbox from '@src/form/Checkbox.svelte';
-    import InlineSpinner from '@src/shop/component/InlineSpinner.svelte';
+    import { url_join } from '@src/shop/core/url.mjs';
+    import Buttons from '@src/shop/customer/register/Buttons.svelte';
     import { onMount } from 'svelte';
 
     export let focus = false;
     export let store = null;
-    export let open;
+    export let open = false;
+    export let id_prefix = '';
 
-    let state = 'idle';
+    let state = 'inactive';
     let form;
-    $: action = `/${[store, 'api', 'customer', 'register'].filter(Boolean).join('/')}/`;
+    let firstname;
+    let lastname;
+    let email;
+    let password;
+    $: action = url_join(store, 'api', 'customer', 'register');
+
+    $: is_valid(firstname, lastname, email, password);
+
+    function is_valid() {
+        if (state != 'busy') {
+            state = form?.checkValidity() ? 'idle' : 'inactive';
+        }
+    }
 
     onMount(() => {
         const stored_email = localStorage.getItem('customer.email');
         if (stored_email) {
             email = stored_email;
         }
+        is_valid(firstname, lastname, email, password);
     });
 </script>
 
 <form bind:this={form} {action} method="POST">
     <div>
-        <Text id={'register_firstname'} required={true} {focus} disabled={state == 'busy'}
-            >{__('customer.firstname')}</Text
+        <Text
+            id={id_prefix + 'register_firstname'}
+            name="firstname"
+            required={true}
+            {focus}
+            disabled={state == 'busy'}
+            bind:value={firstname}>{__('customer.firstname')}</Text
         >
     </div>
     <div>
-        <Text id={'register_lastname'} required={true} disabled={state == 'busy'}>{__('customer.lastname')}</Text>
-    </div>
-    <div>
-        <Email id={'register_email'} required={true} disabled={state == 'busy'}>{__('customer.email')}</Email>
-    </div>
-    <div>
-        <Password id={'register_password'} required={true} disabled={state == 'busy'}
-            >{__('customer.password')}</Password
+        <Text
+            id={id_prefix + 'register_lastname'}
+            name="lastname"
+            required={true}
+            disabled={state == 'busy'}
+            bind:value={lastname}>{__('customer.lastname')}</Text
         >
     </div>
     <div>
-        <Checkbox id={'register_newsletter'} disabled={state == 'busy'}>{__('customer.newsletter_register')}</Checkbox>
+        <Email
+            id={id_prefix + 'register_email'}
+            name="email"
+            required={true}
+            disabled={state == 'busy'}
+            bind:value={email}>{__('customer.email')}</Email
+        >
     </div>
     <div>
-        {#if state == 'busy'}
-            <button class="btn" type="button"><InlineSpinner /> {__('customer.create_account')}</button>
-        {:else}
-            <button class="btn" type="submit" on:click|preventDefault={(e) => send_register(e)}
-                >{__('customer.create_account')}</button
-            >
-        {/if}
+        <Password
+            id={id_prefix + 'register_password'}
+            name="password"
+            required={true}
+            disabled={state == 'busy'}
+            bind:value={password}>{__('customer.password')}</Password
+        >
     </div>
+    <div>
+        <Checkbox id={id_prefix + 'register_newsletter'} name="register_newsletter" disabled={state == 'busy'}
+            >{__('customer.newsletter_register')}</Checkbox
+        >
+    </div>
+    <Buttons bind:open bind:state {id_prefix} {form} />
 </form>

@@ -1,50 +1,49 @@
 <script>
     import Email from '@src/form/Email.svelte';
     import Password from '@src/form/Password.svelte';
-    import InlineSpinner from '@src/shop/component/InlineSpinner.svelte';
+    import Buttons from '@src/shop/customer/login/Buttons.svelte';
     import { url_join } from '@src/shop/core/url.mjs';
     import { onMount } from 'svelte';
 
     export let focus = false;
     export let store = null;
-    export let open;
+    export let open = false;
+    export let id_prefix = '';
 
-    let state = 'idle';
+    let state = 'inactive';
+    let email = _inject('config._secrets.shop.customer_email', '');
+    let password = _inject('config._secrets.shop.customer_password', '');
     let form;
     $: action = url_join(store, 'api', 'customer', 'login');
     $: forgot_password_link = url_join(store, 'account', 'forgot_password');
+    $: is_valid(email, password)
+
+    function is_valid() {
+        if(state != 'busy') {
+            state = form?.checkValidity() ? 'idle' : 'inactive';
+        }
+    }
 
     onMount(() => {
         const stored_email = localStorage.getItem('customer.email');
         if (stored_email) {
             email = stored_email;
         }
+        is_valid(email, password);
     });
 </script>
 
 <form bind:this={form} {action} method="POST">
     <div>
-        <Email id={'login_email'} required={true} {focus} disabled={state == 'busy'}>{__('customer.email')}</Email>
+        <Email id={id_prefix + 'login_email'} required={true} {focus} disabled={state == 'busy'} bind:value={email}
+            >{__('customer.email')}</Email
+        >
     </div>
     <div>
-        <Password id={'login_password'} required={true} disabled={state == 'busy'}>{__('customer.password')}</Password>
+        <Password id={id_prefix + 'login_password'} required={true} disabled={state == 'busy'} bind:value={password}
+            >{__('customer.password')}</Password
+        >
         <a href={forgot_password_link}>{__('customer.forgot_password')}</a>
     </div>
-    <div class="buttons">
-        {#if state == 'busy'}
-            <button class="btn" type="button" disabled><InlineSpinner /> {__('customer.login')}</button>
-        {:else}
-            <button class="btn" type="submit" on:click|preventDefault={(e) => send_login(e)}
-                >{__('customer.login')}</button
-            >
-        {/if}
-        {#if open}
-            <button
-                class="btn btn--ghost"
-                on:click={() => {
-                    open = false;
-                }}>{__('shop.cancel')}</button
-            >
-        {/if}
-    </div>
+    <Buttons bind:open bind:state {id_prefix} {form} />
 </form>

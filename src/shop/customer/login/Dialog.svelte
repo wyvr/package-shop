@@ -9,13 +9,6 @@
 <Dialog id={'register-dialog'} bind:open title={__('customer.login')}>
     <slot slot="close" name="close" />
     <div class="content">
-        <Form focus={open} {store} bind:open />
+        <Form focus={open} {store} bind:open id_prefix={'dialog_'} />
     </div>
 </Dialog>
-
-<style>
-    .content {
-        padding: 1rem;
-        width: min(80vw, 300px);
-    }
-</style>
