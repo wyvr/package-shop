@@ -20,7 +20,6 @@ export async function update_cart(email_or_token, bearer_token, cart_data, domai
             data.headers.authorization = `Bearer ${bearer_token}`;
         }
         const url = url_join(domain_url, store_key, 'api', 'cart', email_or_token || 'guest');
-        console.log(data, url);
         const response = await fetch(url + `?cb=${cb}`, data);
         cart = await response.json();
     } catch (e) {
