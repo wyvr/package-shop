@@ -1,15 +1,13 @@
 <script>
     import Filter from '@src/shop/category/Filter.svelte';
     import Error from '@src/shop/Error.svelte';
-    import Image from '@src/shop/component/Image.svelte';
+    import Content from '@src/shop/category/Content.svelte';
 
     export let data = null;
 
     $: valid = !!data?.category;
     $: name = data?.category?.name || '';
     $: products = data?.category?.products || [];
-    $: description = data?.category?.description || ''; // @TODO sanitze html
-    $: src = data?.category?.image;
 
     const check_page_script = `<script>
         const init_hash = document.location.hash;
@@ -46,16 +44,8 @@
     <div class="main">
         <h1>{name}</h1>
     </div>
-    {#if src}
-        <div class="image">
-            <Image {src} width={1600} alt={name} sizes={image_sizes} widths={image_widths} />
-        </div>
-    {/if}
-    {#if description}
-        <div class="description">
-            {@html description}
-        </div>
-    {/if}
+    
+    <Content {data} />
     <div class="details trigger_interact">
         <Filter {products} store={data.store.key} {name} locale={data.locale} currency={data.currency.default} />
     </div>

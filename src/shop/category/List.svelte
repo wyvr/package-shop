@@ -20,7 +20,7 @@
                 <ListItem {product} {store} {locale} {currency} />
             </div>
             {#if position == 7}
-                <CustomBlock {position} {product} {name} />
+                <CustomBlock {position} {product} {name} {store} />
             {/if}
         {/each}
     </section>
