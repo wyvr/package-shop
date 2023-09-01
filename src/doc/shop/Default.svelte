@@ -1,5 +1,7 @@
 <script>
-    import Stylesheet from '@src/wyvr/Stylesheet.svelte';
+    import Seo from '@src/shop/head/Seo.svelte';
+    import HeadIncludes from '@src/shop/head/Includes.svelte';
+    import BodyIncludes from '@src/shop/body/Includes.svelte';
 
     export let data = null;
 </script>
@@ -7,24 +9,13 @@
 <!DOCTYPE html>
 <html lang={data?._wyvr?.language || 'en'} data-store-key={data?.store?.key}>
     <head>
-        <title>{data.meta?.title || data.title}</title>
-
-        <meta charset="utf-8" />
-        <meta content="width=device-width,initial-scale=1,minimum-scale=1" name="viewport" />
-        <meta content="telephone=no" name="format-detection" />
-
-        <link rel="icon" href="/assets/favicon.png" />
-        <Stylesheet src="/assets/global.css" />
-        {#if data._wyvr.identifier}
-            <Stylesheet src="/css/{data._wyvr.identifier}.css" />
-        {/if}
+        <Seo {data} />
+        <HeadIncludes {data} />
     </head>
     <body>
         <slot />
 
-        {#if data._wyvr.identifier}
-            <script defer src="/js/{data._wyvr.identifier}.js"></script>
-        {/if}
+        <BodyIncludes {data} />
     </body>
 </html>
 
@@ -32,16 +23,4 @@
     body {
         font: 16px/1.4em sans-serif;
     }
-
-    /* Or apply it via media query */
-    /* @media (prefers-color-scheme: dark) {
-        html {
-            background-color: #222;
-            color: #eee;
-            --color-text: #eee;
-        }
-        img {
-            filter: brightness(0.8) contrast(1.2);
-        }
-    } */
 </style>
