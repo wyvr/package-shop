@@ -1,8 +1,14 @@
 <script>
     export let data;
+
+    $: title = data.meta?.title || data.title || _inject('config.shop.name');
 </script>
 
-<title>{data.meta?.title || data.title}</title>
+<title>{title}</title>
+{#if title}
+    <meta name="title" content={title} />
+    <meta name="og:title" content={title} />
+{/if}
 
 {#if data.meta && data.meta.description}
     <meta content={data.meta.description} name="description" />
