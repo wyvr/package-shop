@@ -24,9 +24,11 @@ export function filter(products, config) {
                 return true;
             }
             const filter_value = config[key];
-            const value = attribute.search_children
-                ? product.configurable_products.map((child) => get_attribute_value(child, key)).join(',')
-                : get_attribute_value(product, key);
+            let value = get_attribute_value(product, key);
+            if (attribute.search_children && Array.isArray(product.configurable_products) && product.configurable_products.length > 0) {
+                value = product.configurable_products.map((child) => get_attribute_value(child, key)).join(',');
+            }
+
             const value_list = typeof value == 'string' ? value.split(',') : [];
             //console.log(value, filter_value, attribute);
             switch (attribute.type) {
@@ -35,7 +37,7 @@ export function filter(products, config) {
                     if (typeof value == 'string') {
                         return value === (filter_value ? '1' : '0');
                     }
-                    if(filter_value === false && value === undefined) {
+                    if (filter_value === false && value === undefined) {
                         return true;
                     }
                     return value === filter_value;
