@@ -1,0 +1,12 @@
+{
+    "stock": "Lagerstand",
+    "show_all": "Alle anzeigen",
+    "show_in_stock": "Nur lagernde Produkte anzeigen",
+    "show_out_of_stock": "Nur nicht lagernde Produkte anzeigen",
+    "price": "Preis",
+    "from": "von",
+    "to": "bis",
+    "sort": "Sortieren nach",
+    "range": "von {from} {unit} bis {to} {unit}",
+    "range_name": "{name} von {from} {unit} bis {to} {unit}"
+}

@@ -6,5 +6,7 @@
     "price": "Price",
     "from": "from",
     "to": "to",
-    "sort": "Sort by"
+    "sort": "Sort by",
+    "range": "from {from} {unit} to {to} {unit}",
+    "range_name": "{name} from {from} {unit} to {to} {unit}"
 }

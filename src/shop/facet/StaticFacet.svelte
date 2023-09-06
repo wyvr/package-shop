@@ -68,7 +68,14 @@
                         on:details={(e) => update_details(e.detail)}
                     />
                 {:else if entry.type == 'slider'}
-                    <FacetSlider name={code} bind:value={filter[code]} headline={__(entry.name)} list={data} />
+                    <FacetSlider
+                        name={code}
+                        bind:value={filter[code]}
+                        headline={__(entry.name)}
+                        list={data}
+                        step={entry.step ? entry.step : 1}
+                        unit={entry.unit}
+                    />
                 {/if}
             {/if}
         {/each}

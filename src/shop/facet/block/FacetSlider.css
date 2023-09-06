@@ -2,3 +2,15 @@ input {
     width: 100%;
     display: block;
 }
+.inputs {
+    display: flex;
+}
+.field {
+    position: relative;
+}
+.unit {
+    position: absolute;
+    pointer-events: none;
+    bottom: 0;
+    right: 0.5em;
+}
