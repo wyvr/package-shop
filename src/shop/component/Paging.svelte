@@ -17,7 +17,15 @@
     $: active_prev = pre_frame.length > 0;
     $: active_next = post_frame.length > 0;
 
-    $: is_visible = show_pages && (max > 1 || page != max);
+    $: is_visible = show_pages && (max > 1 || page <= max);
+
+    $: check_limit(max);
+
+    function check_limit(max) {
+        if(page > max) {
+            dispatch_change(max)
+        }
+    }
 
     function get_pre_frame(page, max, frame) {
         const to_max = limit(page, max) - 1;
