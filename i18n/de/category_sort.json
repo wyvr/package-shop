@@ -1,0 +1,9 @@
+{
+    "position": "Position",
+    "name": "Produkt Name",
+    "price": "Preis",
+    "asc": "Aufsteigend",
+    "desc": "Absteigend",
+    "asc_symbol": "🡅",
+    "desc_symbol": "🡇"
+}
