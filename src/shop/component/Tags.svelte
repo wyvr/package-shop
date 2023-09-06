@@ -27,6 +27,10 @@
         if (!tag.details) {
             return '';
         }
+        // range
+        if (Array.isArray(tag.details)) {
+            return tag.details.join(',');
+        }
         const keys = Object.keys(tag.details)
             .map((id) => tag.details[id]?.key)
             .filter((x) => x);
