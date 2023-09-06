@@ -1,4 +1,4 @@
-import { find_attribute_by_code } from "@src/shop/facet/facet_helper.js";
+import { find_attribute_by_code } from '@src/shop/facet/facet_helper.js';
 
 export function get_tags(filter, details) {
     if (!filter || typeof filter != 'object') {
@@ -8,8 +8,18 @@ export function get_tags(filter, details) {
         .filter((id) => filter[id] !== undefined)
         .map((id) => {
             const attribute = find_attribute_by_code(id);
-            const name = __(attribute?.name ? attribute.name : 'facet.' + id);
+            let name = __(attribute?.name ? attribute.name : 'facet.' + id);
             const data = { id, name, details: filter[id] };
+            if (attribute.type == 'slider') {
+                data.name = __('filter.range_name', {
+                    name,
+                    from: filter[id][0],
+                    to: filter[id][1],
+                    unit: attribute.unit || '',
+                });
+                data.details = undefined;
+                return data;
+            }
             if (details[id]) {
                 data.details = details[id];
             }
