@@ -1,4 +1,5 @@
-.indicator {
+div:before {
+    content: '';
     display: inline-block;
     border-radius: 50%;
     width: 0.75em;
@@ -7,15 +8,15 @@
     margin-right: 0.5em;
     margin-top: -3px;
 }
-.green .indicator {
+.green:before {
     background-color: green;
 }
-.yellow .indicator {
+.yellow:before {
     background-color: gold;
 }
-.red .indicator {
+.red:before {
     background-color: red;
 }
-.out_of_stock .indicator {
+.out_of_stock:before {
     background-color: grey;
 }
