@@ -1,21 +1,40 @@
 import { get_attribute_label, get_attribute_name, get_attribute_value } from '../core/attributes.mjs';
-import category_filter_attributes from '@src/shop/config/category_filter_attributes.mjs';
+import facets from '@src/shop/config/facets.mjs';
+import { get_code_of_attribute } from '@src/shop/facet/facet_helper.js';
 
+/**
+ * Filter the list of given products for the given filter config
+ * @param {any[]} products 
+ * @param {any} config 
+ * @returns {any[]} products that match the given filter config
+ */
 export function filter(products, config) {
     if (!config) {
         return products;
     }
+    // get attributes with value to filter for
     const keys = Object.keys(config).filter((x) => config[x] !== undefined);
     if (keys.length === 0) {
         return products;
     }
+    // build attributes object to filter
     const attributes = {};
-    category_filter_attributes.attributes.forEach((attr) => {
-        attributes[attr.attribute] = attr;
+    facets.attributes.forEach((attr) => {
+        const code = get_code_of_attribute(attr);
+        if (!code) {
+            return;
+        }
+        attributes[code] = Object.assign({}, attr);
+        // force array of attributes
+        if (!Array.isArray(attr.attribute)) {
+            attributes[code].attribute = [attributes[code].attribute];
+        }
+        // combine list of vlaues together
         if (attr.type == 'list') {
-            attributes[attr.attribute].values = config[attr.attribute] ? Object.keys(config[attr.attribute]) : [];
+            attributes[code].values = config[code] ? Object.keys(config[code]) : [];
         }
     });
+    // filter all products
     const filtered_products = products.filter((product) => {
         return keys.every((key) => {
             const attribute = attributes[key];
@@ -23,37 +42,70 @@ export function filter(products, config) {
             if (!attribute) {
                 return true;
             }
+
             const filter_value = config[key];
-            let value = get_attribute_value(product, key);
-            if (attribute.search_children && Array.isArray(product.configurable_products) && product.configurable_products.length > 0) {
-                value = product.configurable_products.map((child) => get_attribute_value(child, key)).join(',');
+
+            // exit early for sliders
+            if (attribute.type == 'slider' && filter_value.length < 2) {
+                return false;
             }
 
-            const value_list = typeof value == 'string' ? value.split(',') : [];
-            //console.log(value, filter_value, attribute);
+            const values = get_values_of_attribute(product, attribute);
+            // ignore products which does not contain the attribute
+            if (values.length == 0) {
+                return false;
+            }
+            let match = true;
             switch (attribute.type) {
                 case 'bool':
-                    // @TODO fix f**king json types
-                    if (typeof value == 'string') {
-                        return value === (filter_value ? '1' : '0');
-                    }
-                    if (filter_value === false && value === undefined) {
+                    if (filter_value === false && values.length == 0) {
                         return true;
                     }
-                    return value === filter_value;
-                case 'slider':
-                    if (filter_value.length < 2) {
-                        return false;
-                    }
 
-                    return value >= filter_value[0] && value <= filter_value[1];
+                    match = values.find((value) => {
+                        if (typeof value == 'string') {
+                            return value === (filter_value ? '1' : '0');
+                        }
+                        return value === filter_value;
+                    });
+                    return match;
+                case 'slider':
+                    match = values.find((value) => value >= filter_value[0] && value <= filter_value[1]);
+                    return match;
                 case 'list':
-                    return attribute.values.find((attr_value) => value_list.indexOf(attr_value) > -1);
+                    match = attribute.values.find((value) => values.indexOf(value) > -1);
+                    return match;
             }
             return true;
         });
     });
     return filtered_products;
+}
+
+function get_values_of_attribute(product, attribute) {
+    const values = [];
+    attribute.attribute.forEach((attribute_code) => {
+        values.push(get_attribute_value(product, attribute_code));
+        if (
+            attribute.search_children &&
+            Array.isArray(product.configurable_products) &&
+            product.configurable_products.length > 0
+        ) {
+            values.push(...product.configurable_products.map((child) => get_attribute_value(child, attribute_code)));
+        }
+    });
+    return values.filter(Boolean).reduce((values, current) => {
+        if (typeof current == 'number') {
+            values.push(current);
+            return values;
+        }
+        // ignore unknown/unhandled types
+        if (typeof current != 'string') {
+            return values;
+        }
+        values.push(...current.split(',').filter(Boolean));
+        return values;
+    }, []);
 }
 
 export function get_filter_options(attributes, products) {
@@ -86,23 +138,33 @@ export function get_filter_options(attributes, products) {
             return item;
         });
     });
-    // if() {
-
-    // }
     return options;
 }
 
 function process_attribute(item, sku, product, options, hash) {
     const attr = item.attribute;
-    if (!product[attr] || product[attr] === '0') {
+    if (Array.isArray(attr)) {
+        if (!item.as) {
+            return;
+        }
+        attr.forEach((attr_code) => {
+            process_attribute_by_code(attr_code, item.as, sku, product, options, hash);
+        });
         return;
     }
-    let label = get_attribute_label(product, attr);
-    let name = get_attribute_name(product, attr);
-    let value = get_attribute_value(product, attr);
-    if (!options[attr]) {
-        options[attr] = [];
-        hash[attr] = {};
+    process_attribute_by_code(attr, attr, sku, product, options, hash);
+}
+
+function process_attribute_by_code(product_attr_code, attr_code, sku, product, options, hash) {
+    if (!product[product_attr_code] || product[product_attr_code] === '0') {
+        return;
+    }
+    let label = get_attribute_label(product, product_attr_code);
+    let name = get_attribute_name(product, product_attr_code);
+    let value = get_attribute_value(product, product_attr_code);
+    if (!options[attr_code]) {
+        options[attr_code] = [];
+        hash[attr_code] = {};
     }
 
     if (typeof name == 'object') {
@@ -128,22 +190,22 @@ function process_attribute(item, sku, product, options, hash) {
         entries = splitted_name
             .map((name, index) => {
                 const value = splitted_value[index];
-                if (!hash[attr][value]) {
-                    hash[attr][value] = [sku];
+                if (!hash[attr_code][value]) {
+                    hash[attr_code][value] = [sku];
                     return { key: name, value: splitted_value[index] };
                 }
-                hash[attr][value].push(sku);
+                hash[attr_code][value].push(sku);
                 return undefined;
             })
             .filter((x) => x);
     } else {
-        if (!hash[attr][value]) {
+        if (!hash[attr_code][value]) {
             entries.push({ key: name, value, skus: [sku] });
-            hash[attr][value] = [sku];
+            hash[attr_code][value] = [sku];
         } else {
-            hash[attr][value].push(sku);
+            hash[attr_code][value].push(sku);
         }
     }
 
-    options[attr].push(...entries);
+    options[attr_code].push(...entries);
 }
