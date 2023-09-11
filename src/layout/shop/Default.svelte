@@ -4,6 +4,7 @@
     import Footer from '@src/shop/Footer.svelte';
     import Error from '@src/shop/Error.svelte';
     import Messages from '@src/shop/Messages.svelte';
+    import Breadcrumbs from '@src/shop/Breadcrumbs.svelte';
 
     export let data = null;
 </script>
@@ -14,6 +15,7 @@
 <Header store={data.store} stores={data.stores} locale={data.locale} currency={data.currency} />
 <Messages />
 <main>
+    <Breadcrumbs />
     <slot />
 
     <Credit />
