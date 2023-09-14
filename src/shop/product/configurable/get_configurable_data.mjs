@@ -26,11 +26,23 @@ export function get_configurable_data(configurable_options, configurable_product
         ]
     }
     */
-    if (!configurable_options || typeof configurable_options != 'object' || Array.isArray(configurable_options)) {
+    if (
+        !configurable_options ||
+        typeof configurable_options != 'object' ||
+        Array.isArray(configurable_options) ||
+        !Array.isArray(configurable_products)
+    ) {
         return undefined;
     }
 
     const list = Object.values(configurable_options);
+    // get full list of in_stock per sku
+    const sku_stock = {};
+    configurable_products.forEach((product) => {
+        const stock = get_stock(product);
+        sku_stock[product.sku.value] = !!(stock.qty > 0 && stock.is_in_stock);
+    });
+
     const attributes = list.map((options) => options[0]?.attribute_code);
     return list
         .map((options) => {
@@ -51,13 +63,14 @@ export function get_configurable_data(configurable_options, configurable_product
                     result.label = option.super_attribute_label;
                 }
 
-                const product = (Array.isArray(configurable_products) ? configurable_products : []).find(
-                    (product) => product.sku.value == option.sku
-                );
-                const stock = get_stock(product);
-                const in_stock = !!(stock.qty > 0 && stock.is_in_stock);
+                const product = configurable_products.find((product) => product.sku.value == option.sku);
+
+                const in_stock = sku_stock[option.sku];
+
                 let disable_options = null;
+
                 if (in_stock) {
+                    // any of the products is in stock set the whole option as in_stock
                     result.in_stock = true;
                 } else {
                     disable_options = {};
@@ -71,7 +84,9 @@ export function get_configurable_data(configurable_options, configurable_product
                         disable_options[attribute_code].push(get_attribute_value(product, attribute_code));
                     });
                 }
+
                 if (!result.data[option.value_index]) {
+                    // the option is new and should be added to the result data and as value
                     result.values.push({
                         key: option.value_index,
                         title: option.default_title || option.option_title || option.value_index,
@@ -80,24 +95,31 @@ export function get_configurable_data(configurable_options, configurable_product
                     });
                     result.data[option.value_index] = [];
                 } else {
-                    result.values.forEach((value) => {
-                        if (value.key == option.value_index && disable_options) {
-                            const new_disabled = value.disable_options || {};
-                            Object.keys(disable_options).forEach((key) => {
-                                if (!new_disabled[key]) {
-                                    new_disabled[key] = [];
-                                }
-                                new_disabled[key].push(...disable_options[key]);
-                            });
-                            value.in_stock = false;
-                            value.disable_options = new_disabled;
+                    // the option was already there, add the disabled options
+                    result.values = result.values.map((value) => {
+                        if (value.key == option.value_index) {
+                            if (disable_options) {
+                                const new_disabled = value.disable_options || {};
+                                Object.keys(disable_options).forEach((key) => {
+                                    if (!new_disabled[key]) {
+                                        new_disabled[key] = [];
+                                    }
+                                    new_disabled[key].push(...disable_options[key]);
+                                });
+                                value.disable_options = new_disabled;
+                            }
+                            // if any of the options is in stock set the option in_stock
+                            if (in_stock) {
+                                value.in_stock = true;
+                            }
                         }
+                        return value;
                     });
                 }
 
                 const new_option = {
                     sku: option.sku,
-                    product,
+                    product: Object.assign({}, product),
                 };
                 result.data[option.value_index].push(new_option);
             });

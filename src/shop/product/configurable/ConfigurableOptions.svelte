@@ -27,28 +27,34 @@
             selected[option.attribute_code] = false;
         });
         if (auto_select_first) {
-            const avoid_options = {};
             const select_ids = [];
+
+            // options are the different attribute options for the configuration
             data.forEach((option) => {
+                if (!Array.isArray(option.values) || option.values.length == 0 || !option.in_stock) {
+                    return;
+                }
                 const attribute_code = option.attribute_code;
 
-                const selected_option = !avoid_options[attribute_code] ? option.values.find(Boolean) : option.values.find(
-                    (value) => avoid_options[attribute_code].indexOf(value.key) == -1
-                )
-                if(selected_option) {
-                    if (selected_option?.disable_options) {
-                        Object.entries(selected_option?.disable_options).forEach(([attribute, values]) => {
-                            avoid_options[attribute] = values;
-                        });
-                    }
-                    select_ids.push(get_id(attribute_code, selected_option.key));
+                // search the first in_stock attribute value of the option
+                const value_in_stock = option.values
+                    .filter((option_value) => {
+                        return option_value.in_stock;
+                    })
+                    .find(Boolean);
+
+                if (value_in_stock) {
+                    select_ids.push(get_id(attribute_code, value_in_stock.key));
                 }
             });
-            select_ids.forEach((id) => {
-                const el = document.getElementById(id);
-                el.checked = true;
-                el.dispatchEvent(new Event('change'));
-            });
+            // check if autoselect is allowed
+            if (data.length == select_ids.length) {
+                select_ids.forEach((id) => {
+                    const el = document.getElementById(id);
+                    el.checked = true;
+                    el.dispatchEvent(new Event('change'));
+                });
+            }
         }
     });
 
