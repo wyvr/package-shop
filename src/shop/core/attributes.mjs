@@ -64,24 +64,56 @@ export function get_attribute(product, attribute_name) {
     return attribute;
 }
 
-export function reduce_attributes(product, allowed_attributes = [], denied_attributes = []) {
+/**
+ * Filters the attributes of a given product based on specified attributes and denied attributes.
+ *
+ * @export
+ * @param {object} product product object
+ * @param {array} attributes Array of attribute names that are allowed in the final object. If it's not an array or contains '*', all attributes would be considered allowed.
+ * @param {array} [denied_attributes] Array of attribute names that are disallowed in the final object. Any property with name in this array will definitely be removed from the final object even if it's included in the 'attributes' parameter.
+ *
+ * @returns {object|undefined} An product only containing the allowed properties
+ *
+ *       Note: If an attribute is listed in both `attributes` (allowed) and `denied_attributes`,
+ *             it will be considered as disallowed.
+ *
+ * Usage:
+ *       reduce_attributes({a: 1, b: 2}, ['a'], ['b']); // Returns: {a: 1}
+ *       reduce_attributes({a: 1, b: 2}, ['*'], ['b']); // Returns: {a: 1}
+ *       reduce_attributes({a: 1, b: 2}, ['a', 'b'], ['b']); // Returns: {a: 1}
+ */
+export function reduce_attributes(product, attributes, denied_attributes) {
     if (!product || typeof product != 'object') {
         return undefined;
     }
+
     const p = {};
-    if (!Array.isArray(allowed_attributes) || allowed_attributes.indexOf('*') > -1) {
-        allowed_attributes = [];
+    let allow_all_attributes = !Array.isArray(attributes) || attributes.includes('*');
+    let reduce = !allow_all_attributes;
+
+    let check_denied = false;
+    if (Array.isArray(denied_attributes)) {
+        denied_attributes = new Set(denied_attributes);
+        reduce = true;
+        check_denied = true;
     }
-    if (!Array.isArray(denied_attributes)) {
-        denied_attributes = [];
+
+    if (!reduce) {
+        return product;
     }
+
+    if (!allow_all_attributes) {
+        attributes = new Set(attributes);
+    }
+
     Object.entries(product).forEach(([key, value]) => {
-        if (denied_attributes.indexOf(key) > -1) {
+        if (check_denied && denied_attributes.has(key)) {
             return;
         }
-        if (allowed_attributes.length == 0 || allowed_attributes.indexOf(key) > -1) {
+        if (allow_all_attributes || attributes.has(key)) {
             p[key] = value;
         }
     });
+
     return p;
 }
