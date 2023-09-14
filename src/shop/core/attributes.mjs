@@ -33,7 +33,11 @@ export function get_attribute_label(product, attribute_name) {
     return get_attribute_prop(product, attribute_name, 'label');
 }
 export function get_attribute_name(product, attribute_name) {
-    return get_attribute_prop(product, attribute_name, 'name');
+    let name = get_attribute_prop(product, attribute_name, 'name');
+    if (typeof name == 'object') {
+        name = get_attribute_prop(product, attribute_name, 'value');
+    }
+    return name;
 }
 export function get_attribute_value(product, attribute_name) {
     return get_attribute_prop(product, attribute_name, 'value');
