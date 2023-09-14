@@ -8,12 +8,13 @@
     export let store = 'en';
     export let locale = 'en';
     export let currency = 'EUR';
+    export let id = undefined;
 
     $: is_filled = Array.isArray(products) && products.length > 0;
 </script>
 
 {#if is_filled}
-    <section>
+    <section {id}>
         {#each products as product, index (product.sku.value)}
             {@const position = index + 1}
             <div>

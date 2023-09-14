@@ -17,6 +17,8 @@
     export let locale = 'en';
     export let currency = 'EUR';
 
+    const id = 'product-list';
+
     $: is_filled = Array.isArray(products) && products.length > 0;
     $: paged_products = products ? products.slice((page - 1) * items_per_page, page * items_per_page) : [];
     $: amount = products ? products.length : 0;
@@ -39,11 +41,26 @@
         page = detail.page;
         const hash_page = detail.page != 1 ? detail.page : undefined;
         update_hash({ p: hash_page });
+        let scrolled = false;
+        // try to scroll to the selected id element
+        Object.entries(get_hash()).find(([key, value]) => {
+            // hash without value
+            if (value === true) {
+                const el = document.getElementById(key);
+                if (el) {
+                    el.scrollIntoView({ block: 'start' });
+                    scrolled = true;
+                }
+            }
+        });
+        if (!scrolled && id) {
+            document.getElementById(id)?.scrollIntoView({ block: 'start' });
+        }
     }
 </script>
 
 {#if is_filled}
-    <List products={paged_products} {store} {name} {locale} {currency} />
+    <List {id} products={paged_products} {store} {name} {locale} {currency} />
     <Paging {page} {max} on:change={update_page} show_pages={true} />
 {:else}
     <Error text={__('category.no_products')} />
