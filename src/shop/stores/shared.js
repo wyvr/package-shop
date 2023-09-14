@@ -1,21 +1,31 @@
 export function getSharedStore(name, store) {
     if (existsSharedStore(name)) {
-        return window.sharedStores[name];
+        return context().sharedStores[name];
     }
-    window.sharedStores[name] = store;
+    context().sharedStores[name] = store;
     return store;
 }
 export function setSharedStore(name, store) {
     initSharedStores();
-    window.sharedStores[name] = store;
+    context().sharedStores[name] = store;
     return store;
 }
 export function existsSharedStore(name) {
     initSharedStores();
-    return !!window.sharedStores[name];
+    return !!context().sharedStores[name];
 }
 function initSharedStores() {
-    if (!window.sharedStores) {
-        window.sharedStores = {};
+    if (!context().sharedStores) {
+        context().sharedStores = {};
+    }
+}
+function context() {
+    // Check for 'window' in a safe way.
+    if (typeof window !== 'undefined') {
+        return window;
+    } 
+    // Check for 'global' in a safe way.
+    else if (typeof global !== 'undefined') {
+        return global;
     }
 }
