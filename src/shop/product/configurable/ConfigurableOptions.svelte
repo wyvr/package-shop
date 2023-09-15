@@ -99,7 +99,7 @@
                             type="radio"
                             name={option.attribute_code}
                             value={value.key}
-                            disabled={!option.in_stock || is_disabled}
+                            disabled={!value.in_stock || is_disabled}
                             on:change={(ev) => onChange(ev, option, value)}
                             {id}
                         />
