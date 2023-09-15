@@ -1,0 +1,17 @@
+{
+    "javascript_required": "JavaScript scheint in Ihrem Browser deaktiviert zu sein. Für das beste Erlebnis auf unserer Seite, stellen Sie sicher, dass JavaScript in Ihrem Browser aktiviert ist.",
+    "email": "E-Mail",
+    "zip": "PLZ",
+    "product": "Produkt",
+    "find_order_by": "Bestellung finden durch",
+    "order_id": "Bestellnummer",
+    "billing_last_name": "Rechnungs Nachname",
+    "search": "Suche",
+    "orders_and_returns": "Bestellungen und Rückgaben",
+    "internal_error": "Interner Serverfehler",
+    "missing_required_field": "{name} fehlt",
+    "invalid_field": "{name} ist nicht gültig",
+    "close": "Schließen",
+    "feature_not_available": "Diese Funktion ist nicht verfügbar",
+    "to_home": "Zur Startseite"
+}
