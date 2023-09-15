@@ -9,18 +9,15 @@
 
     export let data;
     export let auto_select_first = true;
+    export let pre_selected_options = undefined;
 
     const dispatch = createEventDispatcher();
     let selected = {};
     let all_selected = false;
-    $: all_disabled_ids = update_disabled_ids(selected);
+    let debouncer;
 
-    $: {
-        all_selected = Object.values(selected).filter((x) => x).length == data.length;
-        if (all_selected) {
-            dispatch('selected', selected);
-        }
-    }
+    $: all_disabled_ids = update_disabled_ids(selected);
+    $: set_selected(pre_selected_options);
 
     onMount(() => {
         data.forEach((option) => {
@@ -47,19 +44,41 @@
                     select_ids.push(get_id(attribute_code, value_in_stock.key));
                 }
             });
-            // check if autoselect is allowed
-            if (data.length == select_ids.length) {
-                select_ids.forEach((id) => {
-                    const el = document.getElementById(id);
-                    el.checked = true;
-                    el.dispatchEvent(new Event('change'));
-                });
-            }
+            // select the inputs
+            select_inputs(select_ids);
         }
     });
 
-    function onChange(event, option, value) {
+    function set_selected(options) {
+        if (options) {
+            const select_ids = [];
+            Object.entries(options).forEach(([attribute_code, value]) => {
+                select_ids.push(get_id(attribute_code, value.key));
+            });
+            select_inputs(select_ids);
+        }
+    }
+
+    function select_inputs(select_ids) {
+        if (Array.isArray(select_ids) && data.length == select_ids.length) {
+            select_ids.forEach((id) => {
+                const el = document.getElementById(id);
+                el.checked = true;
+                el.dispatchEvent(new Event('change'));
+            });
+        }
+    }
+
+    function on_change(event, option, value) {
         selected[option.attribute_code] = value;
+        // debounce selected event
+        clearTimeout(debouncer);
+        debouncer = setTimeout(() => {
+            all_selected = Object.values(selected).filter((x) => x).length == data.length;
+            if (all_selected) {
+                dispatch('selected', selected);
+            }
+        }, 100);
     }
 
     function update_disabled_ids(selected) {
@@ -100,7 +119,7 @@
                             name={option.attribute_code}
                             value={value.key}
                             disabled={!value.in_stock || is_disabled}
-                            on:change={(ev) => onChange(ev, option, value)}
+                            on:change={(ev) => on_change(ev, option, value)}
                             {id}
                         />
                         <label for={id}>{value.title}</label>
