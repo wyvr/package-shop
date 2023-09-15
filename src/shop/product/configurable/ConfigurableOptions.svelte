@@ -8,7 +8,7 @@
     }
 
     export let data;
-    const auto_select_first = true;
+    export let auto_select_first = true;
 
     const dispatch = createEventDispatcher();
     let selected = {};
