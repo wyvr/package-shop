@@ -20,11 +20,15 @@ export function save(key, value) {
     }
     // console.log('storage save', key, value, typeof value)
 
-    if(value == null) {
+    if (value == null) {
         localStorage.removeItem(key);
         return true;
     }
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+        console.error('storage', key, e);
+    }
     return true;
 }
 export function watch(key) {}
