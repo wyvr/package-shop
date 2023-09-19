@@ -179,42 +179,62 @@ function createCart() {
             await fill_products_cache(get_uncached_items([item]));
             item = get_product_from_products_cache(item);
 
+            let message = 'shop.internal_error';
+            let has_changed = true;
+            let prev_qty;
             update((cart) => {
-                let message = 'shop.internal_error';
-                let has_changed = true;
-                if (qty == 0) {
-                    message = 'cart.delete';
-                    cart.items = cart.items.filter((item) => item.sku != sku);
-                } else {
-                    message = 'cart.update';
-                    const found = cart.items.find((item, index) => {
-                        if (item.sku != sku) {
-                            return false;
-                        }
-                        has_changed = cart.items[index].qty !== qty;
-                        cart.items[index].qty = qty;
-                        return true;
-                    });
-                    if (!has_changed) {
-                        message = 'cart.unchanged';
-                    }
-                    if (!found) {
-                        message = 'cart.add';
-                        cart.items.push(get_product_from_products_cache(item));
-                    }
-                }
-                messages.push(__(message, item), has_changed ? 'success' : 'info');
-                return cart;
+                const result = update_cart_with_qty(cart, sku, qty, item);
+
+                message = result.message;
+                has_changed = result.has_changed;
+
+                return result.cart;
             });
 
             // persist the cart on the server
             const cart_data = {};
             cart_data[sku] = qty;
-            const [update_error] = await update_cart(email_or_token, token, cart_data);
+            const [update_error, updated_cart] = await update_cart(email_or_token, token, cart_data);
             if (update_error) {
                 messages.push(update_error, 'error');
+                // revert the qty
+                update((cart) => {
+                    const result = update_cart_with_qty(cart, sku, prev_qty, item);
+                    return result.cart;
+                });
+                return;
             }
-            // @TODO check if cart has changed on server and update the current cart
+            if (updated_cart.message) {
+                if (Array.isArray(updated_cart.message)) {
+                    updated_cart.message.forEach((message) => {
+                        messages.push(message, 'warning');
+                    });
+                } else {
+                    messages.push(updated_cart.message, 'warning');
+                }
+            } else {
+                messages.push(__(message, item), has_changed ? 'success' : 'info');
+            }
+            // update cart with server state
+            update((cart) => {
+                const index = {};
+                updated_cart.items.forEach((item) => {
+                    index[item.sku] = item.qty;
+                });
+                cart.items = cart.items
+                    .map((item) => {
+                        // remove unknown items
+                        if (index[item.sku] == undefined) {
+                            return undefined;
+                        }
+                        // update qty
+                        item.qty = index[item.sku];
+                        return item;
+                    })
+                    .filter(Boolean);
+
+                return cart;
+            });
         },
         subscribe,
     };
@@ -309,6 +329,35 @@ function get_product_from_products_cache(item) {
         product.qty = item.qty;
     }
     return product;
+}
+
+function update_cart_with_qty(cart, sku, qty, item) {
+    let message = undefined;
+    let has_changed = true;
+    let prev_qty = undefined;
+    if (qty == 0 || qty == undefined) {
+        message = 'cart.delete';
+        cart.items = cart.items.filter((item) => item.sku != sku);
+    } else {
+        message = 'cart.update';
+        const found = cart.items.find((item, index) => {
+            if (item.sku != sku) {
+                return false;
+            }
+            has_changed = cart.items[index].qty !== qty;
+            prev_qty = cart.items[index].qty;
+            cart.items[index].qty = qty;
+            return true;
+        });
+        if (!has_changed) {
+            message = 'cart.unchanged';
+        }
+        if (!found) {
+            message = 'cart.add';
+            cart.items.push(get_product_from_products_cache(item));
+        }
+    }
+    return { cart, message, has_changed, prev_qty };
 }
 
 /**
