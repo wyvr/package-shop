@@ -8,7 +8,7 @@ export function update_qty_delayed(sku, qty) {
         clearTimeout(debouncer);
     }
     debouncer = setTimeout(() => {
-        update_qty(sku, new_qty);
+        update_qty(sku, qty);
     }, 1000);
 }
 
