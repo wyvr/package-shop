@@ -33,7 +33,7 @@
         <Stock product={data.product} />
         <Price product={data.product} {locale} {currency} />
 
-        <AddToCart sku={data.product.sku.value} />
+        <AddToCart product={data.product} />
         <div><Wishlist sku={data.product.sku.value} /> <Compare sku={data.product.sku.value} /></div>
 
         <Attribute name="description" product={data.product} as_html={true} />
