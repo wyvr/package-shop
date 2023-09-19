@@ -20,7 +20,8 @@ export async function load_cart(email_or_token, bearer_token, domain_url, store_
         const response = await fetch(url + `?cb=${cb}`, data);
         cart = await response.json();
     } catch (e) {
-        return [e, undefined];
+        console.error(e);
+        return [__('shop.internal_error'), undefined];
     }
     return [undefined, cart];
 }

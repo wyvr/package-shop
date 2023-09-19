@@ -130,6 +130,10 @@ function createCart() {
             messages.push(cart_error, 'error');
         }
 
+        if (!loaded_cart) {
+            return;
+        }
+
         // when id changes the cart has to be merged when switching from guest to customer
         if (snapshot.guest && !loaded_cart.guest && snapshot.id != loaded_cart.id) {
             const items_map = {};
