@@ -158,7 +158,9 @@ function createCart() {
         // the id of guests cart is the token
         if (!is_customer) {
             email_or_token = loaded_cart.id;
-            save(guest_cart_name, loaded_cart.id);
+            if(loaded_cart.id) {
+                save(guest_cart_name, JSON.stringify(loaded_cart.id));
+            }
         }
 
         // load products from cart when not existing
