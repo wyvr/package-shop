@@ -141,7 +141,7 @@
 
         <ProductSwitcher {product} let:product>
             {#if product}
-                <AddToCart {product} disabled={!get_stock(product)?.is_in_stock} />
+                <AddToCart {product} disabled={!get_stock(product).is_in_stock} />
 
                 <div><Wishlist sku={product.sku.value} /> <Compare sku={product.sku.value} /></div>
             {/if}
