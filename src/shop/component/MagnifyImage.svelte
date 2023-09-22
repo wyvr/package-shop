@@ -9,6 +9,7 @@
 
     export let maxWidth = 1000;
     export let src;
+    export let domain;
     export let alt;
     export let width = 0;
     export let sizes = null;
@@ -68,11 +69,11 @@
 
 <section on:mousemove={move} class:centered>
     <button bind:this={preview} class="preview" on:click>
-        <Image {src} {width} {alt} {sizes} {widths} />
+        <Image {src} {domain} {width} {alt} {sizes} {widths} />
     </button>
     {#if started}
         <div bind:this={container} class="magnified" style={position}>
-            <Image {src} width={maxWidth} alt={''} />
+            <Image {src} {domain} width={maxWidth} alt={''} />
         </div>
     {/if}
 </section>

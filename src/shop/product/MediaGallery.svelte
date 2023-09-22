@@ -17,6 +17,7 @@
 
     export let product;
     export let additional_product = null;
+    export let domain;
 
     let images = get_images(product);
     $: {
@@ -75,9 +76,16 @@
         open = true;
     }
 
-    onServer(() => {
+    onServer(async () => {
         images = get_images(product);
         select_main_image(selected_index);
+        const { get_domain_hash } = await import('@wyvr/generator/src/utils/media.js');
+
+        const shop_domain = _inject('config.media.allowed_domains.shop');
+        if (!shop_domain) {
+            return;
+        }
+        domain = get_domain_hash(shop_domain);
     });
     onMount(() => {
         select_main_image(selected_index);
@@ -103,6 +111,7 @@
             <div class="selected">
                 <MagnifyImage
                     src={selected_image.src}
+                    {domain}
                     width={600}
                     maxWidth={1200}
                     alt={selected_image.label}
@@ -116,12 +125,12 @@
             <div class="previews">
                 {#each images as image, i}
                     <button on:click={() => select(image, i)} class:active={i == selected_index}>
-                        <Image src={image.src} width={100} height={100} alt={image.label} />
+                        <Image src={image.src} {domain} width={100} height={100} alt={image.label} />
                     </button>
                 {/each}
             </div>
         {/if}
-        <ImageDialog bind:open {images} index={selected_index} />
+        <ImageDialog bind:open {images} {domain} index={selected_index} />
     </section>
 {/if}
 
