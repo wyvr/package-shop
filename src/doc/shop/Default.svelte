@@ -18,9 +18,3 @@
         <BodyIncludes {data} />
     </body>
 </html>
-
-<style>
-    body {
-        font: 16px/1.4em sans-serif;
-    }
-</style>
