@@ -1,0 +1,5 @@
+{
+    "in_stock": "Auf Lager",
+    "out_of_stock": "Derzeit nicht auf Lager",
+    "only_x_in_stock": "Nur noch {qty} Stück auf Lager"
+}
