@@ -1,0 +1,18 @@
+{
+    "name": "Ihr Warenkorb",
+    "add": "Artikel \"{name}\" zum Warenkorb hinzugefügt",
+    "update": "Artikel \"{name}\" wurde mit der Menge {qty} im Warenkorb aktualisiert",
+    "delete": "Artikel \"{name}\" wurde entfernt aus dem Warenkorb",
+    "unchanged": "Artikel \"{name}\" war bereits mit der Menge {qty} im Warenkorb",
+    "merged": "Artikel wurden aus dem aktuelle Warenkorb in ihrem gespeicherten Warenkorb übertragen",
+    "update_error": "Fehler beim aktualisieren des Artikels mit der SKU {sku} in ihrem Warenkorb",
+    "delete_error": "Fehler beim entfernen des Artikels mit der SKU {sku} aus ihrem Warenkorb",
+    "empty": "Ihr Warenkorb ist leer",
+    "proceed_to_checkout": "Zur Kasse",
+    "view_cart": "Warenkorb anzeigen und bearbeiten",
+    "items_in_cart": "<b>{count}</b> Artikel im Warenkorb",
+    "is_in_cart": "Dieser Artikel ist bereits in ihrem Warenkorb",
+    "sum": "Total",
+    "item_qty": "Gesamtsumme:",
+    "invalid_cart_error": "Etwas ist mit dem gesendeten Warenkorb nicht in Ordnung, versuchen sie es später erneut"
+}
