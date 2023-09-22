@@ -24,8 +24,18 @@ export function save(key, value) {
         localStorage.removeItem(key);
         return true;
     }
+    let store_value = '';
+    if (typeof value == 'string') {
+        store_value = value;
+    } else {
+        try {
+            store_value = JSON.stringify(value);
+        } catch (e) {
+            console.error('storage stringify value', key, e);
+        }
+    }
     try {
-        localStorage.setItem(key, JSON.stringify(value));
+        localStorage.setItem(key, store_value);
     } catch (e) {
         console.error('storage', key, e);
     }
