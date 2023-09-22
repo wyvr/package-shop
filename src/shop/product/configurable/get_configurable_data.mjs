@@ -53,6 +53,7 @@ export function get_configurable_data(configurable_options, configurable_product
                 values: [],
                 data: {},
                 in_stock: false,
+                sku_stock,
             };
 
             options.forEach((option) => {
