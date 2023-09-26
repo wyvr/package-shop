@@ -6,7 +6,6 @@
     export let id = 'image-dialog';
     export let images = [];
     export let index = 0;
-    export let domain;
 
     $: internal_images = cleanImages(images);
     $: amount = internal_images.length;
@@ -39,7 +38,7 @@
         {#if amount > 1}
             <button class="btn prev" on:click={prevImage}>{__('paging.prev_symbol')}</button>
         {/if}
-        <Image {src} {domain} alt={label} width={1200} />
+        <Image {src} alt={label} width={1200} />
         {#if amount > 1}
             <button class="btn next" on:click={nextImage}>{__('paging.next_symbol')}</button>
         {/if}
