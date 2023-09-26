@@ -1,6 +1,6 @@
 <script>
     import Image from '@src/shop/component/Image.svelte';
-    import { get_attribute_value, get_attribute_label } from '../core/attributes.mjs';
+    import { get_attribute_value, get_attribute_name } from '../core/attributes.mjs';
     import { get_image_path } from './get_image_path.mjs';
 
     export let name;
@@ -18,7 +18,7 @@
 
     $: value = get_attribute_value(product, name);
     $: src = get_image_path(value);
-    $: alt = get_attribute_label(product, 'name') || '';
+    $: alt = get_attribute_name(product, 'name') || '';
 </script>
 
 {#if value && src}
