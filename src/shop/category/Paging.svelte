@@ -61,7 +61,7 @@
 
 {#if is_filled}
     <List {id} products={paged_products} {store} {name} {locale} {currency} />
-    <Paging {page} {max} on:change={update_page} show_pages={true} />
+    <Paging {page} {max} on:change={update_page} />
 {:else}
     <Error text={__('category.no_products')} />
 {/if}
