@@ -135,7 +135,7 @@ function createCart() {
         }
 
         // when id changes the cart has to be merged when switching from guest to customer
-        if (snapshot.guest && !loaded_cart.guest && snapshot.id != loaded_cart.id) {
+        if (snapshot.guest && !loaded_cart.guest && snapshot.cart_id != loaded_cart.cart_id) {
             const items_map = {};
             loaded_cart.items.forEach((item, index) => {
                 items_map[item.sku] = { index, item };
@@ -157,9 +157,9 @@ function createCart() {
 
         // the id of guests cart is the token
         if (!is_customer) {
-            email_or_token = loaded_cart.id;
-            if(loaded_cart.id) {
-                save(guest_cart_name, JSON.stringify(loaded_cart.id));
+            email_or_token = loaded_cart.cart_id;
+            if(loaded_cart.cart_id) {
+                save(guest_cart_name, JSON.stringify(loaded_cart.cart_id));
             }
         }
 
