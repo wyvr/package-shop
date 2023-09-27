@@ -18,8 +18,11 @@
  * // Returns '/path/to/directory/'
  */
 export function url_join(...parts) {
+    if(!Array.isArray(parts)) {
+        return undefined;
+    }
     // combine parts together and remove the leading and trailing slashes
-    let url = parts.filter(Boolean).map((part) => part.replace(/\/$/, '').replace(/^\//, ''));
+    let url = parts.filter(Boolean).map((part) => part.toString().replace(/\/$/, '').replace(/^\//, ''));
     if (url.length == 0) {
         return undefined;
     }
