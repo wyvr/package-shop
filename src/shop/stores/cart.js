@@ -14,6 +14,10 @@ export const cart_name = 'cart';
 export const guest_cart_name = 'guest_cart';
 
 let product_cache = {};
+// handle the email and token for the cart
+let email_or_token = 'guest';
+let token;
+let is_customer;
 
 /**
  * @typedef Cart
@@ -54,7 +58,6 @@ function createCart() {
     if (store) {
         return store;
     }
-    let is_customer;
 
     // load customer from local storage
     const current_cart = load(cart_name, base);
@@ -99,7 +102,7 @@ function createCart() {
         const products_to_load = get_uncached_items(cart?.items);
         save(cart_name, cart);
         // store the current cart as snapshot, to handle/check the cart without subscribing to the store
-        snapshot = cart;
+        snapshot = JSON.parse(JSON.stringify(cart));
         // load products from cart when not existing
         let [updated_cache] = await fill_products_cache(products_to_load);
         if (updated_cache) {
@@ -107,10 +110,6 @@ function createCart() {
             set(fill_cart_with_products_cache(snapshot));
         }
     });
-
-    // handle the email and token for the cart
-    let email_or_token = 'guest';
-    let token;
 
     // refresh cart, when login or logoout
     api_customer.subscribe(async (customer) => {
@@ -135,7 +134,12 @@ function createCart() {
         }
 
         // when id changes the cart has to be merged when switching from guest to customer
-        if (snapshot.guest && !loaded_cart.guest && snapshot.cart_id != loaded_cart.cart_id) {
+        if (
+            snapshot?.guest &&
+            !loaded_cart.guest &&
+            snapshot?.cart_id != loaded_cart.cart_id &&
+            snapshot?.items.length > 0
+        ) {
             const items_map = {};
             loaded_cart.items.forEach((item, index) => {
                 items_map[item.sku] = { index, item };
@@ -144,11 +148,16 @@ function createCart() {
             snapshot.items.forEach((item) => {
                 // is new
                 if (!items_map[item.sku]) {
+                    update_cart_item(item.sku, item.qty, update, snapshot, false);
                     loaded_cart.items.push(item);
                     return;
                 }
                 // when exists use the higher qty
-                loaded_cart.items[items_map[item.sku].index].qty = Math.max(items_map[item.sku].item.qty, item.qty);
+                const new_qty = Math.max(items_map[item.sku].item.qty, item.qty);
+                if (items_map[item.sku].item.qty != new_qty) {
+                    update_cart_item(item.sku, new_qty, update, snapshot, false);
+                    loaded_cart.items[items_map[item.sku].index].qty = new_qty;
+                }
             });
             if (loaded_cart.items.length > 0 || snapshot.items.length > 0) {
                 messages.push(__('cart.merged'), 'info');
@@ -158,7 +167,7 @@ function createCart() {
         // the id of guests cart is the token
         if (!is_customer) {
             email_or_token = loaded_cart.cart_id;
-            if(loaded_cart.cart_id) {
+            if (loaded_cart.cart_id) {
                 save(guest_cart_name, JSON.stringify(loaded_cart.cart_id));
             }
         }
@@ -172,76 +181,89 @@ function createCart() {
 
     // create store logic
     store = {
-        update_item: async (sku, qty) => {
-            let item = { sku, qty };
-            if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
-                messages.push(__('cart.update_error', get_product_from_products_cache(item)), 'error');
-                return;
-            }
-            await fill_products_cache(get_uncached_items([item]));
-            item = get_product_from_products_cache(item);
-
-            let message = 'shop.internal_error';
-            let has_changed = true;
-            let prev_qty;
-            update((cart) => {
-                const result = update_cart_with_qty(cart, sku, qty, item);
-
-                message = result.message;
-                has_changed = result.has_changed;
-
-                return result.cart;
-            });
-
-            // persist the cart on the server
-            const cart_data = {};
-            cart_data[sku] = qty;
-            const [update_error, updated_cart] = await update_cart(email_or_token, token, cart_data);
-            if (update_error) {
-                messages.push(update_error, 'error');
-                // revert the qty
-                update((cart) => {
-                    const result = update_cart_with_qty(cart, sku, prev_qty, item);
-                    return result.cart;
-                });
-                return;
-            }
-            if (updated_cart.message) {
-                if (Array.isArray(updated_cart.message)) {
-                    updated_cart.message.forEach((message) => {
-                        messages.push(message, 'warning');
-                    });
-                } else {
-                    messages.push(updated_cart.message, 'warning');
-                }
-            } else {
-                messages.push(__(message, item), has_changed ? 'success' : 'info');
-            }
-            // update cart with server state
-            update((cart) => {
-                const index = {};
-                updated_cart.items.forEach((item) => {
-                    index[item.sku] = item.qty;
-                });
-                cart.items = cart.items
-                    .map((item) => {
-                        // remove unknown items
-                        if (index[item.sku] == undefined) {
-                            return undefined;
-                        }
-                        // update qty
-                        item.qty = index[item.sku];
-                        return item;
-                    })
-                    .filter(Boolean);
-
-                return cart;
-            });
-        },
+        update_item: async (sku, qty) => await update_cart_item(sku, qty, update, snapshot, true),
         subscribe,
     };
 
     return setSharedStore(cart_name, store);
+}
+
+async function update_cart_item(sku, qty, update, snapshot, show_messages = true) {
+    if (typeof update !== 'function') {
+        console.error('missing update fn');
+        return;
+    }
+    let item = { sku, qty };
+    if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
+        if (show_messages) {
+            messages.push(__('cart.update_error', get_product_from_products_cache(item)), 'error');
+        }
+        return;
+    }
+    await fill_products_cache(get_uncached_items([item]));
+    item = get_product_from_products_cache(item);
+
+    let message = 'shop.internal_error';
+    let has_changed = true;
+    let prev_qty;
+    update((cart) => {
+        const result = update_cart_with_qty(cart, sku, qty, item);
+        message = result.message;
+        has_changed = result.has_changed;
+
+        return result.cart;
+    });
+
+    // persist the cart on the server
+    const cart_data = {};
+    cart_data[sku] = qty;
+    const [update_error, updated_cart] = await update_cart(email_or_token, token, cart_data);
+    if (update_error) {
+        if (show_messages) {
+            messages.push(update_error, 'error');
+        }
+        // revert the qty
+        update((cart) => {
+            const result = update_cart_with_qty(cart, sku, prev_qty, item);
+            return result.cart;
+        });
+        return;
+    }
+    if (updated_cart.message) {
+        if (Array.isArray(updated_cart.message)) {
+            updated_cart.message.forEach((message) => {
+                if (show_messages) {
+                    messages.push(message, 'warning');
+                }
+            });
+        } else {
+            if (show_messages) {
+                messages.push(updated_cart.message, 'warning');
+            }
+        }
+    } else {
+        messages.push(__(message, item), has_changed ? 'success' : 'info');
+    }
+    // update cart with server state
+    update((cart) => {
+        const index = {};
+        updated_cart.items.forEach((item) => {
+            index[item.sku] = item.qty;
+        });
+        cart.items = cart.items
+            .map((item) => {
+                // remove unknown items
+                if (index[item.sku] == undefined) {
+                    return undefined;
+                }
+                // update qty
+                item.qty = index[item.sku];
+                return item;
+            })
+            .filter(Boolean);
+
+        return cart;
+    });
 }
 
 /**
