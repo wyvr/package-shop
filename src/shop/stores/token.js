@@ -26,7 +26,7 @@ function createToken() {
     });
     // set current value of the store
     token_store.subscribe((token) => {
-        save(token_storage_name, token);
+        save(token_storage_name, JSON.stringify(token));
     });
 
     return setSharedStore(token_storage_name, token_store);
