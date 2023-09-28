@@ -1,8 +1,16 @@
 import { cart } from '@src/shop/stores/cart';
 
 let debouncer;
+const cache = {};
 
 export function update_qty_delayed(sku, qty) {
+
+    if (cache[sku] == null || cache[sku] != qty) {
+        cache[sku] = qty;
+    } else {
+        // when nothing change avoid updating
+        return;
+    }
     // delay the cart update, to avoid bruteforcing the api
     if (debouncer) {
         clearTimeout(debouncer);
