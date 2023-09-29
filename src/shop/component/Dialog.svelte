@@ -56,7 +56,7 @@
                 >{#if close_content}{@html close_content}{:else}{__('shop.close')}{/if}</button
             >
             {#if title}
-                <header id={internal_title_id}>{title}</header>
+                <header id={internal_title_id}>{@html title}</header>
             {/if}
             <div class="content" class:scroll>
                 {#if description}
