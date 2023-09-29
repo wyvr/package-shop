@@ -315,10 +315,19 @@ async function fill_products_cache(products_to_load) {
                     return null;
                 }
                 const item = {};
-                product_cart_attributes.forEach((key) => {
-                    const value = get_attribute_value(product, key);
-                    if (value != null) {
-                        item[key] = value;
+                product_cart_attributes.forEach((attribute) => {
+                    if (typeof attribute == 'string') {
+                        const value = get_attribute_value(product, attribute);
+                        if (value != null) {
+                            item[attribute] = value;
+                        }
+                        return;
+                    }
+                    if (typeof attribute == 'object' && !Array.isArray(attribute) && attribute?.attribute) {
+                        if (attribute.all) {
+                            item[attribute.attribute] = product[attribute.attribute];
+                            return;
+                        }
                     }
                 });
                 product_cache[sku] = item;
@@ -346,6 +355,8 @@ function get_product_from_products_cache(item) {
     }
     // return the cached products with the sku and qty from the item
     const product = product_cache[item.sku];
+    console.log(product);
+
     if (item.sku) {
         product.sku = item.sku;
     }
