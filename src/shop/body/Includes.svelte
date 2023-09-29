@@ -1,4 +1,6 @@
 <script>
+    import Script from '@src/wyvr/Script.svelte';
+
     export let data;
 
     onServer(() => {
@@ -9,5 +11,5 @@
 </script>
 
 {#if data._wyvr.identifier}
-    <script defer src="/js/{data._wyvr.identifier}.js"></script>
+    <Script src="/js/{data._wyvr.identifier}.js" />
 {/if}
