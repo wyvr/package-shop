@@ -5,6 +5,26 @@ import { getSharedStore, setSharedStore } from './shared';
 
 export const messages_name = 'messages';
 
+/**
+ * Creates a messaging object containing push, close, and subscribe methods.
+ * If conditions are not met it returns null.
+ *
+ * @function 
+ * @name createMessages
+ * @returns {object|null} Returns an object with methods or null.
+ *
+ * @property {Function} push creates a new message
+ *   @param {string} message The message content.
+ *   @param {string} type The type of message.
+ *   @param {object} [options={}] Optional settings for the message.
+ * @return {integer} ID of the message
+ *
+ * @property {Function} close Destroy a specific message by ID.
+ *   @param {string|number} id The ID of the message to remove.
+ *
+ * @property {Function} subscribe Svelte subsribe of the messages
+ *   @param {Function} callback
+ */
 function createMessages() {
     // token is always null on server, no token available
     if (isServer) {
