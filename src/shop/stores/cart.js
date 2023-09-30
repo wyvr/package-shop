@@ -355,7 +355,6 @@ function get_product_from_products_cache(item) {
     }
     // return the cached products with the sku and qty from the item
     const product = product_cache[item.sku];
-    console.log(product);
 
     if (item.sku) {
         product.sku = item.sku;
