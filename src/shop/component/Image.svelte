@@ -17,11 +17,15 @@
 
     $: media_src = get_src(src);
 
+    const domain = _inject('config.media.allowed_domains.shop');
+
     function get_src(src) {
         if (src.indexOf('http') == 0) {
             return src;
         }
-        return url_join(_inject('config.media.allowed_domains.shop'), src);
+
+        const url = url_join(domain, src);
+        return url;
     }
 </script>
 
