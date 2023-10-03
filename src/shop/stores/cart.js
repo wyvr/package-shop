@@ -242,7 +242,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
             }
         }
     } else {
-        messages.push(__(message, item), has_changed ? 'success' : 'info');
+        messages.push(__(message, item), 'success');
     }
     // update cart with server state
     update((cart) => {
