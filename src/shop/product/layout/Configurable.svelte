@@ -7,7 +7,7 @@
     import Name from '@src/shop/product/Name.svelte';
     import ConfigurableOptions from '@src/shop/product/configurable/ConfigurableOptions.svelte';
     import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.mjs';
-    import { get_cookies, update_cookie } from '@src/shop/core/cookies.mjs';
+    import { get_cookies, update_cookies } from '@src/shop/core/cookies.mjs';
 
     import Attribute from '@src/shop/product/Attribute.svelte';
     import AttributeList from '@src/shop/product/AttributeList.svelte';
@@ -47,7 +47,7 @@
         const simple_options = get_redirected_from_simple_options();
         if (simple_options && _inject('config.magento2.product.redirect_simple_to_configurable')) {
             // remove the redirect cookie
-            update_cookie({ redirect_from_simple: undefined });
+            update_cookies({ redirect_from_simple: undefined });
 
             pre_selected_options = simple_options;
             select_configurable({ detail: simple_options });

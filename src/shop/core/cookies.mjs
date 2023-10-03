@@ -28,10 +28,10 @@ export function get_cookies() {
 /**
  * Update or delete cookies based on provided data. Data should be an object where each key-value pair represents a single cookie.
  * Cookies corresponding to keys in the data object are updated with their respective values. Cookies with undefined values are deleted.
- * @function update_cookie
+ * @function update_cookies
  * @param {Object} data The data to be used to update or delete cookies. Each key-value pair represents a single cookie.
  */
-export function update_cookie(data) {
+export function update_cookies(data) {
     // check if data is provided and it's an object type. If not, exit the function.
     if (!data || typeof data != 'object') {
         return;
