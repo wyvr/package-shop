@@ -31,23 +31,28 @@ export function get_cookies() {
  * @function update_cookies
  * @param {Object} data The data to be used to update or delete cookies. Each key-value pair represents a single cookie.
  */
-export function update_cookies(data) {
+export function update_cookies(data, path) {
     // check if data is provided and it's an object type. If not, exit the function.
     if (!data || typeof data != 'object') {
         return;
     }
 
+    let cookie_path = '';
     // get current store key from stack and set path accordingly
-    const path = `path=/${getStack('store')?.key ?? ''}`;
+    if (!path) {
+        cookie_path = `path=/${getStack('store')?.key ?? ''}`;
+    } else {
+        cookie_path = `path=${path}`;
+    }
 
     // iterate over each entry in the provided data object
     Object.entries(data).forEach(([key, value]) => {
         // if value is undefined, delete the cookie
         if (value === undefined) {
-            document.cookie = `${key}=; ${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+            document.cookie = `${key}=; ${cookie_path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
             return;
         }
         // else update or create a new cookie with the given key/value pair and path
-        document.cookie = `${key}=${value}; ${path};`;
+        document.cookie = `${key}=${value}; ${cookie_path};`;
     });
 }
