@@ -43,7 +43,7 @@
 
     onMount(() => {
         email = atob(strip_tags(new URLSearchParams(window.location.search).get('email')));
-        sku = strip_tags(new URLSearchParams(window.location.search).get('sku'));
+        sku = atob(strip_tags(new URLSearchParams(window.location.search).get('sku')));
 
         try_add_to_cart();
     });
