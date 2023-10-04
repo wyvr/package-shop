@@ -28,6 +28,7 @@
     let cache = {};
     let cache_timer;
     $: items = get_items($compare);
+    $: description = get_label_of_cache('description');
 
     onMount(() => {
         if (items) {
@@ -95,7 +96,6 @@
         }, 500);
     }
     function update_attributes() {
-        console.log(cache);
         attributes = compare_attributes
             .map((attribute) => {
                 const data = {
@@ -111,6 +111,15 @@
                 return data;
             })
             .filter(Boolean);
+    }
+    function get_label_of_cache(name) {
+        const found = Object.values(cache)
+            .map((product) => {
+                return get_attribute_label(product, name);
+            })
+            .find(Boolean);
+        console.log(name, found);
+        return found;
     }
 </script>
 
@@ -129,7 +138,7 @@
                     {/each}
                 </tr>
                 <tr>
-                    <th><div>{get_attribute_label(cache[items[0]], 'name')}</div></th>
+                    <th><div>{get_label_of_cache('name')}</div></th>
                     {#each items as sku}
                         <td>
                             <b>{get_attribute_value(cache[sku], 'name')}</b>
@@ -153,7 +162,7 @@
                     </tr>
                 {/each}
                 <tr>
-                    <th><div>{get_attribute_label(cache[items[0]], 'price')}</div></th>
+                    <th><div>{get_label_of_cache('price')}</div></th>
                     {#each items as sku}
                         <td><Price product={cache[sku]} {locale} {currency} /></td>
                     {/each}
@@ -169,12 +178,14 @@
                         </td>
                     {/each}
                 </tr>
-                <tr>
-                    <th><div>{get_attribute_label(cache[items[0]], 'description')}</div></th>
-                    {#each items as sku}
-                        <td>{@html get_attribute_value(cache[sku], 'description')} </td>
-                    {/each}
-                </tr>
+                {#if description}
+                    <tr>
+                        <th><div>{description}</div></th>
+                        {#each items as sku}
+                            <td>{@html get_attribute_value(cache[sku], 'description')} </td>
+                        {/each}
+                    </tr>
+                {/if}
             </table>
         </section>
     {/if}
