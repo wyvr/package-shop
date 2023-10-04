@@ -4,10 +4,13 @@ export default {
     url: '/[store]/account',
     _wyvr: ({ data }) => {
         return {
-            template: ['shop/Account', 'shop/Default'],
-            methods: ['get'],
-            persist: true,
-            language: data?.locale || 'en',
+            ...(data?._wyvr ?? {}),
+            ...{
+                template: ['shop/Account', 'shop/Default'],
+                methods: ['get'],
+                persist: true,
+                language: data?.locale || 'en',
+            },
         };
     },
     title: () => __('customer.my_account'),
