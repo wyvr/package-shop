@@ -50,6 +50,7 @@ function createWishlist() {
             }
             update((wishlist) => {
                 let message = 'shop.internal_error';
+                let event;
                 const toggle_sku = sku.toLowerCase();
                 let was_in_list = false;
                 wishlist.items = wishlist.items.filter((sku) => {
@@ -61,9 +62,11 @@ function createWishlist() {
                 });
                 if (was_in_list) {
                     message = 'wishlist.remove';
+                    event = 'wishlist.remove';
                 } else {
                     message = 'wishlist.add';
                     wishlist.items.push(toggle_sku);
+                    event = 'wishlist.add';
                 }
                 load_product(sku).then(([error, product]) => {
                     if (error) {
@@ -72,6 +75,7 @@ function createWishlist() {
                         return;
                     }
                     messages.push(__(message, { name: product.name?.value || __('shop.product') }), 'success');
+                    trigger(event, product);
                 });
                 return wishlist;
             });
