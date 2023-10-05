@@ -210,6 +210,9 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
         const result = update_cart_with_qty(cart, sku, qty, item);
         message = result.message;
         has_changed = result.has_changed;
+        if(result.event) {
+            trigger(result.event, { sku, qty, item });
+        }
 
         return result.cart;
     });
@@ -391,7 +394,7 @@ function update_cart_with_qty(cart, sku, qty, item) {
             cart.items.push(get_product_from_products_cache(item));
         }
     }
-    return { cart, message, has_changed, prev_qty };
+    return { cart, message, event: message, has_changed, prev_qty };
 }
 
 /**
