@@ -210,8 +210,8 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
         const result = update_cart_with_qty(cart, sku, qty, item);
         message = result.message;
         has_changed = result.has_changed;
-        if(result.event) {
-            trigger(result.event, { sku, qty, item });
+        if (result.event) {
+            trigger(result.event, { sku, qty, item, prev_qty: result.prev_qty });
         }
 
         return result.cart;
