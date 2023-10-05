@@ -16,6 +16,7 @@
     export let items_per_page = 11;
     export let locale = 'en';
     export let currency = 'EUR';
+    export let list_id;
 
     const id = 'product-list';
 
@@ -23,6 +24,7 @@
     $: paged_products = products ? products.slice((page - 1) * items_per_page, page * items_per_page) : [];
     $: amount = products ? products.length : 0;
     $: max = Math.ceil(amount / items_per_page);
+    $: trigger_events(paged_products);
 
     onMount(() => {
         const hash = get_hash();
@@ -57,10 +59,20 @@
             document.getElementById(id)?.scrollIntoView({ block: 'start' });
         }
     }
+    let debouncer;
+    function trigger_events(paged_products) {
+        if (isServer) {
+            return;
+        }
+        clearTimeout(debouncer);
+        debouncer = setTimeout(() => {
+            trigger('paging.products', paged_products);
+        }, 1000);
+    }
 </script>
 
 {#if is_filled}
-    <List {id} products={paged_products} {store} {name} {locale} {currency} />
+    <List {id} {list_id} products={paged_products} {store} {name} {locale} {currency} />
     <Paging {page} {max} on:change={update_page} show_pages={true} />
 {:else}
     <Error text={__('category.no_products')} />

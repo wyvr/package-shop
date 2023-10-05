@@ -28,9 +28,20 @@
     $: is_filled = Array.isArray(products) && products.length > 0;
     $: filtered_products = products ? sort(filter(products, filter_config), sort_by, asc) : [];
     $: tags = get_tags(filter_config, details);
+    $: trigger_events(filter_config);
 
     function update_details(data) {
         details = data;
+    }
+    let debouncer;
+    function trigger_events() {
+        if(isServer) {
+            return;
+        }
+        clearTimeout(debouncer);
+        debouncer = setTimeout(() => {
+            trigger('filter.update', filtered_products);
+        }, 1000);
     }
 </script>
 
