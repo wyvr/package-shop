@@ -1,4 +1,5 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
     import InlineSpinner from '@src/shop/component/InlineSpinner.svelte';
     import { cart } from '@src/shop/stores/cart';
 
@@ -11,12 +12,15 @@
     export let qty = 1;
     export let disabled = false;
 
+    const dispatch = createEventDispatcher();
+
     let state = 'idle';
     $: button_text = qty > 0 ? 'product.add_to_cart' : 'product.remove_from_cart';
 
     async function add_to_cart() {
         state = 'busy';
         cart.update_item(sku, qty);
+        dispatch('click', { sku, qty });
         state = 'idle';
     }
 </script>
