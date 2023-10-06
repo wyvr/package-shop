@@ -28,7 +28,7 @@
 
 <section>
     <Qty bind:qty />
-    <AddToCartButton {sku} {disabled} {qty} />
+    <AddToCartButton {sku} {disabled} {qty} on:click />
     {#if in_cart}
         <span>{__('cart.is_in_cart')}</span>
     {/if}
