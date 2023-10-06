@@ -79,6 +79,11 @@
             sessionStorage.setItem('wishlist_cache', JSON.stringify(cache));
         }, 500);
     }
+    function toggle({ sku }) {
+        if (sku) {
+            wishlist.toggle(sku);
+        }
+    }
 </script>
 
 {#if items}
@@ -88,7 +93,7 @@
                 {#if cache && cache[sku]}
                     <ListItem product={cache[sku]} {store} {locale} {currency}>
                         <div class="actions" slot="bottom">
-                            <AddToCartButton {sku} />
+                            <AddToCartButton {sku} on:click={(e) => toggle(e.detail)} />
                             <ToggleButton {sku} />
                         </div>
                     </ListItem>
