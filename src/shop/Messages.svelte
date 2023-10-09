@@ -2,11 +2,19 @@
     import { messages } from '@src/shop/stores/messages';
     import Message from '@src/shop/messages/Message.svelte';
     import { slide } from 'svelte/transition';
+    import { onMount } from 'svelte';
 
     wyvr: {
         render: 'hydrate';
         loading: 'instant';
     }
+    onMount(() => {
+        on('message', (data) => {
+            if (data) {
+                messages.push(data.message, data.type, data.options);
+            }
+        });
+    });
 </script>
 
 {#if $messages}
