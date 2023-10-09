@@ -4,5 +4,6 @@
     "remove_from_wishlist": "Entfernen von Wunschliste",
     "add": "{name} zur Wunschliste hinzugefügt",
     "remove": "{name} von Wunschliste entfernt",
-    "empty": "Ihre Wunschliste ist leer."
+    "empty": "Ihre Wunschliste ist leer.",
+    "not_found": "{name} wurde nicht gefunden"
 }

@@ -4,5 +4,6 @@
     "remove_from_wishlist": "Remove from wishlist",
     "add": "Added {name} to your wishlist",
     "remove": "Removed {name} from your wishlist",
-    "empty": "Your wishlist is empty"
+    "empty": "Your wishlist is empty",
+    "not_found": "{name} could not be found"
 }

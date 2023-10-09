@@ -74,7 +74,14 @@ function createWishlist() {
                         console.error(error);
                         return;
                     }
-                    messages.push(__(message, { name: product.name?.value || __('shop.product') }), 'success');
+                    let name = product?.name?.value;
+                    let type = 'success';
+                    if (!name) {
+                        message = 'wishlist.not_found';
+                        name = sku;
+                        type = 'warning';
+                    }
+                    messages.push(__(message, { name }), type);
                     trigger(event, product);
                 });
                 return wishlist;
