@@ -191,14 +191,14 @@ function createCart() {
 async function update_cart_item(sku, qty, update, snapshot, show_messages = true) {
     if (typeof update !== 'function') {
         console.error('missing update fn');
-        return;
+        return undefined;
     }
     let item = { sku, qty };
     if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
         if (show_messages) {
             messages.push(__('cart.update_error', get_product_from_products_cache(item)), 'error');
         }
-        return;
+        return undefined;
     }
     await fill_products_cache(get_uncached_items([item]));
     item = get_product_from_products_cache(item);
@@ -207,7 +207,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
     let has_changed = true;
     let prev_qty;
     update((cart) => {
-        const result = update_cart_with_qty(cart, sku, qty, item);
+        const result = update_cart_with_qty(cart, sku, qty, item, snapshot);
         message = result.message;
         has_changed = result.has_changed;
         if (result.event) {
@@ -227,7 +227,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
         }
         // revert the qty
         update((cart) => {
-            const result = update_cart_with_qty(cart, sku, prev_qty, item);
+            const result = update_cart_with_qty(cart, sku, prev_qty, item, snapshot);
             return result.cart;
         });
         return;
@@ -267,6 +267,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
 
         return cart;
     });
+    return updated_cart;
 }
 
 /**
@@ -368,10 +369,10 @@ function get_product_from_products_cache(item) {
     return product;
 }
 
-function update_cart_with_qty(cart, sku, qty, item) {
+function update_cart_with_qty(cart, sku, qty, item, snapshot) {
     let message = undefined;
     let has_changed = true;
-    let prev_qty = undefined;
+    let prev_qty = snapshot?.items.find((item) => item.sku == sku)?.qty;
     if (qty == 0 || qty == undefined) {
         message = 'cart.delete';
         cart.items = cart.items.filter((item) => item.sku != sku);
@@ -381,8 +382,7 @@ function update_cart_with_qty(cart, sku, qty, item) {
             if (item.sku != sku) {
                 return false;
             }
-            has_changed = cart.items[index].qty !== qty;
-            prev_qty = cart.items[index].qty;
+            has_changed = prev_qty !== qty;
             cart.items[index].qty = qty;
             return true;
         });
