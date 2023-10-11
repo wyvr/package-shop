@@ -2,5 +2,6 @@
     "account": "My Account",
     "address": "My Addresses",
     "order": "My Orders",
-    "compare": "Compare List"
+    "compare": "Comparelist",
+    "wishlist": "Wishlist"
 }
