@@ -4,6 +4,7 @@ import { messages } from '@src/shop/stores/messages';
 import { guest_cart_name } from '@src/shop/stores/cart';
 import { save } from '@src/shop/stores/storage';
 
+let logout_timer;
 export function customer_logout_action() {
     save(guest_cart_name, undefined);
     token.set(undefined);
@@ -24,5 +25,8 @@ export function customer_logout_action() {
         const key = cookie.split('=');
         document.cookie = key[0].trim() + ' =; expires = Thu, 01 Jan 1970 00:00:00 UTC';
     });
-    messages.push(__('customer.logout_success'), 'success');
+    clearTimeout(logout_timer);
+    logout_timer = setTimeout(() => {
+        messages.push(__('customer.logout_success'), 'success');
+    }, 2000);
 }
