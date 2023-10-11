@@ -137,7 +137,7 @@ function createCart() {
                 email_or_token = 'guest'; // force new cart
             }
         }
-        refresh_cart(snapshot, set);
+        refresh_cart(snapshot, set, update);
     });
 
     // create store logic
@@ -358,7 +358,7 @@ function update_cart_with_qty(cart, sku, qty, item, snapshot) {
     return { cart, message, event: message, has_changed, prev_qty };
 }
 
-async function refresh_cart(snapshot, set_cart) {
+async function refresh_cart(snapshot, set_cart, update_cart) {
     if (typeof set_cart != 'function') {
         console.error('no set_cart method given');
         return;
@@ -389,14 +389,14 @@ async function refresh_cart(snapshot, set_cart) {
         snapshot.items.forEach((item) => {
             // is new
             if (!items_map[item.sku]) {
-                update_cart_item(item.sku, item.qty, update, snapshot, false);
+                update_cart_item(item.sku, item.qty, update_cart, snapshot, false);
                 loaded_cart.items.push(item);
                 return;
             }
             // when exists use the higher qty
             const new_qty = Math.max(items_map[item.sku].item.qty, item.qty);
             if (items_map[item.sku].item.qty != new_qty) {
-                update_cart_item(item.sku, new_qty, update, snapshot, false);
+                update_cart_item(item.sku, new_qty, update_cart, snapshot, false);
                 loaded_cart.items[items_map[item.sku].index].qty = new_qty;
             }
         });
