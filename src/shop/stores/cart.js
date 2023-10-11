@@ -129,7 +129,7 @@ function createCart() {
         if (purchase) {
             setTimeout(() => {
                 // trigger is created after the components
-                trigger('purchase', purchase);
+                trigger('purchase', { purchase, customer });
             }, 100);
             // remove purchase
             save(purchase_name, undefined);
