@@ -5,6 +5,7 @@ import { load, save } from './storage';
 import is_logged_in from '@src/shop/stores/is_logged_in';
 import { messages } from '@src/shop/stores/messages';
 import { load_product } from '@src/shop/api-client/product/load_product';
+import { get_wishlist_url } from '@src/shop/wishlist/get_wishlist_url';
 
 export const wishlist_name = 'wishlist';
 
@@ -81,7 +82,7 @@ function createWishlist() {
                         name = sku;
                         type = 'warning';
                     }
-                    messages.push(__(message, { name }), type);
+                    messages.push(__(message, { name, url: get_wishlist_url() }), type);
                     trigger(event, product);
                 });
                 return wishlist;

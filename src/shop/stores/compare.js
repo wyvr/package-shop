@@ -5,6 +5,7 @@ import { load, save } from './storage';
 import is_logged_in from '@src/shop/stores/is_logged_in';
 import { messages } from '@src/shop/stores/messages';
 import { load_product } from '@src/shop/api-client/product/load_product';
+import { get_compare_url } from '@src/shop/compare/get_compare_url';
 
 export const compare_name = 'compare';
 
@@ -71,7 +72,7 @@ function createCompare() {
                         console.error(error);
                         return;
                     }
-                    messages.push(__(message, { name: product.name?.value || __('shop.product') }), 'success');
+                    messages.push(__(message, { name: product.name?.value || __('shop.product'), url: get_compare_url() }), 'success');
                 });
                 return compare;
             });
