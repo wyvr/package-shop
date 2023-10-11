@@ -11,6 +11,7 @@ import api_customer from '@src/shop/stores/api_customer';
 import { update_cart } from '@src/shop/api-client/cart/update_cart';
 
 export const cart_name = 'cart';
+export const purchase_name = 'purchase';
 export const guest_cart_name = 'guest_cart';
 
 let product_cache = {};
@@ -54,6 +55,7 @@ function createCart() {
     if (isServer) {
         return null;
     }
+
     let store = getSharedStore(cart_name);
     if (store) {
         return store;
@@ -111,8 +113,8 @@ function createCart() {
         }
     });
 
-    // refresh cart, when login or logoout
-    api_customer.subscribe(async (customer) => {
+    // refresh cart, when login or logout
+    api_customer.subscribe((customer) => {
         if (customer?.email && customer?.token) {
             email_or_token = customer.email;
             token = customer.token;
@@ -122,61 +124,20 @@ function createCart() {
             token = undefined;
             is_customer = false;
         }
-
-        // load the current cart based on the email or token
-        const [cart_error, loaded_cart] = await load_cart(email_or_token, token);
-        if (cart_error) {
-            messages.push(cart_error, 'error');
-        }
-
-        if (!loaded_cart) {
-            return;
-        }
-
-        // when id changes the cart has to be merged when switching from guest to customer
-        if (
-            snapshot?.guest &&
-            !loaded_cart.guest &&
-            snapshot?.cart_id != loaded_cart.cart_id &&
-            snapshot?.items.length > 0
-        ) {
-            const items_map = {};
-            loaded_cart.items.forEach((item, index) => {
-                items_map[item.sku] = { index, item };
-            });
-            // merge the old cart into the new one
-            snapshot.items.forEach((item) => {
-                // is new
-                if (!items_map[item.sku]) {
-                    update_cart_item(item.sku, item.qty, update, snapshot, false);
-                    loaded_cart.items.push(item);
-                    return;
-                }
-                // when exists use the higher qty
-                const new_qty = Math.max(items_map[item.sku].item.qty, item.qty);
-                if (items_map[item.sku].item.qty != new_qty) {
-                    update_cart_item(item.sku, new_qty, update, snapshot, false);
-                    loaded_cart.items[items_map[item.sku].index].qty = new_qty;
-                }
-            });
-            if (loaded_cart.items.length > 0 || snapshot.items.length > 0) {
-                messages.push(__('cart.merged'), 'info');
+        // check purchase event, to create new cart
+        const purchase = load(purchase_name);
+        if (purchase) {
+            setTimeout(() => {
+                // trigger is created after the components
+                trigger('purchase', purchase);
+            }, 100);
+            // remove purchase
+            save(purchase_name, undefined);
+            if (!is_customer) {
+                email_or_token = 'guest'; // force new cart
             }
         }
-
-        // the id of guests cart is the token
-        if (!is_customer) {
-            email_or_token = loaded_cart.cart_id;
-            if (loaded_cart.cart_id) {
-                save(guest_cart_name, JSON.stringify(loaded_cart.cart_id));
-            }
-        }
-
-        // load products from cart when not existing
-        await fill_products_cache(get_uncached_items(loaded_cart?.items));
-
-        // insert the products cache
-        set(fill_cart_with_products_cache(loaded_cart));
+        refresh_cart(snapshot, set);
     });
 
     // create store logic
@@ -395,6 +356,68 @@ function update_cart_with_qty(cart, sku, qty, item, snapshot) {
         }
     }
     return { cart, message, event: message, has_changed, prev_qty };
+}
+
+async function refresh_cart(snapshot, set_cart) {
+    if (typeof set_cart != 'function') {
+        console.error('no set_cart method given');
+        return;
+    }
+
+    // load the current cart based on the email or token
+    const [cart_error, loaded_cart] = await load_cart(email_or_token, token);
+    if (cart_error) {
+        messages.push(cart_error, 'error');
+    }
+
+    if (!loaded_cart) {
+        return;
+    }
+
+    // when id changes the cart has to be merged when switching from guest to customer
+    if (
+        snapshot?.guest &&
+        !loaded_cart.guest &&
+        snapshot?.cart_id != loaded_cart.cart_id &&
+        snapshot?.items.length > 0
+    ) {
+        const items_map = {};
+        loaded_cart.items.forEach((item, index) => {
+            items_map[item.sku] = { index, item };
+        });
+        // merge the old cart into the new one
+        snapshot.items.forEach((item) => {
+            // is new
+            if (!items_map[item.sku]) {
+                update_cart_item(item.sku, item.qty, update, snapshot, false);
+                loaded_cart.items.push(item);
+                return;
+            }
+            // when exists use the higher qty
+            const new_qty = Math.max(items_map[item.sku].item.qty, item.qty);
+            if (items_map[item.sku].item.qty != new_qty) {
+                update_cart_item(item.sku, new_qty, update, snapshot, false);
+                loaded_cart.items[items_map[item.sku].index].qty = new_qty;
+            }
+        });
+        if (loaded_cart.items.length > 0 || snapshot.items.length > 0) {
+            messages.push(__('cart.merged'), 'info');
+        }
+    }
+
+    // the id of guests cart is the token
+    if (!is_customer) {
+        email_or_token = loaded_cart.cart_id;
+        if (loaded_cart.cart_id) {
+            save(guest_cart_name, JSON.stringify(loaded_cart.cart_id));
+        }
+    }
+
+    // load products from cart when not existing
+    await fill_products_cache(get_uncached_items(loaded_cart?.items));
+
+    // insert the products cache
+    set_cart(fill_cart_with_products_cache(loaded_cart));
 }
 
 /**
