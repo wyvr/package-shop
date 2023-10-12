@@ -100,6 +100,10 @@ function get_values_of_attribute(product, attribute) {
             return values;
         }
         // ignore unknown/unhandled types
+        if(Array.isArray(current)) {
+            values.push(...current)
+            return values;
+        }
         if (typeof current != 'string') {
             return values;
         }
