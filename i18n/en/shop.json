@@ -13,5 +13,7 @@
     "invalid_field": "{name} is not valid",
     "close": "Close",
     "feature_not_available": "This Feature is not available",
-    "to_home": "Go to Home"
+    "to_home": "Go to Home",
+    "edit": "Edit",
+    "delete": "Delete"
 }

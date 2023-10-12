@@ -13,5 +13,7 @@
     "invalid_field": "{name} ist nicht gültig",
     "close": "Schließen",
     "feature_not_available": "Diese Funktion ist nicht verfügbar",
-    "to_home": "Zur Startseite"
+    "to_home": "Zur Startseite",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
 }
