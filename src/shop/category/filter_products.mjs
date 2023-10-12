@@ -17,6 +17,12 @@ export function filter(products, config) {
     if (keys.length === 0) {
         return products;
     }
+
+    // keys.push('category_ids');
+    // config.category_ids = {
+    //     "83": true
+    // }
+    // debugger;
     // build attributes object to filter
     const attributes = {};
     facets.attributes.forEach((attr) => {
@@ -74,6 +80,9 @@ export function filter(products, config) {
                     return match;
                 case 'list':
                     match = attribute.values.find((value) => values.indexOf(value) > -1);
+                    return match;
+                case 'tree':
+                    match = values.find((value) => filter_value[value]);
                     return match;
             }
             return true;
