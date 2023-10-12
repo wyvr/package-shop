@@ -2,6 +2,12 @@
     import Stylesheet from '@src/wyvr/Stylesheet.svelte';
 
     export let data;
+
+    onServer(() => {
+        setStack('store', data.store);
+        setStack('locale', data.locale);
+        setStack('currency', data.currency);
+    });
 </script>
 
 <link rel="icon" href="/assets/favicon.png" />
