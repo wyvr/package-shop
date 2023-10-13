@@ -21,7 +21,7 @@
     <nav>
         {#if $is_logged_in && isClient}
             <a href={url}>{__('customer.my_account')}</a>
-            <button type="button" on:click={() => customer_logout()}>{__('customer.logout')}</button>
+            <button type="button" on:click={() => customer_logout(true)}>{__('customer.logout')}</button>
         {:else}
             <a href={url}>{__('customer.register')}</a>
             <button type="button" on:click={() => (openLoginDialog = true)}>{__('customer.login')}</button>

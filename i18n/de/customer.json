@@ -1,0 +1,20 @@
+{
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "email": "Email",
+    "password": "Passwort",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "my_account": "Mein Konto",
+    "register": "Registrieren",
+    "create_account": "Ein Konto erstellen",
+    "newsletter_register": "Zum Newsletter anmelden",
+    "allow_remote": "Fernunterstützung beim Einkaufen erlauben",
+    "allow_remote_hint": "Dies ermöglicht es Händlern, zu \"sehen, was Sie sehen\" und in Ihrem Namen Handlungen vorzunehmen, um eine bessere Unterstützung zu bieten.",
+    "invalid_error": "Das Konto mit der angegebenen Email existiert nicht oder der Login ist nicht mehr gültig",
+    "login_error": "Die Anmeldung für das Konto war falsch oder Ihr Konto wurde vorübergehend deaktiviert. Bitte warten Sie und versuchen Sie es später erneut.",
+    "login_success": "Sie haben sich erfolgreich angemeldet",
+    "logout_success": "Sie haben sich abgemeldet",
+    "logout_success_system": "Sie wurden abgemeldet",
+    "forgot_password": "Passwort vergessen?"
+}
