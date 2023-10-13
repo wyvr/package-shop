@@ -5,7 +5,7 @@ import { guest_cart_name } from '@src/shop/stores/cart';
 import { save } from '@src/shop/stores/storage';
 
 let logout_timer;
-export function customer_logout_action() {
+export function customer_logout_action(customer_logged_out = false) {
     save(guest_cart_name, undefined);
     token.set(undefined);
     customer.set(undefined);
@@ -27,6 +27,6 @@ export function customer_logout_action() {
     });
     clearTimeout(logout_timer);
     logout_timer = setTimeout(() => {
-        messages.push(__('customer.logout_success'), 'success');
+        messages.push(__(customer_logged_out ? 'customer.logout_success' : 'customer.logout_success_system'), 'success');
     }, 2000);
 }
