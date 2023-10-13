@@ -15,15 +15,16 @@ export function get_hash() {
     });
     return hash_object;
 }
-export function set_hash(hash) {
+export function set_hash(hash_result, hash) {
     if (!history || !document.location) {
         return;
     }
-    if (!hash) {
+    if (!hash_result || ! hash) {
+        const url = document.location.pathname + document.location.search;
         history.pushState(undefined, undefined, document.location.pathname + document.location.search);
         return;
     }
-    history.replaceState(undefined, undefined, '#' + hash);
+    history.pushState(hash, undefined, '#' + hash_result);
 }
 export function update_hash(data) {
     if (!data || typeof data != 'object') {
@@ -45,5 +46,5 @@ export function update_hash(data) {
         })
         .filter((x) => x)
         .join('&');
-    set_hash(hash_result);
+    set_hash(hash_result, hash);
 }
