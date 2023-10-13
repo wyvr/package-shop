@@ -37,6 +37,13 @@
             }
             page = p;
         }
+        window.addEventListener('popstate', (e) => {
+            if (e.state?.p) {
+                if (!isNaN(e.state.p)) {
+                    page = e.state.p;
+                }
+            }
+        });
     });
 
     function update_page({ detail }) {
