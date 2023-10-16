@@ -17,12 +17,6 @@ export function filter(products, config) {
     if (keys.length === 0) {
         return products;
     }
-
-    // keys.push('category_ids');
-    // config.category_ids = {
-    //     "83": true
-    // }
-    // debugger;
     // build attributes object to filter
     const attributes = {};
     facets.attributes.forEach((attr) => {
@@ -37,7 +31,11 @@ export function filter(products, config) {
         }
         // combine list of vlaues together
         if (attr.type == 'list') {
-            attributes[code].values = config[code] ? Object.keys(config[code]) : [];
+            if (config[code]) {
+                attributes[code].values = [].concat(...Object.keys(config[code]).map(value => value.split(",")));
+            } else {
+                attributes[code].values = [];
+            }
         }
     });
     // filter all products
@@ -126,6 +124,7 @@ export function get_filter_options(attributes, products) {
     const child_attrs = attributes.filter((item) => item.search_children);
     const options = {};
     const hash = {};
+
     products.forEach((product) => {
         const sku = get_attribute_value(product, 'sku');
         attrs.forEach((item) => {
@@ -144,15 +143,23 @@ export function get_filter_options(attributes, products) {
         }
     });
 
-    // add the skus to the options
+    // Filter options to only those with products
     Object.keys(options).forEach((attr) => {
-        options[attr] = options[attr].map((item) => {
+        options[attr] = options[attr].filter((item) => {
             item.skus = hash[attr][item.value];
-            return item;
+            return item.skus && item.skus.length > 0; // retain only if there are skus/products associated
         });
+    });
+
+    // remove attributes that have no options left after the filter
+    Object.keys(options).forEach((attr) => {
+        if (options[attr].length === 0) {
+            delete options[attr];
+        }
     });
     return options;
 }
+
 
 function process_attribute(item, sku, product, options, hash) {
     const attr = item.attribute;
@@ -167,6 +174,7 @@ function process_attribute(item, sku, product, options, hash) {
     }
     process_attribute_by_code(attr, attr, sku, product, options, hash);
 }
+
 
 function process_attribute_by_code(product_attr_code, attr_code, sku, product, options, hash) {
     if (!product[product_attr_code] || product[product_attr_code] === '0') {
@@ -220,5 +228,7 @@ function process_attribute_by_code(product_attr_code, attr_code, sku, product, o
         }
     }
 
+    // Only add entries to options if they have products
+    entries = entries.filter(entry => hash[attr_code][entry.value] && hash[attr_code][entry.value].length > 0);
     options[attr_code].push(...entries);
 }
