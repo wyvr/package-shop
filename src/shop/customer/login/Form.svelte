@@ -3,6 +3,7 @@
     import Password from '@src/form/Password.svelte';
     import Buttons from '@src/shop/customer/login/Buttons.svelte';
     import { url_join } from '@src/shop/core/url.mjs';
+    import { forgot_password_link } from '@src/shop/config/forgot_password_link.js';
     import { onMount } from 'svelte';
 
     export let focus = false;
@@ -15,11 +16,10 @@
     let password = _inject('config._secrets.shop.customer_password', '');
     let form;
     $: action = url_join(store, 'api', 'customer', 'login');
-    $: forgot_password_link = url_join(store, 'account', 'forgot_password');
-    $: is_valid(email, password)
+    $: is_valid(email, password);
 
     function is_valid() {
-        if(state != 'busy') {
+        if (state != 'busy') {
             state = form?.checkValidity() ? 'idle' : 'inactive';
         }
     }
@@ -43,7 +43,7 @@
         <Password id={id_prefix + 'login_password'} required={true} disabled={state == 'busy'} bind:value={password}
             >{__('customer.password')}</Password
         >
-        <a href={forgot_password_link}>{__('customer.forgot_password')}</a>
+        <a href={forgot_password_link()}>{__('customer.forgot_password')}</a>
     </div>
     <Buttons bind:open bind:state {id_prefix} {form} />
 </form>
