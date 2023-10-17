@@ -3,10 +3,24 @@
 
     export let data;
     const name = injectConfig('shop.name');
-    $: title = data.meta?.title || data.meta_title || data.title || name;
-    $: description = data.meta?.description || data.meta_description || name;
-    $: canonical = url_join(domain, data.url);
-    $: robots = data?.robots || injectConfig('env', 'dev') == 'prod' ? 'index, follow' : 'noindex, nofollow';
+    const index_site = injectConfig('shop.seo.index', false);
+    const title = data.meta?.title || data.meta_title || data.title || name;
+    const description = data.meta?.description || data.meta_description || name;
+    const canonical = url_join(domain, data.url);
+    const robots = get_robots(index_site, data);
+    
+    function get_robots(index_site, data) {
+        if (!index_site) {
+            return 'noindex, nofollow';
+        }
+        if (data?.robots) {
+            return data.robots;
+        }
+        if (injectConfig('env', 'dev') == 'prod') {
+            return 'index, follow';
+        }
+        return 'noindex, nofollow';
+    }
 </script>
 
 <title>{title}</title>
