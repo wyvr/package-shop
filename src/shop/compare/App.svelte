@@ -118,7 +118,6 @@
                 return get_attribute_label(product, name);
             })
             .find(Boolean);
-        console.log(name, found);
         return found;
     }
 </script>
