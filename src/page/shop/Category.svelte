@@ -10,8 +10,7 @@
     $: products = data?.category?.products || [];
 
     const check_page_script = `<script>
-        const init_hash = document.location.hash;
-        if(init_hash) {
+        if(document.location.hash) {
             let interact_elems = Array.from(document.querySelectorAll('.trigger_interact [data-hydrate][data-loading="interact"]'));
             const interact_watcher = setInterval(function() {
                 interact_elems = interact_elems.filter(function(el) {
@@ -44,7 +43,7 @@
     <div class="main">
         <h1>{name}</h1>
     </div>
-    
+
     <Content {data} />
     <div class="details trigger_interact">
         <Filter {products} store={data.store.key} {name} locale={data.locale} currency={data.currency.default} />
