@@ -20,6 +20,9 @@
     const domain = _inject('config.media.allowed_domains.shop');
 
     function get_src(src) {
+        if(!src) {
+            return undefined;
+        }
         if (src.indexOf('http') == 0) {
             return src;
         }
