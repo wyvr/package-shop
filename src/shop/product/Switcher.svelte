@@ -16,7 +16,7 @@
     onMount(() => {
         slot_product = product;
         on('shop-product-switch', (switch_product) => {
-            if (switch_product.sku.value == product.sku.value) {
+            if (switch_product?.sku?.value == product?.sku?.value) {
                 return;
             }
             slot_product = switch_product;
