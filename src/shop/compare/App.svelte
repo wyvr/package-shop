@@ -28,7 +28,6 @@
     let cache = {};
     let cache_timer;
     $: items = get_items($compare);
-    $: description = get_label_of_cache('description');
 
     onMount(() => {
         if (items) {
@@ -177,14 +176,6 @@
                         </td>
                     {/each}
                 </tr>
-                {#if description}
-                    <tr>
-                        <th><div>{description}</div></th>
-                        {#each items as sku}
-                            <td>{@html get_attribute_value(cache[sku], 'description')} </td>
-                        {/each}
-                    </tr>
-                {/if}
             </table>
         </section>
     {/if}
