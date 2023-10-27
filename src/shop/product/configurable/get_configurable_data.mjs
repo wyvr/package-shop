@@ -43,8 +43,21 @@ export function get_configurable_data(configurable_options, configurable_product
         sku_stock[product.sku.value] = !!(stock.qty > 0 && stock.is_in_stock);
     });
 
-    const attributes = list.map((options) => options[0]?.attribute_code);
-    return list
+    // the configurable option attributes
+    const attribute_options = {};
+    list.forEach((options) => {
+        options.forEach((option) => {
+            if (!attribute_options[option.attribute_code]) {
+                attribute_options[option.attribute_code] = [];
+            }
+            if (attribute_options[option.attribute_code].indexOf(option.value_index) == -1) {
+                attribute_options[option.attribute_code].push(option.value_index);
+            }
+        });
+    });
+    const attributes = Object.keys(attribute_options);
+
+    const data = list
         .map((options) => {
             if (!options || options.length == 0) {
                 return undefined;
@@ -53,7 +66,6 @@ export function get_configurable_data(configurable_options, configurable_product
                 values: [],
                 data: {},
                 in_stock: false,
-                sku_stock,
             };
 
             options.forEach((option) => {
@@ -67,47 +79,59 @@ export function get_configurable_data(configurable_options, configurable_product
                 const product = configurable_products.find((product) => product.sku.value == option.sku);
 
                 const in_stock = sku_stock[option.sku];
-
-                let disable_options = null;
+                let enabled_options = null;
 
                 if (in_stock) {
                     // any of the products is in stock set the whole option as in_stock
                     result.in_stock = true;
-                } else {
-                    disable_options = {};
+                    if (!enabled_options) {
+                        enabled_options = {};
+                    }
                     attributes.forEach((attribute_code) => {
-                        if (result.attribute_code == attribute_code) {
-                            return undefined;
+                        // ignore the current attribute of the option
+                        if (attribute_code == option.attribute_code) {
+                            return;
                         }
-                        if (!disable_options[attribute_code]) {
-                            disable_options[attribute_code] = [];
+                        if (!enabled_options[attribute_code]) {
+                            enabled_options[attribute_code] = [];
                         }
-                        disable_options[attribute_code].push(get_attribute_value(product, attribute_code));
+                        enabled_options[attribute_code].push(get_attribute_value(product, attribute_code));
                     });
                 }
 
+                // add the options
                 if (!result.data[option.value_index]) {
                     // the option is new and should be added to the result data and as value
+                    const skus = {};
+                    skus[option.sku] = sku_stock[option.sku];
+
                     result.values.push({
                         key: option.value_index,
                         title: option.default_title || option.option_title || option.value_index,
                         in_stock,
-                        disable_options,
+                        enabled_options,
+                        skus,
                     });
                     result.data[option.value_index] = [];
                 } else {
-                    // the option was already there, add the disabled options
+                    // the option was already there, add the enabled options
                     result.values = result.values.map((value) => {
                         if (value.key == option.value_index) {
-                            if (disable_options) {
-                                const new_disabled = value.disable_options || {};
-                                Object.keys(disable_options).forEach((key) => {
-                                    if (!new_disabled[key]) {
-                                        new_disabled[key] = [];
+                            value.skus[option.sku] = sku_stock[option.sku];
+                            if (enabled_options) {
+                                const new_enabled = value.enabled_options || {};
+                                Object.entries(enabled_options).forEach(([key, values]) => {
+                                    if (!new_enabled[key]) {
+                                        new_enabled[key] = [];
                                     }
-                                    new_disabled[key].push(...disable_options[key]);
+                                    values.forEach((value) => {
+                                        // only add the value if it not already exists
+                                        if (new_enabled[key].indexOf(value) == -1) {
+                                            new_enabled[key].push(value);
+                                        }
+                                    });
                                 });
-                                value.disable_options = new_disabled;
+                                value.enabled_options = new_enabled;
                             }
                             // if any of the options is in stock set the option in_stock
                             if (in_stock) {
@@ -117,7 +141,7 @@ export function get_configurable_data(configurable_options, configurable_product
                         return value;
                     });
                 }
-
+                // append the option with the whole product
                 const new_option = {
                     sku: option.sku,
                     product: Object.assign({}, product),
@@ -127,4 +151,6 @@ export function get_configurable_data(configurable_options, configurable_product
             return result;
         })
         .filter((x) => x);
+
+    return data;
 }
