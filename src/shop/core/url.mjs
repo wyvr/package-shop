@@ -41,3 +41,19 @@ export function url_join(...parts) {
     }
     return url;
 }
+
+export function object_to_query_param(query) {
+    if (typeof query !== 'object' || Array.isArray(query)) {
+        return '';
+    }
+    const params = Object.entries(query)
+        .map(([key, value]) => {
+            return key + '=' + value;
+        })
+        .filter(Boolean)
+        .join('&');
+    if (!params) {
+        return '';
+    }
+    return '?' + params;
+}
