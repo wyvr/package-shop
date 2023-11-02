@@ -21,3 +21,9 @@ export function add_history(data = null, title = document.title, url = location.
     last_url = url;
     history.pushState(data, title, url);
 }
+
+if(isClient) {
+    window.addEventListener('popstate', function (event) {
+        trigger('history', event);
+    });
+}
