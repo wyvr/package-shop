@@ -386,7 +386,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
             items_map[item.sku] = { index, item };
         });
         // merge the old cart into the new one
-        snapshot.items.forEach((item) => {
+        snapshot?.items.forEach((item) => {
             // is new
             if (!items_map[item.sku]) {
                 update_cart_item(item.sku, item.qty, update_cart, snapshot, false);
@@ -400,7 +400,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
                 loaded_cart.items[items_map[item.sku].index].qty = new_qty;
             }
         });
-        if (loaded_cart.items.length > 0 || snapshot.items.length > 0) {
+        if (loaded_cart.items.length > 0 || snapshot?.items.length > 0) {
             messages.push(__('cart.merged'), 'info');
         }
     }
