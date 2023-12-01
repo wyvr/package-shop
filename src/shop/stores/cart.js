@@ -2,13 +2,13 @@ import { isServer } from '@wyvr/generator';
 import { writable } from 'svelte/store';
 import { getSharedStore, setSharedStore } from './shared';
 import { load, save } from './storage';
-import { messages } from '@src/shop/stores/messages';
 import product_cart_attributes from '@src/shop/config/product_cart_attributes.mjs';
 import { get_attribute_value } from '@src/shop/core/attributes.mjs';
 import { load_product } from '@src/shop/api-client/product/load_product';
 import { load_cart } from '@src/shop/api-client/cart/load_cart';
 import api_customer from '@src/shop/stores/api_customer';
 import { update_cart } from '@src/shop/api-client/cart/update_cart';
+import { cart_message } from '@src/shop/cart/cart_message';
 
 export const cart_name = 'cart';
 export const purchase_name = 'purchase';
@@ -95,7 +95,14 @@ function createCart() {
     // notification from other tab
     window.addEventListener('storage', (e) => {
         if (e.key == cart_name) {
-            set(e.newValue);
+            try {
+                const cart = JSON.parse(e.newValue);
+                if (cart) {
+                    set(cart);
+                }
+            } catch (e) {
+                console.error('could not parse cart', e);
+            }
         }
     });
     let snapshot;
@@ -157,7 +164,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
     let item = { sku, qty };
     if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
         if (show_messages) {
-            messages.push(__('cart.update_error', get_product_from_products_cache(item)), 'error');
+            cart_message('error', 'cart.update_error', get_product_from_products_cache(item));
         }
         return undefined;
     }
@@ -184,7 +191,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
     const [update_error, updated_cart] = await update_cart(email_or_token, token, cart_data);
     if (update_error) {
         if (show_messages) {
-            messages.push(update_error, 'error');
+            cart_message('error', update_error);
         }
         // revert the qty
         update((cart) => {
@@ -197,16 +204,16 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
         if (Array.isArray(updated_cart.message)) {
             updated_cart.message.forEach((message) => {
                 if (show_messages) {
-                    messages.push(message, 'warning');
+                    cart_message('warning', message);
                 }
             });
         } else {
             if (show_messages) {
-                messages.push(updated_cart.message, 'warning');
+                cart_message('warning', updated_cart.message);
             }
         }
     } else {
-        messages.push(__(message, item), 'success');
+        cart_message('success', message, item);
     }
     // update cart with server state
     update((cart) => {
@@ -275,7 +282,7 @@ async function fill_products_cache(products_to_load) {
             if (!product_cache[sku]) {
                 const [error, product] = await load_product(sku);
                 if (error) {
-                    messages.push(__('shop.internal_error', error), 'error');
+                    cart_message('error', 'shop.internal_error', error);
                     console.error('could not load product', sku, error);
                     return null;
                 }
@@ -338,7 +345,11 @@ function update_cart_with_qty(cart, sku, qty, item, snapshot) {
         message = 'cart.delete';
         cart.items = cart.items.filter((item) => item.sku != sku);
     } else {
-        message = 'cart.update';
+        if (prev_qty < qty) {
+            message = 'cart.update';
+        } else {
+            message = 'cart.decrease';
+        }
         const found = cart.items.find((item, index) => {
             if (item.sku != sku) {
                 return false;
@@ -367,7 +378,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
     // load the current cart based on the email or token
     const [cart_error, loaded_cart] = await load_cart(email_or_token, token);
     if (cart_error) {
-        messages.push(cart_error, 'error');
+        cart_message('error', cart_error);
     }
 
     if (!loaded_cart) {
@@ -375,12 +386,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
     }
 
     // when id changes the cart has to be merged when switching from guest to customer
-    if (
-        snapshot?.guest &&
-        !loaded_cart.guest &&
-        snapshot?.cart_id != loaded_cart.cart_id &&
-        snapshot?.items.length > 0
-    ) {
+    if (snapshot?.guest && !loaded_cart.guest && snapshot?.cart_id != loaded_cart.cart_id && snapshot?.items.length > 0) {
         const items_map = {};
         loaded_cart.items.forEach((item, index) => {
             items_map[item.sku] = { index, item };
@@ -401,7 +407,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
             }
         });
         if (loaded_cart.items.length > 0 || snapshot?.items.length > 0) {
-            messages.push(__('cart.merged'), 'info');
+            cart_messages('info', 'cart.merged');
         }
     }
 
