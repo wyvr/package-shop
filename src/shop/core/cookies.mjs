@@ -17,7 +17,14 @@ export function get_cookies() {
     // loop through each item in the cookies array
     for (const cookie of cookies) {
         // split each cookie into its key and value parts
-        const [key, value] = cookie.split('=');
+        // if there is no '=' in the cookie, it is a boolean cookie and we set its value to true
+        const index = cookie.indexOf('=');
+        if (index < 0) {
+            cookie_object[cookie.trim()] = true;
+            continue;
+        }
+        const key = cookie.slice(0, index).trim();
+        const value = cookie.slice(index + 1).trim();
         // add the key-value pair to the cookie_object
         cookie_object[key] = value;
     }
