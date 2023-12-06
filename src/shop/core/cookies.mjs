@@ -30,8 +30,10 @@ export function get_cookies() {
  * Cookies corresponding to keys in the data object are updated with their respective values. Cookies with undefined values are deleted.
  * @function update_cookies
  * @param {Object} data The data to be used to update or delete cookies. Each key-value pair represents a single cookie.
+ * @param {String} path The path to be used for the cookie. If not provided, the path of the current store is used.
+ * @param {String} expires The expiration date for the cookie. If not provided, the cookie will expire at the end of the session.
  */
-export function update_cookies(data, path) {
+export function update_cookies(data, path, expires = undefined) {
     // check if data is provided and it's an object type. If not, exit the function.
     if (!data || typeof data != 'object') {
         return;
@@ -53,6 +55,7 @@ export function update_cookies(data, path) {
             return;
         }
         // else update or create a new cookie with the given key/value pair and path
-        document.cookie = `${key}=${value}; ${cookie_path};`;
+        const exp = expires ? `expires=${expires}; ` : '';
+        document.cookie = `${key}=${value}; ${exp}${cookie_path};`;
     });
 }
