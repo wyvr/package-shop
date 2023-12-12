@@ -46,23 +46,51 @@ export function update_cookies(data, path, expires = undefined) {
         return;
     }
 
-    let cookie_path = '';
-    // get current store key from stack and set path accordingly
-    if (!path) {
-        cookie_path = `path=/${getStack('store')?.key ?? ''}`;
-    } else {
-        cookie_path = `path=${path}`;
-    }
-
     // iterate over each entry in the provided data object
     Object.entries(data).forEach(([key, value]) => {
-        // if value is undefined, delete the cookie
-        if (value === undefined) {
-            document.cookie = `${key}=; ${cookie_path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-            return;
-        }
-        // else update or create a new cookie with the given key/value pair and path
-        const exp = expires ? `expires=${expires}; ` : '';
-        document.cookie = `${key}=${value}; ${exp}${cookie_path};`;
+        update_cookie(key, value, { path, expires });
     });
+}
+
+/**
+ * Updates a cookie with the specified key, value, and options.
+ *
+ * @param {string} key - The key of the cookie.
+ * @param {string} value - The value of the cookie.
+ * @param {Object} options - The options for the cookie.
+ * @param {string} options.path - The path for the cookie. Defaults to `/${getStack('store')?.key ?? ''}`.
+ * @param {Date} options.expires - The expiration date for the cookie. Defaults to undefined.
+ * @param {string} options.sameSite - The SameSite attribute for the cookie. Defaults to 'Strict'.
+ * @param {boolean} options.secure - The secure attribute for the cookie. Defaults to true.
+ * @param {boolean} options.httpOnly - The httpOnly attribute for the cookie. Defaults to false.
+ */
+export function update_cookie(key, value, options) {
+    const defaults = {
+        path: `/${getStack('store')?.key ?? ''}`,
+        expires: undefined,
+        sameSite: 'Strict',
+        secure: true,
+        httpOnly: false,
+    };
+    const opts = { ...defaults, ...options };
+    // allow deleting of cookies by setting the value to undefined
+    if (value === undefined) {
+        opts.expires = 'Thu, 01 Jan 1970 00:00:01 GMT';
+    }
+    const cookie = [`${key}=${value}`];
+    ['path', 'expires', 'sameSite', 'secure', 'httpOnly'].forEach((opt) => {
+        const key = opt[0].toUpperCase() + opt.slice(1);
+        if (opts[opt] !== undefined) {
+            // handle boolean options
+            if (opt == 'secure' || opt == 'httpOnly') {
+                if (opts[opt] === true) {
+                    cookie.push(key);
+                }
+                return;
+            }
+            cookie.push(key + '=' + opts[opt]);
+        }
+    });
+    console.log(cookie.join('; '));
+    document.cookie = cookie.join('; ') + ';'; //`${key}=${value}; ${exp}${cookie_path};`;
 }
