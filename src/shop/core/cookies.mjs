@@ -91,6 +91,5 @@ export function update_cookie(key, value, options) {
             cookie.push(key + '=' + opts[opt]);
         }
     });
-    console.log(cookie.join('; '));
     document.cookie = cookie.join('; ') + ';'; //`${key}=${value}; ${exp}${cookie_path};`;
 }
