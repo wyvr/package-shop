@@ -18,7 +18,7 @@
  * // Returns '/path/to/directory/'
  */
 export function url_join(...parts) {
-    if(!Array.isArray(parts)) {
+    if (!Array.isArray(parts)) {
         return undefined;
     }
     // combine parts together and remove the leading and trailing slashes
@@ -48,7 +48,7 @@ export function object_to_query_param(query) {
     }
     const params = Object.entries(query)
         .map(([key, value]) => {
-            return key + '=' + value;
+            return encodeURIComponent(key) + '=' + encodeURIComponent(value);
         })
         .filter(Boolean)
         .join('&');
