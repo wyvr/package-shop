@@ -1,9 +1,12 @@
+import { context } from '@src/wyvr/context.js';
+
 export function get_domain(domain_url) {
     if (domain_url) {
         return domain_url;
     }
-    if (!location?.origin) {
+    const ctx = context();
+    if (!ctx?.location?.origin) {
         return undefined;
     }
-    return location.origin;
+    return ctx.location.origin;
 }

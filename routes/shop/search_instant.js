@@ -6,7 +6,7 @@ export default {
     url: '/[store]/search/instant',
     _wyvr: () => {
         return {
-            methods: ['post'],
+            methods: ['post']
         };
     },
     onExec: async ({ body, params, returnJSON }) => {
@@ -14,10 +14,10 @@ export default {
         const store_id = stores[params.store];
         const date = new Date();
 
-        const code = await get(store_id, 'general.locale.code', `magento 2 search`, 'en_US');
+        const code = await get(store_id, 'general.locale.code', "magento 2 search", 'en_US');
         const locale = code.split('_')[0];
 
-        const currency = await get(store_id, 'currency.options.default', `magento 2 search`, 'EUR');
+        const currency = await get(store_id, 'currency.options.default', "magento 2 search", 'EUR');
 
         const size = 3;
         const search_result = await search_execute(body?.q, store_id, size);
@@ -31,7 +31,7 @@ export default {
             term: search_result.term,
             currency,
             timing: search_result.timing,
-            suggestion: search_result.suggestion,
+            suggestion: search_result.suggestion
         });
-    },
+    }
 };

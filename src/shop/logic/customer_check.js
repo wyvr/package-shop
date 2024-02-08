@@ -10,9 +10,9 @@ export async function customer_check(store, email, token, onFinished = () => {})
     try {
         response = await fetch(url, {
             headers: {
-                authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`
             },
-            method: 'get',
+            method: 'get'
         });
         successfull = response.ok;
     } catch (e) {

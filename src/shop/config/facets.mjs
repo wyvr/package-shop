@@ -12,6 +12,6 @@ export default {
         { attribute: 'material', type: 'list', name: 'facet.material' },
         { attribute: 'style_general', type: 'list', name: 'facet.style' },
         { attribute: 'pattern', type: 'list', name: 'facet.pattern' },
-        { attribute: 'climate', type: 'list', name: 'facet.climate' },
-    ],
+        { attribute: 'climate', type: 'list', name: 'facet.climate' }
+    ]
 };

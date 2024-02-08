@@ -5,23 +5,23 @@ import { url_join } from '@src/shop/core/url.mjs';
 import { customer } from '@src/shop/stores/customer';
 
 export async function update_customer(email, bearer_token, customer_data, domain_url, store_key) {
-    store_key = get_store(store_key);
-    domain_url = get_domain(domain_url);
+    const store = get_store(store_key);
+    const domain = get_domain(domain_url);
     let customer_result;
     try {
         const cb = get_time_stamp_minutes();
         const data = {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             method: 'put',
-            body: JSON.stringify(customer_data),
+            body: JSON.stringify(customer_data)
         };
         if (bearer_token) {
             data.headers.authorization = `Bearer ${bearer_token}`;
         }
-        const url = url_join(domain_url, store_key, 'api', 'customer', 'update', email ?? 'guest');
-        const response = await fetch(url + `?cb=${cb}`, data);
+        const url = url_join(domain, store, 'api', 'customer', 'update', email ?? 'guest');
+        const response = await fetch(`${url}?cb=${cb}`, data);
         customer_result = await response.json();
         if (!response.ok) {
             return [customer_result?.message, undefined];

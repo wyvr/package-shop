@@ -4,15 +4,15 @@ import { get_store } from '@src/shop/api-client/get_store';
 import { get_domain } from '@src/shop/api-client/get_domain';
 
 export async function get(token, domain_url, store_key) {
-    store_key = get_store(store_key);
-    domain_url = get_domain(domain_url);
+    const store = get_store(store_key);
+    const domain = get_domain(domain_url);
     let result;
     try {
         const cb = get_time_stamp_minutes();
-        const response = await fetch(url_join(domain_url, store_key, 'api', 'wishlist', 'get') + `?cb=${cb}`, {
+        const response = await fetch(`${url_join(domain, store, 'api', 'wishlist', 'get')}?cb=${cb}`, {
             headers: {
-                authorization: `Bearer ${token}`,
-            },
+                authorization: `Bearer ${token}`
+            }
         });
         result = await response.json();
         if (!response.ok) {

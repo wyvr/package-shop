@@ -34,7 +34,7 @@ export function get_attribute_label(product, attribute_name) {
 }
 export function get_attribute_name(product, attribute_name) {
     let name = get_attribute_prop(product, attribute_name, 'name');
-    if (typeof name == 'object') {
+    if (typeof name === 'object') {
         name = get_attribute_prop(product, attribute_name, 'value');
     }
     return name;
@@ -58,11 +58,7 @@ export function get_attribute(product, attribute_name) {
         return undefined;
     }
     const attribute = product[attribute_name];
-    if (
-        attribute &&
-        attribute.value &&
-        (!attribute.label || (typeof attribute.label == 'object' && Object.keys(attribute.label).length == 0))
-    ) {
+    if (attribute?.value && (!attribute.label || (typeof attribute.label === 'object' && Object.keys(attribute.label).length === 0))) {
         attribute.label = attribute_name;
     }
     return attribute;
@@ -87,12 +83,12 @@ export function get_attribute(product, attribute_name) {
  *       reduce_attributes({a: 1, b: 2}, ['a', 'b'], ['b']); // Returns: {a: 1}
  */
 export function reduce_attributes(product, attributes, denied_attributes) {
-    if (!product || typeof product != 'object') {
+    if (!product || typeof product !== 'object') {
         return undefined;
     }
 
     const p = {};
-    let allow_all_attributes = !Array.isArray(attributes) || attributes.includes('*');
+    const allow_all_attributes = !Array.isArray(attributes) || attributes.includes('*');
     let reduce = !allow_all_attributes;
 
     let check_denied = false;
@@ -110,14 +106,14 @@ export function reduce_attributes(product, attributes, denied_attributes) {
         attributes = new Set(attributes);
     }
 
-    Object.entries(product).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(product)) {
         if (check_denied && denied_attributes.has(key)) {
-            return;
+            continue;
         }
         if (allow_all_attributes || attributes.has(key)) {
             p[key] = value;
         }
-    });
+    }
 
     return p;
 }

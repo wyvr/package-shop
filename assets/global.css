@@ -24,6 +24,8 @@ html {
 a {
     color: var(--color-primary);
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: border-box;
 }

@@ -22,8 +22,8 @@ export function add_history(data = null, title = document.title, url = location.
     history.pushState(data, title, url);
 }
 
-if(isClient) {
-    window.addEventListener('popstate', function (event) {
+if (isClient) {
+    window.addEventListener('popstate', (event) => {
         trigger('history', event);
     });
 }

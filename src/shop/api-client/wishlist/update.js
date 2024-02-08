@@ -4,8 +4,8 @@ import { get_store } from '@src/shop/api-client/get_store';
 import { get_domain } from '@src/shop/api-client/get_domain';
 
 export async function update(token, changes, domain_url, store_key) {
-    store_key = get_store(store_key);
-    domain_url = get_domain(domain_url);
+    const store = get_store(store_key);
+    const domain = get_domain(domain_url);
     try {
         const cb = get_time_stamp_minutes();
         const data = {
@@ -14,9 +14,9 @@ export async function update(token, changes, domain_url, store_key) {
                 authorization: `Bearer ${token}`,
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(changes),
+            body: JSON.stringify(changes)
         };
-        const response = await fetch(url_join(domain_url, store_key, 'api', 'wishlist', 'update') + `?cb=${cb}`, data);
+        const response = await fetch(`${url_join(domain, store, 'api', 'wishlist', 'update')}?cb=${cb}`, data);
         result = await response.json();
         if (!response.ok) {
             return [result.message || __('shop.internal_error'), undefined];

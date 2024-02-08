@@ -10,10 +10,10 @@ export default {
                 template: ['shop/Category', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: ({ params }) => 'category ' + params.slug,
-    content: 'missing category implementation',
+    title: ({ params }) => `category ${params.slug}`,
+    content: 'missing category implementation'
 };

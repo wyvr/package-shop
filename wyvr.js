@@ -3,13 +3,13 @@ export default {
         name: 'wyvr Shop',
         domain: 'your.domain.shop',
         default_store: null,
-        stores: {},
+        stores: {}
     },
 
     _secrets: {
         shop: {
             customer_email: '',
-            customer_password: '',
-        },
-    },
+            customer_password: ''
+        }
+    }
 };

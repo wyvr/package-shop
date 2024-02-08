@@ -79,9 +79,9 @@ function createCart() {
     if (known_products.length > 0) {
         setTimeout(async () => {
             // destroy the cache for the given products
-            known_products.forEach((sku) => {
+            for (const sku of known_products) {
                 delete product_cache[sku];
-            });
+            }
             // reload the products
             await fill_products_cache(known_products);
             // update the cart
@@ -94,7 +94,7 @@ function createCart() {
 
     // notification from other tab
     window.addEventListener('storage', (e) => {
-        if (e.key == cart_name) {
+        if (e.key === cart_name) {
             try {
                 const cart = JSON.parse(e.newValue);
                 if (cart) {
@@ -113,7 +113,7 @@ function createCart() {
         // store the current cart as snapshot, to handle/check the cart without subscribing to the store
         snapshot = JSON.parse(JSON.stringify(cart));
         // load products from cart when not existing
-        let [updated_cache] = await fill_products_cache(products_to_load);
+        const [updated_cache] = await fill_products_cache(products_to_load);
         if (updated_cache) {
             // if cache has been updated append the products and set the cart again
             set(fill_cart_with_products_cache(snapshot));
@@ -150,7 +150,7 @@ function createCart() {
     // create store logic
     store = {
         update_item: async (sku, qty) => await update_cart_item(sku, qty, update, snapshot, true),
-        subscribe,
+        subscribe
     };
 
     return setSharedStore(cart_name, store);
@@ -162,7 +162,7 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
         return undefined;
     }
     let item = { sku, qty };
-    if (!sku || typeof sku != 'string' || isNaN(qty) || qty == null) {
+    if (!sku || typeof sku !== 'string' || Number.isNaN(qty) || qty == null) {
         if (show_messages) {
             cart_message('error', 'cart.update_error', get_product_from_products_cache(item));
         }
@@ -202,11 +202,11 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
     }
     if (updated_cart.message) {
         if (Array.isArray(updated_cart.message)) {
-            updated_cart.message.forEach((message) => {
+            for (const message of updated_cart.message) {
                 if (show_messages) {
                     cart_message('warning', message);
                 }
-            });
+            }
         } else {
             if (show_messages) {
                 cart_message('warning', updated_cart.message);
@@ -218,13 +218,13 @@ async function update_cart_item(sku, qty, update, snapshot, show_messages = true
     // update cart with server state
     update((cart) => {
         const index = {};
-        updated_cart.items.forEach((item) => {
+        for (const item of updated_cart.items) {
             index[item.sku] = item.qty;
-        });
+        }
         cart.items = cart.items
             .map((item) => {
                 // remove unknown items
-                if (index[item.sku] == undefined) {
+                if (index[item.sku] === undefined) {
                     return undefined;
                 }
                 // update qty
@@ -287,21 +287,20 @@ async function fill_products_cache(products_to_load) {
                     return null;
                 }
                 const item = {};
-                product_cart_attributes.forEach((attribute) => {
-                    if (typeof attribute == 'string') {
+                for (const attribute of product_cart_attributes) {
+                    if (typeof attribute === 'string') {
                         const value = get_attribute_value(product, attribute);
                         if (value != null) {
                             item[attribute] = value;
                         }
-                        return;
+                        continue;
                     }
-                    if (typeof attribute == 'object' && !Array.isArray(attribute) && attribute?.attribute) {
+                    if (typeof attribute === 'object' && !Array.isArray(attribute) && attribute?.attribute) {
                         if (attribute.all) {
                             item[attribute.attribute] = product[attribute.attribute];
-                            return;
                         }
                     }
-                });
+                }
                 product_cache[sku] = item;
             }
             return sku;
@@ -340,10 +339,10 @@ function get_product_from_products_cache(item) {
 function update_cart_with_qty(cart, sku, qty, item, snapshot) {
     let message = undefined;
     let has_changed = true;
-    let prev_qty = snapshot?.items.find((item) => item.sku == sku)?.qty;
-    if (qty == 0 || qty == undefined) {
+    const prev_qty = snapshot?.items.find((item) => item.sku === sku)?.qty;
+    if (qty === 0 || qty === undefined) {
         message = 'cart.delete';
-        cart.items = cart.items.filter((item) => item.sku != sku);
+        cart.items = cart.items.filter((item) => item.sku !== sku);
     } else {
         if (prev_qty < qty) {
             message = 'cart.update';
@@ -351,7 +350,7 @@ function update_cart_with_qty(cart, sku, qty, item, snapshot) {
             message = 'cart.decrease';
         }
         const found = cart.items.find((item, index) => {
-            if (item.sku != sku) {
+            if (item.sku !== sku) {
                 return false;
             }
             has_changed = prev_qty !== qty;
@@ -370,7 +369,7 @@ function update_cart_with_qty(cart, sku, qty, item, snapshot) {
 }
 
 async function refresh_cart(snapshot, set_cart, update_cart) {
-    if (typeof set_cart != 'function') {
+    if (typeof set_cart !== 'function') {
         console.error('no set_cart method given');
         return;
     }
@@ -386,26 +385,26 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
     }
 
     // when id changes the cart has to be merged when switching from guest to customer
-    if (snapshot?.guest && !loaded_cart.guest && snapshot?.cart_id != loaded_cart.cart_id && snapshot?.items.length > 0) {
+    if (snapshot?.guest && !loaded_cart.guest && snapshot?.cart_id !== loaded_cart.cart_id && snapshot?.items.length > 0) {
         const items_map = {};
-        loaded_cart.items.forEach((item, index) => {
-            items_map[item.sku] = { index, item };
-        });
+        for (const item of loaded_cart.items) {
+            items_map[item.sku] = { index: loaded_cart.items.indexOf(item), item };
+        }
         // merge the old cart into the new one
-        snapshot?.items.forEach((item) => {
+        for (const item of snapshot.items) {
             // is new
             if (!items_map[item.sku]) {
                 update_cart_item(item.sku, item.qty, update_cart, snapshot, false);
                 loaded_cart.items.push(item);
-                return;
+                continue;
             }
             // when exists use the higher qty
             const new_qty = Math.max(items_map[item.sku].item.qty, item.qty);
-            if (items_map[item.sku].item.qty != new_qty) {
+            if (items_map[item.sku].item.qty !== new_qty) {
                 update_cart_item(item.sku, new_qty, update_cart, snapshot, false);
                 loaded_cart.items[items_map[item.sku].index].qty = new_qty;
             }
-        });
+        }
         if (loaded_cart.items.length > 0 || snapshot?.items.length > 0) {
             cart_messages('info', 'cart.merged');
         }

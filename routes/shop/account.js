@@ -9,9 +9,9 @@ export default {
                 template: ['shop/Account', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: () => __('customer.my_account'),
+    title: () => __('customer.my_account')
 };

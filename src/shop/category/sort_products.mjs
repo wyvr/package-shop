@@ -1,16 +1,15 @@
-import { get_attribute_value } from "../core/attributes.mjs";
+import { get_attribute_value } from '../core/attributes.mjs';
 
 export function sort(products, sort_by, asc) {
     if (!products) {
         return [];
     }
     const list = [].concat(products);
-    if (sort_by == 'position') {
+    if (sort_by === 'position') {
         if (asc) {
             return list;
-        } else {
-            return list.reverse();
         }
+        return list.reverse();
     }
 
     const sorted = list.sort((a, b) => {
@@ -22,7 +21,6 @@ export function sort(products, sort_by, asc) {
     });
     if (asc) {
         return sorted;
-    } else {
-        return sorted.reverse();
     }
+    return sorted.reverse();
 }

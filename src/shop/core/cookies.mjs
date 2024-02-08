@@ -42,14 +42,14 @@ export function get_cookies() {
  */
 export function update_cookies(data, path, expires = undefined) {
     // check if data is provided and it's an object type. If not, exit the function.
-    if (!data || typeof data != 'object') {
+    if (!data || typeof data !== 'object') {
         return;
     }
 
     // iterate over each entry in the provided data object
-    Object.entries(data).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(data)) {
         update_cookie(key, value, { path, expires });
-    });
+    }
 }
 
 /**
@@ -70,7 +70,7 @@ export function update_cookie(key, value, options) {
         expires: undefined,
         sameSite: 'Strict',
         secure: true,
-        httpOnly: false,
+        httpOnly: false
     };
     const opts = { ...defaults, ...options };
     // allow deleting of cookies by setting the value to undefined
@@ -78,18 +78,18 @@ export function update_cookie(key, value, options) {
         opts.expires = 'Thu, 01 Jan 1970 00:00:01 GMT';
     }
     const cookie = [`${key}=${value}`];
-    ['path', 'expires', 'sameSite', 'secure', 'httpOnly'].forEach((opt) => {
+    for (const opt of ['path', 'expires', 'sameSite', 'secure', 'httpOnly']) {
         const key = opt[0].toUpperCase() + opt.slice(1);
         if (opts[opt] !== undefined) {
             // handle boolean options
-            if (opt == 'secure' || opt == 'httpOnly') {
+            if (opt === 'secure' || opt === 'httpOnly') {
                 if (opts[opt] === true) {
                     cookie.push(key);
                 }
-                return;
+                continue;
             }
-            cookie.push(key + '=' + opts[opt]);
+            cookie.push(`${key}=${opts[opt]}`);
         }
-    });
-    document.cookie = cookie.join('; ') + ';'; //`${key}=${value}; ${exp}${cookie_path};`;
+    }
+    document.cookie = `${cookie.join('; ')};`;
 }

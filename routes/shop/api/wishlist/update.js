@@ -2,15 +2,15 @@ export default {
     url: '/[store]/api/wishlist/update/',
     _wyvr: () => {
         return {
-            methods: ['post'],
+            methods: ['post']
         };
     },
     onExec: async ({ returnJSON }) => {
         return returnJSON(
             {
-                message: 'missing wishlist implementation',
+                message: 'missing wishlist implementation'
             },
             400
         );
-    },
+    }
 };

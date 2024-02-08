@@ -5,9 +5,9 @@ export default async function () {
             _wyvr: {
                 template: ['Robots', 'Empty'],
                 collection: { visible: false, name: 'robots.txt' },
-                private: true,
+                private: true
             },
-            content: '',
-        },
+            content: ''
+        }
     ];
 }

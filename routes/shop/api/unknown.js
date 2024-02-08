@@ -6,9 +6,9 @@ export default {
         await sleep_random(200, 500);
         return returnJSON(
             {
-                message: 'unknown',
+                message: 'unknown'
             },
             404
         );
-    },
+    }
 };

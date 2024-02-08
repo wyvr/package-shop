@@ -23,9 +23,9 @@ function context() {
     // Check for 'window' in a safe way.
     if (typeof window !== 'undefined') {
         return window;
-    } 
+    }
     // Check for 'global' in a safe way.
-    else if (typeof global !== 'undefined') {
+    if (typeof global !== 'undefined') {
         return global;
     }
 }

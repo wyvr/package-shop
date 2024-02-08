@@ -1,10 +1,10 @@
-import { valid } from "@src/shop/api/customer/valid.js";
+import { valid } from '@src/shop/api/customer/valid.js';
 
 export default {
     url: '/[store]/api/customer/valid/[email]/',
     _wyvr: () => {
         return {
-            methods: ['get'],
+            methods: ['get']
         };
     },
     onExec: async ({ params, returnJSON, setStatus }) => {
@@ -13,7 +13,7 @@ export default {
         }
         setStatus(400);
         return returnJSON({
-            message: 'missing customer implementation',
+            message: 'missing customer implementation'
         });
-    },
+    }
 };

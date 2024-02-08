@@ -31,7 +31,7 @@ function createWishlist() {
     let token_value;
     if (api_enabled) {
         token.subscribe(async (token) => {
-            const changed = token_value != token;
+            const changed = token_value !== token;
             token_value = token;
             // when token changes load the wishlist from the server
             if (changed && token) {
@@ -47,17 +47,17 @@ function createWishlist() {
                         wishlist = {};
                     }
                     // add items from the previous wishlist to the server wishlist
-                    (wishlist.items || [])
-                        .filter((x) => (loaded_wishlist.items || []).indexOf(x) == -1)
-                        .forEach((sku) => {
+                    for (const item of wishlist.items || []) {
+                        if ((loaded_wishlist.items || []).indexOf(item) === -1) {
                             has_changes = true;
-                            changes[sku] = true;
-                        });
+                            changes[item] = true;
+                        }
+                    }
                     wishlist.id = loaded_wishlist.id;
                     wishlist.items = (wishlist.items || [])
                         .concat(loaded_wishlist.items || [])
                         .sort()
-                        .filter((sku, index, arr) => arr.indexOf(sku) == index);
+                        .filter((sku, index, arr) => arr.indexOf(sku) === index);
 
                     return wishlist;
                 });
@@ -74,7 +74,7 @@ function createWishlist() {
 
     // notification from other tab
     window.addEventListener('storage', (e) => {
-        if (e.key == wishlist_name) {
+        if (e.key === wishlist_name) {
             set(e.newValue);
         }
     });
@@ -88,14 +88,14 @@ function createWishlist() {
     // create store logic
     store = {
         toggle: async (sku) => await toggle(sku, update, token_value),
-        subscribe,
+        subscribe
     };
 
     return setSharedStore(wishlist_name, store);
 }
 
 async function toggle(sku, update_fn, token_value) {
-    if (!sku || typeof sku != 'string') {
+    if (!sku || typeof sku !== 'string') {
         messages.push(__('wishlist.error', sku), 'error');
         return;
     }
@@ -105,7 +105,7 @@ async function toggle(sku, update_fn, token_value) {
         const toggle_sku = sku.toLowerCase();
         let was_in_list = false;
         wishlist.items = wishlist.items.filter((sku) => {
-            if (sku == toggle_sku) {
+            if (sku === toggle_sku) {
                 was_in_list = true;
                 return false;
             }

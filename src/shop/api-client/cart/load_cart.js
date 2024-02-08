@@ -5,21 +5,21 @@ import { url_join } from '@src/shop/core/url.mjs';
 import { customer_logout } from '../../logic/customer_logout';
 
 export async function load_cart(email_or_token, bearer_token, domain_url, store_key) {
-    store_key = get_store(store_key);
-    domain_url = get_domain(domain_url);
+    const store = get_store(store_key);
+    const domain = get_domain(domain_url);
     let cart;
     try {
         const cb = get_time_stamp_minutes();
         const data = {
             headers: {},
-            method: 'get',
+            method: 'get'
         };
         if (bearer_token) {
             data.headers.authorization = `Bearer ${bearer_token}`;
         }
-        const url = url_join(domain_url, store_key, 'api', 'cart', email_or_token || 'guest');
-        const response = await fetch(url + `?cb=${cb}`, data);
-        if (!response.ok && response.status == 403) {
+        const url = url_join(domain, store, 'api', 'cart', email_or_token || 'guest');
+        const response = await fetch(`${url}?cb=${cb}`, data);
+        if (!response.ok && response.status === 403) {
             customer_logout();
             return [undefined, undefined];
         }

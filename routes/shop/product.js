@@ -11,10 +11,10 @@ export default {
                 template: ['shop/Product', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: ({ params }) => 'product ' + params.slug,
-    content: 'missing product implementation',
+    title: ({ params }) => `product ${params.slug}`,
+    content: 'missing product implementation'
 };

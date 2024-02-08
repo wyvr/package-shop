@@ -9,7 +9,7 @@ export const messages_name = 'messages';
  * Creates a messaging object containing push, close, and subscribe methods.
  * If conditions are not met it returns null.
  *
- * @function 
+ * @function
  * @name createMessages
  * @returns {object|null} Returns an object with methods or null.
  *
@@ -42,7 +42,7 @@ function createMessages() {
     store = {
         push: (message, type, options = {}) => {
             // force options
-            if (['info', 'error', 'warning', 'success'].indexOf(type) == -1) {
+            if (['info', 'error', 'warning', 'success'].indexOf(type) === -1) {
                 type = 'info';
             }
             const permanent = !!options.permanent;
@@ -56,7 +56,7 @@ function createMessages() {
         close: (id) => {
             update((n) => n.filter((entry) => entry.id != id));
         },
-        subscribe,
+        subscribe
     };
 
     setInterval(() => {

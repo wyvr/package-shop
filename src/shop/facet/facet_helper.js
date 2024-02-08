@@ -11,10 +11,7 @@ export function get_code_of_attribute(attribute) {
 }
 export function find_attribute_by_code(code) {
     return facets.attributes.find(
-        (attribute) =>
-            attribute.as == code ||
-            attribute.attribute == code ||
-            (Array.isArray(attribute.attribute) && attribute.attribute.indexOf(code) > -1)
+        (attribute) => attribute.as === code || attribute.attribute === code || (Array.isArray(attribute.attribute) && attribute.attribute.indexOf(code) > -1)
     );
 }
 export function get_data_of_attribute(config, code) {

@@ -11,9 +11,9 @@ export default {
                 template: ['shop/Compare', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: () => __('compare.name'),
+    title: () => __('compare.name')
 };

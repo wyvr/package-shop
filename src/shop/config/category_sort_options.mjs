@@ -1,5 +1,1 @@
-export default [
-    'position',
-    'name',
-    'price'
-];
+export default ['position', 'name', 'price'];

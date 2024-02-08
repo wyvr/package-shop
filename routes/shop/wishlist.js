@@ -11,9 +11,9 @@ export default {
                 template: ['shop/Wishlist', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: () => __('wishlist.name'),
+    title: () => __('wishlist.name')
 };

@@ -45,7 +45,7 @@ function createCompare() {
     // create store logic
     store = {
         toggle: async (sku) => {
-            if (!sku || typeof sku != 'string') {
+            if (!sku || typeof sku !== 'string') {
                 messages.push(__('compare.error', sku), 'error');
                 return;
             }
@@ -54,7 +54,7 @@ function createCompare() {
                 const toggle_sku = sku.toLowerCase();
                 let was_in_list = false;
                 compare.items = compare.items.filter((sku) => {
-                    if (sku == toggle_sku) {
+                    if (sku === toggle_sku) {
                         was_in_list = true;
                         return false;
                     }
@@ -77,7 +77,7 @@ function createCompare() {
                 return compare;
             });
         },
-        subscribe,
+        subscribe
     };
 
     return setSharedStore(compare_name, store);

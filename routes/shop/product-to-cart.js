@@ -7,9 +7,9 @@ export default {
                 template: ['shop/ProductToCart', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en',
-            },
+                language: data?.locale || 'en'
+            }
         };
     },
-    title: () => __('product_to_cart.name'),
+    title: () => __('product_to_cart.name')
 };
