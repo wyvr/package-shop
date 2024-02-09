@@ -1,3 +1,5 @@
+import { context } from '@src/wyvr/context.js';
+
 export function getSharedStore(name, store) {
     if (existsSharedStore(name)) {
         return context().sharedStores[name];
@@ -17,15 +19,5 @@ export function existsSharedStore(name) {
 function initSharedStores() {
     if (!context().sharedStores) {
         context().sharedStores = {};
-    }
-}
-function context() {
-    // Check for 'window' in a safe way.
-    if (typeof window !== 'undefined') {
-        return window;
-    }
-    // Check for 'global' in a safe way.
-    if (typeof global !== 'undefined') {
-        return global;
     }
 }
