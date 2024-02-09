@@ -13,7 +13,7 @@ export function get_tags(filter, details) {
         if (!attribute) {
             continue;
         }
-        const name = attribute?.name ? attribute.name : `facet.${id}`;
+        const name = __(attribute?.name ? attribute.name : `facet.${id}`);
         const data = { id, name, details: filter[id] };
         if (attribute.type === 'slider') {
             data.name = __('filter.range_name', {
