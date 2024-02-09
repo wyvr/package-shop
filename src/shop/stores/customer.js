@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { isServer } from '@wyvr/generator';
 import { load, save } from './storage';
-import { getSharedStore, setSharedStore } from './shared.js';
+import { getSharedStore, setSharedStore } from '@src/wyvr/stores/shared.js';
 
 export const customer_storage_name = 'customer_data';
 
@@ -10,7 +10,7 @@ function createCustomer() {
     if (isServer) {
         return null;
     }
-    let store = getSharedStore(customer_storage_name);
+    const store = getSharedStore(customer_storage_name);
     if (store) {
         return store;
     }
@@ -20,7 +20,7 @@ function createCustomer() {
 
     // notification from other tab
     window.addEventListener('storage', (e) => {
-        if (e.key == customer_storage_name) {
+        if (e.key === customer_storage_name) {
             set(e.newValue);
         }
     });

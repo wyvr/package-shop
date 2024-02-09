@@ -1,6 +1,6 @@
 import { isServer } from '@wyvr/generator';
 import { writable } from 'svelte/store';
-import { getSharedStore, setSharedStore } from './shared';
+import { getSharedStore, setSharedStore } from '@src/wyvr/stores/shared.js';
 import { load, save } from './storage';
 import product_cart_attributes from '@src/shop/config/product_cart_attributes.mjs';
 import { get_attribute_value } from '@src/shop/core/attributes.mjs';

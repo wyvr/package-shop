@@ -1,6 +1,6 @@
 import { isServer, injectConfig } from '@wyvr/generator';
 import { writable } from 'svelte/store';
-import { getSharedStore, setSharedStore } from './shared';
+import { getSharedStore, setSharedStore } from '@src/wyvr/stores/shared.js';
 import { load, save } from './storage';
 import { messages } from '@src/shop/stores/messages';
 import { load_product } from '@src/shop/api-client/product/load_product';

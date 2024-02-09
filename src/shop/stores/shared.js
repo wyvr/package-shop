@@ -1,23 +1,6 @@
-import { context } from '@src/wyvr/context.js';
+export { getSharedStore, setSharedStore, existsSharedStore } from '@src/wyvr/stores/shared.js';
 
-export function getSharedStore(name, store) {
-    if (existsSharedStore(name)) {
-        return context().sharedStores[name];
-    }
-    context().sharedStores[name] = store;
-    return store;
-}
-export function setSharedStore(name, store) {
-    initSharedStores();
-    context().sharedStores[name] = store;
-    return store;
-}
-export function existsSharedStore(name) {
-    initSharedStores();
-    return !!context().sharedStores[name];
-}
-function initSharedStores() {
-    if (!context().sharedStores) {
-        context().sharedStores = {};
-    }
-}
+/**
+ * @file This file is deprecated. Use `@src/wyvr/stores/shared.js` instead.
+ * @deprecated since version 0.0.0. Please use {@link @src/wyvr/stores/shared.js} instead.
+ */
