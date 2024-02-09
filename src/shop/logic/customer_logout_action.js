@@ -11,20 +11,16 @@ export function customer_logout_action(customer_logged_out = false) {
     customer.set(undefined);
     // clear all storage keys
     if (localStorage) {
-        Object.keys(localStorage).forEach((key) => {
-            localStorage.removeItem(key);
-        });
+        localStorage.clear();
     }
     if (sessionStorage) {
-        Object.keys(sessionStorage).forEach((key) => {
-            sessionStorage.removeItem(key);
-        });
+        sessionStorage.clear();
     }
     // clear all cookies
-    document.cookie.split(';').forEach((cookie) => {
-        const key = cookie.split('=');
-        document.cookie = key[0].trim() + ' =; expires = Thu, 01 Jan 1970 00:00:00 UTC';
-    });
+    for (const cookie of document.cookie.split(';')) {
+        const [key] = cookie.split('=');
+        document.cookie = `${key.trim()} =; expires = Thu, 01 Jan 1970 00:00:00 UTC`;
+    }
     clearTimeout(logout_timer);
     logout_timer = setTimeout(() => {
         messages.push(__(customer_logged_out ? 'customer.logout_success' : 'customer.logout_success_system'), 'success');
