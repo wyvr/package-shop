@@ -2,7 +2,7 @@ import { token } from '@src/shop/stores/token';
 import { customer } from '@src/shop/stores/customer';
 import { messages } from '@src/shop/stores/messages';
 import { guest_cart_name } from '@src/shop/stores/cart';
-import { save } from '@src/shop/stores/storage';
+import { save } from '@src/wyvr/stores/storage.js';
 
 let logout_timer;
 export function customer_logout_action(customer_logged_out = false) {

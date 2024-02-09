@@ -1,6 +1,5 @@
 import { writable } from 'svelte/store';
 import { isServer } from '@wyvr/generator';
-import { load, save } from './storage';
 import { getSharedStore, setSharedStore } from '@src/wyvr/stores/shared.js';
 
 export const messages_name = 'messages';
