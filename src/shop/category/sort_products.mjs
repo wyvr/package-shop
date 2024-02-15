@@ -1,6 +1,13 @@
 import { get_attribute_value } from '../core/attributes.mjs';
 
-export function sort(products, sort_by, asc) {
+/**
+ *
+ * @param {Object[]} products
+ * @param {string} sort_by
+ * @param {boolean} [asc=false]
+ * @returns
+ */
+export function sort(products, sort_by, asc = false) {
     if (!products) {
         return [];
     }
