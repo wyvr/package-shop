@@ -38,6 +38,9 @@ export function filter(products, config) {
             }
         }
     }
+    if (!Array.isArray(products)) {
+        return [];
+    }
     // filter all products
     const filtered_products = products.filter((product) => {
         return keys.every((key) => {
