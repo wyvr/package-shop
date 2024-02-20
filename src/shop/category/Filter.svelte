@@ -19,6 +19,8 @@
     export let locale = 'en';
     export let currency = 'EUR';
 
+    const items_per_page = injectConfig('shop.category.items_per_page', 12);
+
     let sort_by = 'position';
     let asc = true;
     let filter_config = undefined;
@@ -35,7 +37,7 @@
     }
     let debouncer;
     function trigger_events() {
-        if(isServer) {
+        if (isServer) {
             return;
         }
         clearTimeout(debouncer);
@@ -46,9 +48,7 @@
 </script>
 
 <section>
-    <button class="toggle" class:show={show_facets} on:click={() => (show_facets = !show_facets)}
-        >⚙ {__('facet.show_facets')}<span /></button
-    >
+    <button class="toggle" class:show={show_facets} on:click={() => (show_facets = !show_facets)}>⚙ {__('facet.show_facets')}<span /></button>
     <aside class:show={show_facets}>
         <Facet bind:filter={filter_config} products={filtered_products} on:details={(e) => update_details(e.detail)} />
     </aside>
@@ -61,7 +61,7 @@
             {/if}
         </div>
         {#if is_filled}
-            <Paging products={filtered_products} {store} {name} {locale} {currency} />
+            <Paging products={filtered_products} {items_per_page} {store} {name} {locale} {currency} />
         {:else}
             <Error text={__('category.no_products')} />
         {/if}
