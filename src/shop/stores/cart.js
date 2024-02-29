@@ -406,7 +406,7 @@ async function refresh_cart(snapshot, set_cart, update_cart) {
             }
         }
         if (loaded_cart.items.length > 0 || snapshot?.items.length > 0) {
-            cart_messages('info', 'cart.merged');
+            cart_message('info', 'cart.merged');
         }
     }
 
