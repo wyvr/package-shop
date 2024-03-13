@@ -1,5 +1,5 @@
 export default {
-    url: '/[store]/api/wishlist/update/',
+    url: '/[store]/api/wishlist/[email]/',
     _wyvr: () => {
         return {
             methods: ['post']
