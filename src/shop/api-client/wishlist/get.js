@@ -3,13 +3,19 @@ import { url_join } from '@src/shop/core/url.mjs';
 import { get_store } from '@src/shop/api-client/get_store';
 import { get_domain } from '@src/shop/api-client/get_domain';
 
-export async function get(token, domain_url, store_key) {
+export async function get(email, token, domain_url, store_key) {
+    if (!email) {
+        return [__('shop.missing_required_field', { name: 'email' }), undefined];
+    }
+    if (!token || typeof token !== 'string') {
+        return [__('shop.missing_required_field', { name: 'token' }), undefined];
+    }
     const store = get_store(store_key);
     const domain = get_domain(domain_url);
     let result;
     try {
         const cb = get_time_stamp_minutes();
-        const response = await fetch(`${url_join(domain, store, 'api', 'wishlist', 'get')}?cb=${cb}`, {
+        const response = await fetch(`${url_join(domain, store, 'api', 'wishlist', email)}?cb=${cb}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }

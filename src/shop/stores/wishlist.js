@@ -6,6 +6,7 @@ import { messages } from '@src/shop/stores/messages';
 import { load_product } from '@src/shop/api-client/product/load_product';
 import { get_wishlist_url } from '@src/shop/wishlist/get_wishlist_url';
 import { token } from '@src/shop/stores/token';
+import { customer } from '@src/shop/stores/customer';
 import { get } from '@src/shop/api-client/wishlist/get';
 import { update as update_wishlist } from '@src/shop/api-client/wishlist/update';
 
@@ -29,13 +30,15 @@ function createWishlist() {
     const { subscribe, set, update } = writable(current_wishlist);
 
     let token_value;
+    let email;
     if (api_enabled) {
-        token.subscribe(async (token) => {
-            const changed = token_value !== token;
-            token_value = token;
+        customer.subscribe(async (customer) => {
+            const changed = token_value !== customer?.token;
+            token_value = customer?.token;
+            email = customer?.email;
             // when token changes load the wishlist from the server
-            if (changed && token) {
-                const [get_error, loaded_wishlist] = await get(token);
+            if (changed && token_value && email) {
+                const [get_error, loaded_wishlist] = await get(email, token_value);
                 if (get_error) {
                     messages.push(get_error, 'error');
                     return;
@@ -62,11 +65,11 @@ function createWishlist() {
                     return wishlist;
                 });
                 if (has_changes) {
-                    update_wishlist(token_value, changes);
+                    update_wishlist(email, token_value, changes);
                 }
             }
             // clear the wishlist when customer logs out
-            if (changed && !token) {
+            if (changed && !token_value) {
                 set({ items: [] });
             }
         });
@@ -87,14 +90,14 @@ function createWishlist() {
 
     // create store logic
     store = {
-        toggle: async (sku) => await toggle(sku, update, token_value),
+        toggle: async (sku) => await toggle(sku, update, email, token_value),
         subscribe
     };
 
     return setSharedStore(wishlist_name, store);
 }
 
-async function toggle(sku, update_fn, token_value) {
+async function toggle(sku, update_fn, email, token_value) {
     if (!sku || typeof sku !== 'string') {
         messages.push(__('wishlist.error', sku), 'error');
         return;
@@ -140,8 +143,8 @@ async function toggle(sku, update_fn, token_value) {
         });
 
         // for customers persist the wishlist on the server
-        if (token_value) {
-            update_wishlist(token_value, changes);
+        if (email && token_value) {
+            update_wishlist(email, token_value, changes);
         }
         return wishlist;
     });
