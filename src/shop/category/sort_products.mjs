@@ -12,11 +12,16 @@ export function sort(products, sort_by, asc = false) {
         return [];
     }
     const list = [].concat(products);
+
     if (sort_by === 'position') {
         if (asc) {
             return list;
         }
         return list.reverse();
+    }
+    // use final_price because price represents the base price
+    if (sort_by === 'price') {
+        sort_by = 'final_price';
     }
 
     const sorted = list.sort((a, b) => {
@@ -26,8 +31,7 @@ export function sort(products, sort_by, asc = false) {
         if (a_prop < b_prop) return -1;
         return 0;
     });
-    if (asc) {
-        return sorted;
-    }
-    return sorted.reverse();
+    const sorted_products = asc ? sorted : sorted.reverse();
+
+    return sorted_products;
 }
