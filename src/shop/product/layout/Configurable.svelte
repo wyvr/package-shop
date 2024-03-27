@@ -19,7 +19,7 @@
     import MediaGallery from '@src/shop/product/MediaGallery.svelte';
 
     import { get_attribute_value } from '@src/shop/core/attributes.mjs';
-    import { add_history } from '@src/shop/core/history.mjs';
+    import { replace_history } from '@src/shop/core/history.mjs';
     import { url_join } from '@src/shop/core/url.mjs';
     import { get_stock } from '@src/shop/core/product/get_stock.mjs';
 
@@ -39,7 +39,7 @@
     let pre_selected_options;
 
     onServer(() => {
-        if (product?.type_id == 'configurable') {
+        if (product?.type_id === 'configurable') {
             configurable = get_configurable_data(product?.configurable_options, product?.configurable_products);
         }
     });
@@ -81,18 +81,14 @@
             const slug = _inject('config.shop.slug.product', 'product');
             const url_key = get_attribute_value(selected_product, 'url_key');
             const title = get_attribute_value(selected_product, 'name');
-            add_history(
-                { source: url_key, target: location.pathname },
-                title,
-                url_join(getStack('store')?.key, slug, url_key)
-            );
+            replace_history(null, null, url_join(getStack('store')?.key, slug, url_key));
         }
 
         trigger('shop-product-switch', selected_product);
     }
 
     function get_redirected_from_simple_options() {
-        if (product?.type_id != 'configurable') {
+        if (product?.type_id !== 'configurable') {
             return undefined;
         }
         const redirect_from_simple = get_cookies()?.redirect_from_simple;
@@ -100,20 +96,22 @@
             return undefined;
         }
         // search product by the url_key
-        const redirected_simple = product.configurable_products.find((p) => p.url_key.value == redirect_from_simple);
+        const redirected_simple = product.configurable_products.find((p) => p.url_key.value === redirect_from_simple);
         if (!redirected_simple) {
             return undefined;
         }
 
         // get the option values from the options
         const simple_options = {};
-        configurable.forEach((option) => {
-            const product_attribute_value = get_attribute_value(redirected_simple, option.attribute_code);
-            const found_option = option.values.find((option_value) => option_value.key == product_attribute_value);
-            if (found_option) {
-                simple_options[option.attribute_code] = found_option;
+        if (Array.isArray(configurable)) {
+            for (const option of configurable) {
+                const product_attribute_value = get_attribute_value(redirected_simple, option.attribute_code);
+                const found_option = option.values.find((option_value) => option_value.key === product_attribute_value);
+                if (found_option) {
+                    simple_options[option.attribute_code] = found_option;
+                }
             }
-        });
+        }
 
         return simple_options;
     }
