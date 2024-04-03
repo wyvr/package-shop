@@ -14,9 +14,9 @@ export async function load_products(skus, domain_url, store_key) {
     let products = [];
     const cb = get_time_stamp_minutes();
     const cleaned_skus = skus.filter(Boolean).map((sku) => sku.toLowerCase());
-    const errors = [];
-    const responses = [];
-
+    if (cleaned_skus.length === 0) {
+        return [undefined, products];
+    }
     try {
         const cb = get_time_stamp_minutes();
         const response = await fetch(`${url_join(domain, store, 'api', 'product', 'get')}?cb=${cb}`, {
@@ -24,49 +24,11 @@ export async function load_products(skus, domain_url, store_key) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(skus.filter(Boolean).map((sku) => sku.toLowerCase()))
+            body: JSON.stringify(cleaned_skus)
         });
         products = await response.json();
     } catch (e) {
         return [e, undefined];
     }
     return [undefined, products];
-
-
-    // load in chunks of 25
-    // for (let i = 0; i < cleaned_skus.length; i += CHUNK_SIZE) {
-    //     const chunk = cleaned_skus.slice(i, i + CHUNK_SIZE);
-    //     try {
-    //         responses.push(
-    //             await fetch(`${url_join(domain, store, 'api', 'product', 'get')}?cb=${cb}`, {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 },
-    //                 body: JSON.stringify(chunk)
-    //             })
-    //         );
-    //     } catch (e) {
-    //         errors.push(e);
-    //     }
-    // }
-    // await Promise.all(
-    //     responses.map(async (response) => {
-    //         try {
-    //             const chunk_products = await response.json();
-    //             products.push(...chunk_products);
-    //         } catch (e) {
-    //             errors.push(e);
-    //         }
-    //         return true;
-    //     })
-    // );
-    // if (errors.length > 0) {
-    //     if (products.length === 0) {
-    //         return [errors, undefined];
-    //     }
-    //     console.error(errors);
-    // }
-
-    // return [undefined, products];
 }
