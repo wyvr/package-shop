@@ -87,30 +87,25 @@ export function reduce_attributes(product, attributes, denied_attributes) {
         return undefined;
     }
 
-    const p = {};
     const allow_all_attributes = !Array.isArray(attributes) || attributes.includes('*');
-    let reduce = !allow_all_attributes;
 
-    let check_denied = false;
+    let denied_attribute_set;
+
     if (Array.isArray(denied_attributes)) {
-        denied_attributes = new Set(denied_attributes);
-        reduce = true;
-        check_denied = true;
+        denied_attribute_set = new Set(denied_attributes);
     }
 
-    if (!reduce) {
+    if (allow_all_attributes) {
         return product;
     }
+    const attribute_set = new Set(attributes);
 
-    if (!allow_all_attributes) {
-        attributes = new Set(attributes);
-    }
-
+    const p = {};
     for (const [key, value] of Object.entries(product)) {
-        if (check_denied && denied_attributes.has(key)) {
+        if (denied_attribute_set?.has(key)) {
             continue;
         }
-        if (allow_all_attributes || attributes.has(key)) {
+        if (attribute_set.has(key)) {
             p[key] = value;
         }
     }
