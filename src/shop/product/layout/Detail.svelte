@@ -9,22 +9,15 @@
     import Compare from '@src/shop/compare/ToggleButton.svelte';
     import MediaGallery from '@src/shop/product/MediaGallery.svelte';
     import AddToCart from '@src/shop/product/AddToCart.svelte';
+    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
 
     export let product = null;
     export let locale = null;
     export let currency = null;
 
-    const detail_attributes = [
-        'activity',
-        ['style', 'style_bags'],
-        'material',
-        'strap_bags',
-        ['features', 'features_bags'],
-        'gender',
-        'category_gear',
-    ];
+    const detail_attributes = ['activity', ['style', 'style_bags'], 'material', 'strap_bags', ['features', 'features_bags'], 'gender', 'category_gear'];
 
-    onServer(() => {});
+    $: sku = get_attribute_value(product, 'sku');
 </script>
 
 <div class="main">
@@ -39,10 +32,10 @@
         <Stock {product} />
         <Price {product} {locale} {currency} />
 
-        <AddToCart sku={product.sku.value} />
+        <AddToCart {sku} />
         <Attribute name="description" {product} as_html={true} />
 
-        <div><Wishlist sku={product.sku.value} /> <Compare sku={product.sku.value} /></div>
+        <div><Wishlist {sku} /> <Compare {sku} /></div>
     </div>
 </div>
 <div class="details">

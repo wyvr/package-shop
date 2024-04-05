@@ -141,7 +141,7 @@
             {#if product}
                 <AddToCart {product} disabled={!get_stock(product).is_in_stock} />
 
-                <div><Wishlist sku={product.sku.value} /> <Compare sku={product.sku.value} /></div>
+                <div><Wishlist sku={get_attribute_value(product, 'value')} /> <Compare sku={get_attribute_value(product, 'value')} /></div>
             {/if}
         </ProductSwitcher>
         <Attribute name="description" {product} as_html={true} />
