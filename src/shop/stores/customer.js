@@ -21,7 +21,7 @@ function createCustomer() {
     // notification from other tab
     window.addEventListener('storage', (e) => {
         if (e.key === customer_storage_name) {
-            set(e.newValue);
+            customer_store.set(e.newValue);
         }
     });
     // set current value of the store

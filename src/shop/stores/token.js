@@ -21,7 +21,7 @@ function createToken() {
     // notification from other tab
     window.addEventListener('storage', (e) => {
         if (e.key === token_storage_name) {
-            set(e.newValue);
+            token_store.set(e.newValue);
         }
     });
     // set current value of the store
