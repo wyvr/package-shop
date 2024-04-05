@@ -15,7 +15,7 @@
 
     onMount(() => {
         compare.subscribe((compare) => {
-            if (!sku || typeof sku != 'string') {
+            if (!sku || typeof sku !== 'string' || !Array.isArray(compare?.items)) {
                 return;
             }
             const contains_sku = sku.toLowerCase();

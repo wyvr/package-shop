@@ -15,7 +15,7 @@
 
     onMount(() => {
         wishlist.subscribe((wishlist) => {
-            if (!sku || typeof sku != 'string') {
+            if (!sku || typeof sku !== 'string' || !Array.isArray(wishlist?.items)) {
                 return;
             }
             const contains_sku = sku.toLowerCase();
