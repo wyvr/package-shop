@@ -3,8 +3,6 @@
     import { load_product } from '@src/shop/api-client/product/load_product';
     import { messages } from '@src/shop/stores/messages';
     import Spinner from '@src/shop/component/Spinner.svelte';
-    import ListItem from '@src/shop/product/ListItem.svelte';
-    import ToggleButton from '@src/shop/compare/ToggleButton.svelte';
     import AddToCartButton from '@src/shop/cart/AddToCartButton.svelte';
     import { compare_attributes } from '@src/shop/config/compare_attributes.mjs';
     import { onMount } from 'svelte';
@@ -12,6 +10,7 @@
     import { get_attribute_label, get_attribute_name, get_attribute_value } from '@src/shop/core/attributes.mjs';
     import ImageAttribute from '@src/shop/product/ImageAttribute.svelte';
     import Price from '@src/shop/product/Price.svelte';
+    import { logger, get_error_message } from '@wyvr/generator/universal.js';
 
     wyvr: {
         render: 'hydrate';
@@ -27,7 +26,10 @@
 
     let cache = {};
     let cache_timer;
-    $: items = get_items($compare);
+    let items;
+    $: get_items($compare).then((result) => {
+        items = result;
+    });
 
     onMount(() => {
         if (items) {
@@ -36,25 +38,23 @@
         cache = load_cache(cache);
     });
 
-    function get_items(compare) {
-        if (isServer || !cache || !compare?.items || compare.items.length == 0) {
+    async function get_items(compare) {
+        if (isServer || !cache || compare?.items?.length === 0) {
             return undefined;
         }
-        compare.items.forEach(async (sku) => {
-            if (cache && cache[sku]) {
+        for (const sku of compare.items) {
+            if (cache?.[sku]) {
                 update_cache();
-                return;
+                continue;
             }
             const [error, product] = await load_product(sku);
             if (error) {
                 messages.push(__('shop.internal_error', error), 'error');
-                return;
-            }
-            if (!cache) {
+                continue;
             }
             cache[sku] = product;
             update_cache();
-        });
+        }
 
         return compare.items;
     }
@@ -69,13 +69,13 @@
             }
             const cache = JSON.parse(value);
             if (current_cache) {
-                Object.keys(current_cache).forEach((key) => {
+                for (const key of Object.keys(current_cache)) {
                     cache[key] = current_cache[key];
-                });
+                }
             }
             return cache;
         } catch (e) {
-            console.error(e);
+            logger.error(get_error_message(e, 'compare', 'load cache'));
             return current_cache;
         }
     }
@@ -98,7 +98,7 @@
         attributes = compare_attributes
             .map((attribute) => {
                 const data = {
-                    code: attribute,
+                    code: attribute
                 };
                 const sku = items.find((sku) => {
                     return cache[sku][attribute];
@@ -170,9 +170,7 @@
                     {#each items as sku}
                         <td>
                             <AddToCartButton {sku} />
-                            <button class="btn" on:click={() => compare.toggle(sku)}
-                                >{__('compare.remove_from_compare')}</button
-                            >
+                            <button class="btn" on:click={() => compare.toggle(sku)}>{__('compare.remove_from_compare')}</button>
                         </td>
                     {/each}
                 </tr>
