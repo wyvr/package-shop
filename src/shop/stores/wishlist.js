@@ -107,7 +107,7 @@ async function toggle(sku, update_fn, email, token_value) {
         let event;
         const toggle_sku = sku.toLowerCase();
         let was_in_list = false;
-        wishlist.items = wishlist.items.filter((sku) => {
+        wishlist.items = (wishlist?.items ?? []).filter((sku) => {
             if (sku === toggle_sku) {
                 was_in_list = true;
                 return false;
