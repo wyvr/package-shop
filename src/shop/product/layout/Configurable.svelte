@@ -7,7 +7,6 @@
     import Name from '@src/shop/product/Name.svelte';
     import ConfigurableOptions from '@src/shop/product/configurable/ConfigurableOptions.svelte';
     import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.mjs';
-    import { get_cookies, update_cookies } from '@src/shop/core/cookies.mjs';
 
     import Attribute from '@src/shop/product/Attribute.svelte';
     import AttributeList from '@src/shop/product/AttributeList.svelte';
@@ -21,6 +20,7 @@
     import { get_attribute_value } from '@src/shop/core/attributes.mjs';
     import { replace_history } from '@src/shop/core/history.mjs';
     import { url_join } from '@src/shop/core/url.mjs';
+    import { get_hash } from '@src/shop/core/url_hash.mjs';
     import { get_stock } from '@src/shop/core/product/get_stock.mjs';
 
     wyvr: {
@@ -46,9 +46,6 @@
     onMount(() => {
         const simple_options = get_redirected_from_simple_options();
         if (simple_options && _inject('config.magento2.product.redirect_simple_to_configurable')) {
-            // remove the redirect cookie
-            update_cookies({ redirect_from_simple: undefined });
-
             pre_selected_options = simple_options;
             select_configurable({ detail: simple_options });
         }
@@ -91,7 +88,7 @@
         if (product?.type_id !== 'configurable') {
             return undefined;
         }
-        const redirect_from_simple = get_cookies()?.redirect_from_simple;
+        const redirect_from_simple = get_hash()?.redirect_from_simple;
         if (!redirect_from_simple) {
             return undefined;
         }
