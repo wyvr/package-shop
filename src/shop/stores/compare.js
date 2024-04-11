@@ -33,8 +33,12 @@ function createCompare() {
 
     // notification from other tab
     window.addEventListener('storage', (e) => {
-        if (e.key == compare_name) {
-            set(e.newValue);
+        if (e.key === compare_name) {
+            try {
+                set(JSON.parse(e.newValue));
+            } catch (_) {
+                set(null);
+            }
         }
     });
     // set current value of the store
