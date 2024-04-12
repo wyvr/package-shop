@@ -21,7 +21,12 @@ function createCustomer() {
     // notification from other tab
     window.addEventListener('storage', (e) => {
         if (e.key === customer_storage_name) {
-            customer_store.set(e.newValue);
+            try {
+                const value = JSON.parse(e.newValue);
+                customer_store.set(value);
+            } catch (_) {
+                customer_store.set(null);
+            }
         }
     });
     // set current value of the store

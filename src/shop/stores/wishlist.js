@@ -78,7 +78,12 @@ function createWishlist() {
     // notification from other tab
     window.addEventListener('storage', (e) => {
         if (e.key === wishlist_name) {
-            set(e.newValue);
+            try {
+                const value = JSON.parse(e.newValue);
+                set(value);
+            } catch (_) {
+                set(null);
+            }
         }
     });
     // set current value of the store

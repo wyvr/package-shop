@@ -35,7 +35,8 @@ function createCompare() {
     window.addEventListener('storage', (e) => {
         if (e.key === compare_name) {
             try {
-                set(JSON.parse(e.newValue));
+                const value = JSON.parse(e.newValue);
+                set(value);
             } catch (_) {
                 set(null);
             }
