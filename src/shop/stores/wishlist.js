@@ -96,6 +96,7 @@ function createWishlist() {
     // create store logic
     store = {
         toggle: async (sku) => await toggle(sku, update, email, token_value),
+        get: () => snapshot,
         subscribe
     };
 

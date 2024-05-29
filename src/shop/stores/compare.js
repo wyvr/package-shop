@@ -1,5 +1,5 @@
 import { isServer } from '@wyvr/generator';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { getSharedStore, setSharedStore } from '@src/wyvr/stores/shared.js';
 import { load, save } from '@src/wyvr/stores/storage.js';
 import is_logged_in from '@src/shop/stores/is_logged_in';
@@ -42,9 +42,11 @@ function createCompare() {
             }
         }
     });
+    let value = null;
     // set current value of the store
     subscribe((compare) => {
         save(compare_name, compare);
+        value = compare;
     });
 
     // create store logic
@@ -82,6 +84,7 @@ function createCompare() {
                 return compare;
             });
         },
+        get: () => value,
         subscribe
     };
 
