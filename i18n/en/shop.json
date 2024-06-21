@@ -4,7 +4,7 @@
     "zip": "ZIP Code",
     "product": "Product",
     "find_order_by": "Find Order By",
-    "order_id": "Order ID",
+    "order_number": "Order Number",
     "billing_last_name": "Billing Last Name",
     "search": "Search",
     "orders_and_returns": "Orders and Returns",
