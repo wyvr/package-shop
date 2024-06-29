@@ -1,6 +1,6 @@
 <script>
     import Image from '@src/wyvr/Image.svelte';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let src;
     export let alt;

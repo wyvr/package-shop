@@ -1,8 +1,8 @@
 <script>
-    import facets from '@src/shop/config/facets.mjs';
+    import facets from '@src/shop/config/facets.js';
     import { onMount, createEventDispatcher } from 'svelte';
 
-    import { get_filter_options } from '@src/shop/category/filter_products.mjs';
+    import { get_filter_options } from '@src/shop/category/filter_products.js';
     import FacetBool from '@src/shop/facet/block/FacetBool.svelte';
     import FacetList from '@src/shop/facet/block/FacetList.svelte';
     import FacetSlider from '@src/shop/facet/block/FacetSlider.svelte';

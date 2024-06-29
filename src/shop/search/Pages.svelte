@@ -1,7 +1,7 @@
 <script>
     import Error from '@src/shop/Error.svelte';
-    import { trim_text } from '@src/shop/core/sanitize.mjs';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { trim_text } from '@src/shop/core/sanitize.js';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let pages;
     export let store = 'en';

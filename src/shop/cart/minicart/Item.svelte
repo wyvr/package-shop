@@ -2,11 +2,11 @@
     import Price from '@src/shop/product/Price.svelte';
     import Qty from '@src/shop/product/Qty.svelte';
     import Image from '@src/shop/component/Image.svelte';
-    import { get_image_path } from '@src/shop/product/get_image_path.mjs';
+    import { get_image_path } from '@src/shop/product/get_image_path.js';
     import { update_qty_delayed, update_qty } from '@src/shop/cart/minicart/item_events';
     import { get_store } from '@src/shop/api-client/get_store';
-    import { url_join } from '@src/shop/core/url.mjs';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { url_join } from '@src/shop/core/url.js';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     export let item;
     export let locale;

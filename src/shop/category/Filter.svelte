@@ -8,8 +8,8 @@
     import Error from '@src/shop/Error.svelte';
     import Sort from '@src/shop/category/Sort.svelte';
     import Facet from '@src/shop/category/Facet.svelte';
-    import { sort } from '@src/shop/category/sort_products.mjs';
-    import { filter } from '@src/shop/category/filter_products.mjs';
+    import { sort } from '@src/shop/category/sort_products.js';
+    import { filter } from '@src/shop/category/filter_products.js';
     import Tags from '@src/shop/component/Tags.svelte';
     import { get_tags, change_tags } from '@src/shop/category/tags_helper.js';
 

@@ -5,12 +5,12 @@
     import Attribute from '@src/shop/product/Attribute.svelte';
     import AttributeList from '@src/shop/product/AttributeList.svelte';
     import Badges from '@src/shop/product/Badges.svelte';
-    import { get_detail_attributes } from '@src/shop/product/get_detail_attributes.mjs';
+    import { get_detail_attributes } from '@src/shop/product/get_detail_attributes.js';
     import AddToCart from '@src/shop/product/AddToCart.svelte';
     import Wishlist from '@src/shop/wishlist/ToggleButton.svelte';
     import Compare from '@src/shop/compare/ToggleButton.svelte';
     import MediaGallery from '@src/shop/product/MediaGallery.svelte';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     export let data = null;
     export let locale = null;

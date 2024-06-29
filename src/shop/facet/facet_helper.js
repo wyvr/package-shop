@@ -1,4 +1,4 @@
-import facets from '@src/shop/config/facets.mjs';
+import facets from '@src/shop/config/facets.js';
 
 export function get_code_of_attribute(attribute) {
     if (Array.isArray(attribute.attribute)) {

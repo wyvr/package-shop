@@ -3,8 +3,8 @@
     import Price from '@src/shop/product/Price.svelte';
     import Badges from '@src/shop/product/Badges.svelte';
     import Stock from '@src/shop/product/Stock.svelte';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let product;
     export let store;

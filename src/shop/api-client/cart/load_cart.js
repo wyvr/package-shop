@@ -1,8 +1,8 @@
-import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.mjs';
+import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.js';
 import { get_domain } from '@src/shop/api-client/get_domain';
 import { get_store } from '@src/shop/api-client/get_store';
-import { url_join } from '@src/shop/core/url.mjs';
-import { customer_logout } from '../../logic/customer_logout';
+import { url_join } from '@src/shop/core/url.js';
+import { customer_logout } from '@src/shop/logic/customer_logout';
 
 export async function load_cart(email_or_token, bearer_token, domain_url, store_key) {
     const store = get_store(store_key);

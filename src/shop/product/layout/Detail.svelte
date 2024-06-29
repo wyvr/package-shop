@@ -9,7 +9,7 @@
     import Compare from '@src/shop/compare/ToggleButton.svelte';
     import MediaGallery from '@src/shop/product/MediaGallery.svelte';
     import AddToCart from '@src/shop/product/AddToCart.svelte';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     export let product = null;
     export let locale = null;

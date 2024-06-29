@@ -4,7 +4,7 @@
     import ProductSwitcher from '@src/shop/product/Switcher.svelte';
     import Name from '@src/shop/product/Name.svelte';
     import ConfigurableOptions from '@src/shop/product/configurable/ConfigurableOptions.svelte';
-    import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.mjs';
+    import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.js';
 
     export let data = null;
     export let configurable;

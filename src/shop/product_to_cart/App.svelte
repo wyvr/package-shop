@@ -2,11 +2,11 @@
     import { onMount } from 'svelte';
     import Spinner from '@src/shop/component/Spinner.svelte';
     import Error from '@src/shop/Error.svelte';
-    import { strip_tags } from '@src/shop/core/sanitize.mjs';
+    import { strip_tags } from '@src/shop/core/sanitize.js';
     import { cart } from '@src/shop/stores/cart';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
     import { load_product } from '@src/shop/api-client/product/load_product';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     wyvr: {
         render: 'hydrate';

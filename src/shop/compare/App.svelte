@@ -4,10 +4,10 @@
     import { messages } from '@src/shop/stores/messages';
     import Spinner from '@src/shop/component/Spinner.svelte';
     import AddToCartButton from '@src/shop/cart/AddToCartButton.svelte';
-    import { compare_attributes } from '@src/shop/config/compare_attributes.mjs';
+    import { compare_attributes } from '@src/shop/config/compare_attributes.js';
     import { onMount } from 'svelte';
     import Empty from '@src/shop/compare/Empty.svelte';
-    import { get_attribute_label, get_attribute_name, get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_label, get_attribute_name, get_attribute_value } from '@src/shop/core/attributes.js';
     import ImageAttribute from '@src/shop/product/ImageAttribute.svelte';
     import Price from '@src/shop/product/Price.svelte';
     import { logger, get_error_message } from '@wyvr/generator/universal.js';

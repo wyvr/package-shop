@@ -1,5 +1,5 @@
 <script>
-    import { to_currency } from '@src/shop/core/currency.mjs';
+    import { to_currency } from '@src/shop/core/currency.js';
 
     export let count = 0;
     export let sum;

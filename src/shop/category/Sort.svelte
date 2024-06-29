@@ -1,5 +1,5 @@
 <script>
-    import category_sort_options from '@src/shop/config/category_sort_options.mjs';
+    import category_sort_options from '@src/shop/config/category_sort_options.js';
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();

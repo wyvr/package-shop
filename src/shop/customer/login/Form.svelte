@@ -2,7 +2,7 @@
     import Email from '@src/form/Email.svelte';
     import Password from '@src/form/Password.svelte';
     import Buttons from '@src/shop/customer/login/Buttons.svelte';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
     import { forgot_password_link } from '@src/shop/config/forgot_password_link.js';
     import { onMount } from 'svelte';
 

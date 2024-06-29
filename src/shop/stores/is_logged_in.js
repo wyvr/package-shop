@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
-import { token } from './token';
-import { customer } from './customer';
+import { token } from '@src/shop/stores/token';
+import { customer } from '@src/shop/stores/customer';
 
 function is_logged_in() {
     return derived([token, customer], ([$token, $customer], set) => {

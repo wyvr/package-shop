@@ -3,7 +3,7 @@
     import Email from '@src/form/Email.svelte';
     import Password from '@src/form/Password.svelte';
     import Checkbox from '@src/form/Checkbox.svelte';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
     import Buttons from '@src/shop/customer/register/Buttons.svelte';
     import { onMount } from 'svelte';
 

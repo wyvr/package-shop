@@ -1,7 +1,7 @@
 <script>
     import Image from '@src/shop/component/Image.svelte';
-    import { get_attribute_value, get_attribute_name } from '../core/attributes.mjs';
-    import { get_image_path } from './get_image_path.mjs';
+    import { get_attribute_value, get_attribute_name } from '@src/shop/core/attributes.js';
+    import { get_image_path } from '@src/shop/product/get_image_path.js';
 
     export let name;
     export let product;

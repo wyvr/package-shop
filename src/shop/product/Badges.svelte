@@ -1,5 +1,5 @@
 <script>
-    import { get_badges } from '@src/shop/product/get_badges.mjs';
+    import { get_badges } from '@src/shop/product/get_badges.js';
 
     export let product;
 

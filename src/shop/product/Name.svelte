@@ -1,5 +1,5 @@
 <script>
-    import { get_attribute_value } from '../core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     export let product;
 </script>

@@ -1,5 +1,5 @@
-import { get_attribute_label, get_attribute_name, get_attribute_value } from '../core/attributes.mjs';
-import facets from '@src/shop/config/facets.mjs';
+import { get_attribute_label, get_attribute_name, get_attribute_value } from '@src/shop/core/attributes.js';
+import facets from '@src/shop/config/facets.js';
 import { get_code_of_attribute } from '@src/shop/facet/facet_helper.js';
 
 /**

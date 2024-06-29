@@ -1,6 +1,6 @@
 <script>
-    import { get_attribute_value } from '../core/attributes.mjs';
-    import { to_currency } from '../core/currency.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
+    import { to_currency } from '@src/shop/core/currency.js';
 
     export let product;
     export let locale = 'en';

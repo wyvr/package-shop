@@ -1,6 +1,6 @@
 <script>
     import { Config } from '@wyvr/generator/src/utils/config.js';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let name = '';
     export let store = 'de';

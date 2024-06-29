@@ -1,5 +1,5 @@
 <script>
-    import { get_stock } from '../core/product/get_stock.mjs';
+    import { get_stock } from '@src/shop/core/product/get_stock.js';
     import Stock from '@src/shop/component/Stock.svelte';
 
     export let product;

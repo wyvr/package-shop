@@ -6,22 +6,22 @@
     import Price from '@src/shop/product/Price.svelte';
     import Name from '@src/shop/product/Name.svelte';
     import ConfigurableOptions from '@src/shop/product/configurable/ConfigurableOptions.svelte';
-    import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.mjs';
+    import { get_configurable_data } from '@src/shop/product/configurable/get_configurable_data.js';
 
     import Attribute from '@src/shop/product/Attribute.svelte';
     import AttributeList from '@src/shop/product/AttributeList.svelte';
     import Badges from '@src/shop/product/Badges.svelte';
-    import { get_detail_attributes } from '@src/shop/product/get_detail_attributes.mjs';
+    import { get_detail_attributes } from '@src/shop/product/get_detail_attributes.js';
     import AddToCart from '@src/shop/product/AddToCart.svelte';
     import Wishlist from '@src/shop/wishlist/ToggleButton.svelte';
     import Compare from '@src/shop/compare/ToggleButton.svelte';
     import MediaGallery from '@src/shop/product/MediaGallery.svelte';
 
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
-    import { replace_history } from '@src/shop/core/history.mjs';
-    import { url_join } from '@src/shop/core/url.mjs';
-    import { get_hash } from '@src/shop/core/url_hash.mjs';
-    import { get_stock } from '@src/shop/core/product/get_stock.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
+    import { replace_history } from '@src/shop/core/history.js';
+    import { url_join } from '@src/shop/core/url.js';
+    import { get_hash } from '@src/shop/core/url_hash.js';
+    import { get_stock } from '@src/shop/core/product/get_stock.js';
 
     wyvr: {
         render: 'hydrate';

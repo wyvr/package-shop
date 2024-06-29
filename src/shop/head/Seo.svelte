@@ -1,5 +1,5 @@
 <script>
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let data;
     const name = injectConfig('shop.name');

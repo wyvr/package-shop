@@ -1,6 +1,6 @@
 <script>
     import { onMount, createEventDispatcher } from 'svelte';
-    import { get_stock } from '@src/shop/core/product/get_stock.mjs';
+    import { get_stock } from '@src/shop/core/product/get_stock.js';
 
     wyvr: {
         render: 'hydrate';

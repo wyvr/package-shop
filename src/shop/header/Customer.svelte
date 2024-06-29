@@ -2,7 +2,7 @@
     import is_logged_in from '@src/shop/stores/is_logged_in';
     import LoginDialog from '@src/shop/customer/login/Dialog.svelte';
     import { customer_logout } from '@src/shop/logic/customer_logout';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
 
     wyvr: {
         render: 'hydrate';

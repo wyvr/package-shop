@@ -1,8 +1,8 @@
 <script>
     import Image from '@src/shop/component/Image.svelte';
     import MagnifyImage from '@src/shop/component/MagnifyImage.svelte';
-    import { get_attribute_value } from '../core/attributes.mjs';
-    import { get_image_path } from './get_image_path.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
+    import { get_image_path } from '@src/shop/product/get_image_path.js';
     import { onMount } from 'svelte';
     import { register } from 'swiper/element/bundle';
     import ImageDialog from '@src/shop/component/ImageDialog.svelte';

@@ -1,6 +1,6 @@
 <script>
     import Label from './Label.svelte';
-    import { strip_tags } from '@src/shop/core/sanitize.mjs';
+    import { strip_tags } from '@src/shop/core/sanitize.js';
     import { createEventDispatcher } from 'svelte';
     import Field from './Field.svelte';
 

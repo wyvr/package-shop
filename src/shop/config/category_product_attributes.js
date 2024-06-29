@@ -1,4 +1,4 @@
-import product_badge_attributes from './product_badge_attributes.mjs';
+import product_badge_attributes from '@src/shop/config/product_badge_attributes.js';
 
 export default [
     'store_id',

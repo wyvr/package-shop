@@ -1,5 +1,5 @@
 <script>
-    import { get_credit_url } from '@src/shop/core/credit.mjs';
+    import { get_credit_url } from '@src/shop/core/credit.js';
 </script>
 
 <div class="credit">

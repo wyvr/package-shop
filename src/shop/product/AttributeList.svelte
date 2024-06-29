@@ -1,5 +1,5 @@
 <script>
-import { get_attributes_of_names } from '../core/attributes.mjs';
+import { get_attributes_of_names } from '@src/shop/core/attributes.js';
 
     export let attributes;
     export let product;

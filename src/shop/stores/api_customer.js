@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
-import { customer } from './customer';
-import is_logged_in from './is_logged_in';
+import { customer } from '@src/shop/stores/customer';
+import is_logged_in from '@src/shop/stores/is_logged_in';
 
 function api_customer() {
     return derived([is_logged_in, customer], ([$is_logged_in, $customer], set) => {

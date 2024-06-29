@@ -1,7 +1,7 @@
-import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.mjs';
+import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.js';
 import { get_domain } from '@src/shop/api-client/get_domain';
 import { get_store } from '@src/shop/api-client/get_store';
-import { url_join } from '@src/shop/core/url.mjs';
+import { url_join } from '@src/shop/core/url.js';
 
 export async function update_password(email, bearer_token, current_password, new_password, domain_url, store_key) {
     const store = get_store(store_key);

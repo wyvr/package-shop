@@ -7,7 +7,7 @@
     import Error from '@src/shop/Error.svelte';
     import Paging from '@src/shop/component/Paging.svelte';
     import { onMount } from 'svelte';
-    import { get_hash, update_hash } from '@src/shop/core/url_hash.mjs';
+    import { get_hash, update_hash } from '@src/shop/core/url_hash.js';
 
     export let name;
     export let products;

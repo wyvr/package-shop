@@ -1,8 +1,8 @@
 <script>
     import ImageAttribute from '@src/shop/product/ImageAttribute.svelte';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
     import Price from '@src/shop/product/Price.svelte';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let product;
     export let term = '';

@@ -1,5 +1,5 @@
 <script>
-    import { strip_tags } from '@src/shop/core/sanitize.mjs';
+    import { strip_tags } from '@src/shop/core/sanitize.js';
 
     export let headline;
 </script>

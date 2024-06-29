@@ -1,8 +1,8 @@
 <script>
     import Image from '@src/shop/component/Image.svelte';
     import Error from '@src/shop/Error.svelte';
-    import { trim_text } from '@src/shop/core/sanitize.mjs';
-    import { url_join } from '@src/shop/core/url.mjs';
+    import { trim_text } from '@src/shop/core/sanitize.js';
+    import { url_join } from '@src/shop/core/url.js';
 
     export let categories;
     export let store = 'en';

@@ -2,7 +2,7 @@
     import ListItem from '@src/shop/product/ListItem.svelte';
     import Error from '@src/shop/Error.svelte';
     import CustomBlock from '@src/shop/category/CustomBlock.svelte';
-    import { get_attribute_value } from '@src/shop/core/attributes.mjs';
+    import { get_attribute_value } from '@src/shop/core/attributes.js';
 
     export let name;
     export let products;

@@ -1,7 +1,7 @@
-import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.mjs';
+import { get_time_stamp_minutes } from '@src/shop/core/cache_breaker.js';
 import { get_domain } from '@src/shop/api-client/get_domain';
 import { get_store } from '@src/shop/api-client/get_store';
-import { url_join } from '@src/shop/core/url.mjs';
+import { url_join } from '@src/shop/core/url.js';
 import { customer } from '@src/shop/stores/customer';
 
 export async function update_customer(email, bearer_token, customer_data, domain_url, store_key) {
