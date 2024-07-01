@@ -1,14 +1,16 @@
+import { validate_store } from '@src/shop/core/validate_store.js';
+
 export default {
     url: '/[store]/api/cart/[email]/',
     _wyvr: () => {
         return {
-            methods: ['get']
+            methods: ['get'],
         };
     },
-    onExec: async ({ returnJSON, setStatus }) => {
-        setStatus(400);
-        return returnJSON({
-            message: 'missing customer implementation'
-        });
-    }
+    onExec: async ({ params, returnJSON }) => {
+        if (!validate_store(params?.store)) {
+            return returnJSON({}, 404);
+        }
+        return returnJSON({ message: 'Not implemented' }, 501);
+    },
 };

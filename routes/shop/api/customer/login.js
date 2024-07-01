@@ -1,3 +1,5 @@
+import { validate_store } from '@src/shop/core/validate_store.js';
+
 export default {
     url: '/[store]/api/customer/login/',
     _wyvr: () => {
@@ -5,8 +7,10 @@ export default {
             methods: ['post']
         };
     },
-    onExec: async ({ returnJSON, setStatus }) => {
-        setStatus(400);
-        return returnJSON({ message: 'missing login implementation' });
-    }
+    onExec: async ({ params, returnJSON }) => {
+        if (!validate_store(params?.store)) {
+            return returnJSON({}, 404);
+        }
+        return returnJSON({ message: 'Not implemented' }, 501);
+    },
 };

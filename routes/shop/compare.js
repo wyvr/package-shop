@@ -1,4 +1,5 @@
 import { Config } from '@wyvr/generator/src/utils/config.js';
+import { redirectInvalidStoreRoute } from '@src/shop/route/redirectInvalidStoreRoute.js';
 
 const slug = Config.get('shop.slug.compare', 'compare');
 
@@ -11,9 +12,10 @@ export default {
                 template: ['shop/Compare', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en'
-            }
+                language: data?.locale || 'en',
+            },
         };
     },
-    title: () => __('compare.name')
+    onExec: await redirectInvalidStoreRoute,
+    title: () => __('compare.name'),
 };

@@ -1,4 +1,4 @@
-import { Config } from '@wyvr/generator/src/utils/config.js';
+import { redirectInvalidStoreRoute } from '@src/shop/route/redirectInvalidStoreRoute.js';
 
 export default {
     url: '/[store]/account',
@@ -9,9 +9,10 @@ export default {
                 template: ['shop/Account', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en'
-            }
+                language: data?.locale || 'en',
+            },
         };
     },
-    title: () => __('customer.my_account')
+    onExec: await redirectInvalidStoreRoute,
+    title: () => __('customer.my_account'),
 };

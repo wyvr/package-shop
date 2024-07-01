@@ -1,4 +1,5 @@
 import { Config } from '@wyvr/generator/src/utils/config.js';
+import { redirectInvalidStoreRoute } from '@src/shop/route/redirectInvalidStoreRoute.js';
 
 const slug = Config.get('shop.slug.category', 'category');
 export default {
@@ -10,10 +11,11 @@ export default {
                 template: ['shop/Category', 'shop/Default'],
                 methods: ['get'],
                 persist: true,
-                language: data?.locale || 'en'
-            }
+                language: data?.locale || 'en',
+            },
         };
     },
+    onExec: await redirectInvalidStoreRoute,
     title: ({ params }) => `category ${params.slug}`,
-    content: 'missing category implementation'
+    content: 'missing category implementation',
 };

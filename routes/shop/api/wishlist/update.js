@@ -1,16 +1,16 @@
+import { validate_store } from '@src/shop/core/validate_store.js';
+
 export default {
     url: '/[store]/api/wishlist/[email]/',
     _wyvr: () => {
         return {
-            methods: ['post']
+            methods: ['post'],
         };
     },
-    onExec: async ({ returnJSON }) => {
-        return returnJSON(
-            {
-                message: 'missing wishlist implementation'
-            },
-            400
-        );
-    }
+    onExec: async ({ params, returnJSON }) => {
+        if (!validate_store(params?.store)) {
+            return returnJSON({}, 404);
+        }
+        return returnJSON({ message: 'Not implemented' }, 501);
+    },
 };

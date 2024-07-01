@@ -1,5 +1,6 @@
 import { valid } from '@src/shop/api/customer/valid.js';
 import { change_password } from '@src/shop/api/customer/password';
+import { validate_store } from '@src/shop/core/validate_store.js';
 
 export default {
     url: '/[store]/api/customer/password/[email]/',
@@ -9,6 +10,9 @@ export default {
         };
     },
     onExec: async ({ params, body, returnJSON, headers, isProd }) => {
+        if (!validate_store(params?.store)) {
+            return returnJSON({}, 404);
+        }
         const [valid_error, base_customer] = await valid(params.email, headers?.authorization);
         if (valid_error) {
             return returnJSON({ message: valid_error }, 403);

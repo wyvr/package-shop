@@ -1,6 +1,7 @@
 import { Config } from '@wyvr/generator/src/utils/config.js';
 import { get } from '@src/shop/core/settings.js';
 import { search_execute } from '@src/shop/core/search/search.js';
+import { validate_store } from '@src/shop/core/validate_store.js';
 
 export default {
     url: '/[store]/search/instant',
@@ -10,6 +11,9 @@ export default {
         };
     },
     onExec: async ({ body, params, returnJSON }) => {
+        if (!validate_store(params?.store)) {
+            return returnJSON({ message: __('shop.internal_error') }, 500);
+        }
         const stores = Config.get('shop.stores');
         const store_id = stores[params.store];
         const date = new Date();
