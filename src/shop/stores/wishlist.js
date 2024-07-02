@@ -114,7 +114,7 @@ async function toggle(sku, update_fn, email, token_value) {
         const toggle_sku = sku.toLowerCase();
         let was_in_list = false;
         wishlist.items = (wishlist?.items ?? []).filter((sku) => {
-            if (sku === toggle_sku) {
+            if (sku.toLowerCase() === toggle_sku) {
                 was_in_list = true;
                 return false;
             }
@@ -127,7 +127,7 @@ async function toggle(sku, update_fn, email, token_value) {
             changes[sku] = false;
         } else {
             message = 'wishlist.add';
-            wishlist.items.push(toggle_sku);
+            wishlist.items.push(sku);
             event = 'wishlist.add';
             changes[sku] = true;
         }
