@@ -33,12 +33,12 @@
     }
     function update_details(data) {
         const new_details = {};
-        Object.keys(filter).forEach((key) => {
+        for (const key of Object.keys(filter)) {
             new_details[key] = details[key];
-            if (data.key == key) {
+            if (data.key === key) {
                 new_details[key] = data.details;
             }
-        });
+        }
         details = new_details;
         dispatch('details', details);
     }
